@@ -2,119 +2,88 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
-import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <div className="min-h-screen bg-gray-950 text-white flex flex-col items-center">
+
+      {/* Hero Section */}
+      <section className="flex flex-col items-center justify-center text-center py-16 gap-6">
+        <div className="relative">
+          <img src={heroImg} className="w-40 mx-auto" alt="" />
+          <img src={reactLogo} className="w-12 absolute -top-4 -left-6 animate-spin-slow" alt="React logo" />
+          <img src={viteLogo} className="w-12 absolute -bottom-4 -right-6" alt="Vite logo" />
         </div>
+
         <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
+          <h1 className="text-5xl font-bold mb-4">Get started</h1>
+          <p className="text-gray-400">
+            Edit <code className="bg-gray-800 px-2 py-1 rounded">src/App.jsx</code> and save to test HMR
           </p>
         </div>
+
         <button
-          className="counter"
           onClick={() => setCount((count) => count + 1)}
+          className="bg-purple-600 hover:bg-purple-700 px-6 py-2 rounded-lg transition"
         >
           Count is {count}
         </button>
       </section>
 
-      <div className="ticks"></div>
+      {/* Divider */}
+      <div className="w-full h-px bg-gray-800 my-10"></div>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
+      {/* Next Steps */}
+      <section className="grid md:grid-cols-2 gap-10 max-w-4xl w-full px-6 pb-16">
+
+        {/* Docs */}
+        <div className="bg-gray-900 p-6 rounded-xl shadow-lg">
+          <h2 className="text-xl font-semibold mb-2">Documentation</h2>
+          <p className="text-gray-400 mb-4">Your questions, answered</p>
+          <ul className="space-y-3">
             <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
+              <a href="https://vite.dev/" target="_blank" className="flex items-center gap-2 hover:text-purple-400">
+                <img className="w-6" src={viteLogo} alt="" />
                 Explore Vite
               </a>
             </li>
             <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
+              <a href="https://react.dev/" target="_blank" className="flex items-center gap-2 hover:text-purple-400">
+                <img className="w-6" src={reactLogo} alt="" />
+                Learn React
               </a>
             </li>
           </ul>
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
+
+        {/* Social */}
+        <div className="bg-gray-900 p-6 rounded-xl shadow-lg">
+          <h2 className="text-xl font-semibold mb-2">Connect</h2>
+          <p className="text-gray-400 mb-4">Join the community</p>
+          <ul className="space-y-3">
             <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
+              <a href="https://github.com/vitejs/vite" target="_blank" className="hover:text-purple-400">
                 GitHub
               </a>
             </li>
             <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
+              <a href="https://chat.vite.dev/" target="_blank" className="hover:text-purple-400">
                 Discord
               </a>
             </li>
             <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
+              <a href="https://x.com/vite_js" target="_blank" className="hover:text-purple-400">
+                X (Twitter)
               </a>
             </li>
           </ul>
         </div>
+
       </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+    </div>
   )
 }
 
