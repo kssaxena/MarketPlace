@@ -1,11 +1,20 @@
-import React from 'react'
+import Navbar from "./components/Navbar";
+import { Hero, Categories } from "./components/Hero";
+import ProductGrid from "./components/ProductGrid";
+import Footer from "./components/Footer";
 
-const App = () => {
+import "./App.css";
+
+function App() {
   return (
-    <div className='bg-red-200 '>
-      Hello Marketplace!
-    </div>
-  )
+    <>
+      <Navbar />
+      <Hero />
+      <Categories />
+      <ProductGrid />
+      <Footer />
+    </>
+  );
 }
 
-export default App
+export default App;
