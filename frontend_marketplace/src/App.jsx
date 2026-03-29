@@ -1,8 +1,8 @@
 import Navbar from "./components/Navbar";
-import { Hero, Categories } from "./components/Hero";
+import Hero from "./components/Hero";
 import ProductGrid from "./components/ProductGrid";
 import Footer from "./components/Footer";
-
+import Categories from "./components/Categories";
 import "./App.css";
 
 function App() {

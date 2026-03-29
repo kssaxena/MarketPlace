@@ -18,3 +18,5 @@ export function Categories() {
     </div>
   );
 }
+
+export default Hero;
