@@ -63,31 +63,36 @@ nav a {
 
 /* HERO */
 .hero {
-  text-align: center;
-  padding: 100px 20px;
-  background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
-              url("https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da");
+  height: 350px;
   background-size: cover;
   background-position: center;
+  position: relative;
+  transition: background-image 0.8s ease-in-out; /* 🔥 smooth change */
+}
+
+/* DARK OVERLAY */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* TEXT */
+.overlay h1 {
+  font-size: 42px;
   color: white;
-}
-
-.hero h1 {
-  font-size: 48px;
   font-weight: 700;
-  letter-spacing: 0.5px;
-  color: #ffffff;
 }
 
-.hero p {
+.overlay p {
+  margin-top: 10px;
   font-size: 18px;
-  font-weight: 400;
-  color: #d1d5db;
-  margin-top: 12px;
-}
-
-.hero h1 {
-  text-shadow: 0 0 20px rgba(34,197,94,0.6);
+  color: #e5e7eb;
 }
 
 /* CATEGORIES */
