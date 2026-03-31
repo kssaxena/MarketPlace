@@ -105,8 +105,17 @@ function Home() {
           <span>Contact</span>
         </div>
 
+       {/* POST AD */}
+      <button className="bg-emerald-500 text-white px-6 py-3 rounded-2xl font-semibold 
+shadow-md hover:bg-emerald-600 hover:shadow-lg 
+transition-all duration-300 active:scale-95">
+
+  + Post Ad
+
+</button>
+
         <button className="cta-btn">
-          Get the Best Brand Deals Right Here!
+          Get the Best Deals Right Here!
         </button>
       </div>
 
@@ -151,9 +160,6 @@ function Home() {
               <div className="card-body">
                 <h4>₹ {item.price}</h4>
                 <p>{item.title}</p>
-                <p className="seller">
-                  Seller: {item.seller?.personalDetails?.name}
-                </p>
               </div>
             </div>
           ))}
@@ -161,7 +167,60 @@ function Home() {
       </section>
 
       {/* FOOTER */}
-      <footer className="footer">© 2026 Marketplace</footer>
+      <footer className="bg-gray-100 border-t mt-16">
+
+  {/* MAIN FOOTER */}
+  <div className="max-w-7xl mx-auto px-6 py-14 grid grid-cols-1 md:grid-cols-4 gap-10">
+
+    {/* LOGO + TEXT */}
+    <div>
+      <div className="flex items-center gap-3 mb-3">
+        <h1 className="text-2xl font-bold text-emerald-600">Marketplace</h1>
+      </div>
+
+      <p className="text-sm text-gray-500">
+        Buy and sell anything locally.
+      </p>
+    </div>
+
+    {/* QUICK LINKS */}
+    <div>
+      <h3 className="font-semibold mb-3">Quick Links</h3>
+      <ul className="space-y-2 text-sm text-gray-500">
+        <li className="hover:text-emerald-600 cursor-pointer">Home</li>
+        <li className="hover:text-emerald-600 cursor-pointer">Post an Ad</li>
+        <li className="hover:text-emerald-600 cursor-pointer">My Ads</li>
+      </ul>
+    </div>
+
+    {/* SUPPORT */}
+    <div>
+      <h3 className="font-semibold mb-3">Support</h3>
+      <ul className="space-y-2 text-sm text-gray-500">
+        <li className="hover:text-emerald-600 cursor-pointer">Help Center</li>
+        <li className="hover:text-emerald-600 cursor-pointer">Safety Tips</li>
+        <li className="hover:text-emerald-600 cursor-pointer">Contact Us</li>
+      </ul>
+    </div>
+
+    {/* LEGAL */}
+    <div>
+      <h3 className="font-semibold mb-3">Legal</h3>
+      <ul className="space-y-2 text-sm text-gray-500">
+        <li className="hover:text-emerald-600 cursor-pointer">Terms of Service</li>
+        <li className="hover:text-emerald-600 cursor-pointer">Privacy Policy</li>
+        <li className="hover:text-emerald-600 cursor-pointer">Cookie Policy</li>
+      </ul>
+    </div>
+
+  </div>
+
+  {/* BOTTOM BAR */}
+  <div className="border-t text-center text-sm text-gray-400 py-4">
+    © 2026 Marketplace.
+  </div>
+
+</footer>
 
       {/* MODALS */}
       {popup && <DemoPopUp onClose={() => setShowPopup(false)} />}

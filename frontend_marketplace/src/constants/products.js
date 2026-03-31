@@ -6,6 +6,9 @@ export const productsData = [
     location: "New York, NY",
     time: "2 hours ago",
     image: "https://picsum.photos/seed/car1/300/200",
+    category: "Vehicles",
+    description: "Well-maintained 2020 Toyota Camry in excellent condition. Features automatic transmission, backup camera, Bluetooth connectivity, and fuel-efficient 2.5L engine. Single owner, clean title, no accidents.",
+    featured: true,
   },
   {
     id: 2,
@@ -14,6 +17,9 @@ export const productsData = [
     location: "Los Angeles, CA",
     time: "45 minutes ago",
     image: "https://picsum.photos/seed/phone2/300/200",
+    category: "Electronics",
+    description: "iPhone 14 Pro Max in Space Black with 256GB storage. Comes with original box, charger, and unused EarPods. Battery health at 97%. No scratches or cracks. Unlocked and compatible with all carriers.",
+    featured: true,
   },
   {
     id: 3,
@@ -22,6 +28,9 @@ export const productsData = [
     location: "Chicago, IL",
     time: "1 day ago",
     image: "https://picsum.photos/seed/bed3/300/200",
+    category: "Furniture",
+    description: "IKEA MALM queen bed frame in white finish. Includes 4 under-bed storage boxes. Lightly used, in great condition with only minor scuffs. Slats included. Easy to disassemble for transport.",
+    featured: true,
   },
   {
     id: 4,
@@ -30,6 +39,9 @@ export const productsData = [
     location: "Houston, TX",
     time: "3 hours ago",
     image: "https://picsum.photos/seed/tv4/300/200",
+    category: "Electronics",
+    description: "Samsung 65-inch 4K QLED Smart TV with HDR10+ and Dolby Digital Plus. Built-in Alexa and Google Assistant. Comes with original remote and wall mount bracket. Picture quality is stunning with vibrant colors.",
+    featured: true,
   },
   {
     id: 5,
@@ -38,6 +50,9 @@ export const productsData = [
     location: "Phoenix, AZ",
     time: "30 minutes ago",
     image: "https://picsum.photos/seed/shoes5/300/200",
+    category: "Fashion",
+    description: "Nike Air Jordan 1 Retro High OG in Chicago colorway. Size 10, worn only twice. Comes with original box and extra laces. No yellowing on soles. A must-have for any sneaker collector.",
+    featured: true,
   },
   {
     id: 6,
@@ -46,6 +61,9 @@ export const productsData = [
     location: "San Francisco, CA",
     time: "5 hours ago",
     image: "https://picsum.photos/seed/laptop6/300/200",
+    category: "Electronics",
+    description: "MacBook Pro 14-inch with Apple M2 chip, 16GB unified memory, and 512GB SSD. Space Gray finish in near-mint condition. Comes with original MagSafe charger and box. Perfect for developers and creatives.",
+    featured: true,
   },
   {
     id: 7,
@@ -54,6 +72,9 @@ export const productsData = [
     location: "Philadelphia, PA",
     time: "2 days ago",
     image: "https://picsum.photos/seed/sofa7/300/200",
+    category: "Furniture",
+    description: "Large grey leather sectional sofa with chaise lounge. Seats up to 5 comfortably. Genuine leather with minimal wear. Dimensions: 110\" x 85\". Moving sale — must go this week. Buyer to arrange pickup.",
+    featured: true,
   },
   {
     id: 8,
@@ -62,6 +83,9 @@ export const productsData = [
     location: "San Antonio, TX",
     time: "6 hours ago",
     image: "https://picsum.photos/seed/car8/300/200",
+    category: "Vehicles",
+    description: "2019 Honda Civic EX sedan with only 28,000 miles. Features lane-keep assist, adaptive cruise control, sunroof, and Apple CarPlay. One owner, fully serviced, no accidents. Fuel economy of 32 city / 42 highway MPG.",
+    featured: true,
   },
   {
     id: 9,
@@ -70,6 +94,9 @@ export const productsData = [
     location: "San Diego, CA",
     time: "1 hour ago",
     image: "https://picsum.photos/seed/headphone9/300/200",
+    category: "Electronics",
+    description: "Sony WH-1000XM5 over-ear noise-cancelling headphones in black. Industry-leading ANC with up to 30 hours battery life. Comes with carrying case, original cables, and box. Used for 3 months, excellent condition.",
+    featured: true,
   },
   {
     id: 10,
@@ -78,6 +105,9 @@ export const productsData = [
     location: "Dallas, TX",
     time: "3 days ago",
     image: "https://picsum.photos/seed/table10/300/200",
+    category: "Furniture",
+    description: "Solid oak vintage dining table seating 6 people. Rich walnut finish with beautiful grain. Dimensions: 72\" x 36\". Minor surface scratches consistent with age, adds to character. Chairs not included but available separately.",
+    featured: true,
   },
   {
     id: 11,
@@ -86,6 +116,9 @@ export const productsData = [
     location: "San Jose, CA",
     time: "4 hours ago",
     image: "https://picsum.photos/seed/phone11/300/200",
+    category: "Electronics",
+    description: "Samsung Galaxy S23 Ultra in Phantom Black with 512GB storage and 12GB RAM. Includes S Pen, original box, and charger. Screen protector applied from day one. Unlocked, works with any carrier. Battery health excellent.",
+    featured: true,
   },
   {
     id: 12,
@@ -94,6 +127,9 @@ export const productsData = [
     location: "Austin, TX",
     time: "2 hours ago",
     image: "https://picsum.photos/seed/bike12/300/200",
+    category: "Hobbies",
+    description: "2022 Trek Marlin 7 mountain bike in size medium. Features hydraulic disc brakes, 1x drivetrain, and RockShox fork. Ridden on light trails, well maintained with recent tune-up. Ideal for trail and recreational riding.",
+    featured: true,
   },
   {
     id: 13,
@@ -102,6 +138,9 @@ export const productsData = [
     location: "Jacksonville, FL",
     time: "1 day ago",
     image: "https://picsum.photos/seed/camera13/300/200",
+    category: "Hobbies",
+    description: "Canon EOS R6 mirrorless camera body with only 8,500 shutter actuations. Includes original box, battery, charger, and body cap. No sensor dust or scratches. Perfect for photography enthusiasts upgrading their kit.",
+    featured: true,
   },
   {
     id: 14,
@@ -110,6 +149,9 @@ export const productsData = [
     location: "Fort Worth, TX",
     time: "50 minutes ago",
     image: "https://picsum.photos/seed/shoes14/300/200",
+    category: "Fashion",
+    description: "Adidas Ultraboost 22 running shoes in Core Black, size 9. Worn only a handful of times, soles still clean. Comes with original box. Boost midsole provides exceptional energy return and comfort for long runs.",
+    featured: true,
   },
   {
     id: 15,
@@ -118,6 +160,9 @@ export const productsData = [
     location: "Columbus, OH",
     time: "7 hours ago",
     image: "https://picsum.photos/seed/kitchen15/300/200",
+    category: "Electronics",
+    description: "KitchenAid Artisan Series 5-quart stand mixer in Empire Red. Includes flat beater, dough hook, and wire whip attachments. Used occasionally, in excellent working condition. A kitchen essential for bakers.",
+    featured: true,
   },
   {
     id: 16,
@@ -126,6 +171,9 @@ export const productsData = [
     location: "Charlotte, NC",
     time: "5 hours ago",
     image: "https://picsum.photos/seed/car16/300/200",
+    category: "Vehicles",
+    description: "2018 Ford Mustang GT with 5.0L V8 engine producing 460 horsepower. 6-speed manual transmission, 42,000 miles. Magnetic Grey exterior, black leather interior. Performance exhaust upgrade. Clean title, no accidents.",
+    featured: true,
   },
   {
     id: 17,
@@ -134,6 +182,9 @@ export const productsData = [
     location: "Indianapolis, IN",
     time: "2 days ago",
     image: "https://picsum.photos/seed/tv17/300/200",
+    category: "Electronics",
+    description: "LG 55-inch OLED C2 Smart TV with self-lit pixels for perfect blacks. Supports Dolby Vision, HDR10, and HGiG gaming mode. webOS platform with all major streaming apps. Comes with Magic Remote and original packaging.",
+    featured: true,
   },
   {
     id: 18,
@@ -142,6 +193,9 @@ export const productsData = [
     location: "San Francisco, CA",
     time: "4 days ago",
     image: "https://picsum.photos/seed/shelf18/300/200",
+    category: "Furniture",
+    description: "Solid wood 5-tier bookshelf in natural oak finish. Dimensions: 72\" H x 32\" W x 12\" D. Sturdy construction with adjustable shelves. Minimal wear, comes fully assembled. Great for a home office or living room.",
+    featured: true,
   },
   {
     id: 19,
@@ -150,6 +204,9 @@ export const productsData = [
     location: "Seattle, WA",
     time: "1 hour ago",
     image: "https://picsum.photos/seed/watch19/300/200",
+    category: "Electronics",
+    description: "Apple Watch Series 8 in 45mm Midnight Aluminum with GPS. Includes crash detection, heart rate monitor, blood oxygen sensor, and sleep tracking. Comes with two bands and original box. Battery holds charge all day.",
+    featured: true,
   },
   {
     id: 20,
@@ -158,6 +215,9 @@ export const productsData = [
     location: "Denver, CO",
     time: "3 hours ago",
     image: "https://picsum.photos/seed/vacuum20/300/200",
+    category: "Electronics",
+    description: "Dyson V15 Detect cordless vacuum with laser dust detection and LCD screen. Includes multiple attachments: crevice tool, mini motorhead, and hair screw tool. Powerful suction on hard floors and carpet. Used 6 months.",
+    featured: true,
   },
   {
     id: 21,
@@ -166,6 +226,9 @@ export const productsData = [
     location: "Nashville, TN",
     time: "20 minutes ago",
     image: "https://picsum.photos/seed/jeans21/300/200",
+    category: "Fashion",
+    description: "Levi's 501 Original straight-fit jeans in classic medium wash. Size W32 L32. Worn a few times, excellent condition with no fading or damage. Timeless cut that pairs with everything. 100% cotton denim.",
+    featured: true,
   },
   {
     id: 22,
@@ -174,6 +237,9 @@ export const productsData = [
     location: "Oklahoma City, OK",
     time: "2 hours ago",
     image: "https://picsum.photos/seed/ps522/300/200",
+    category: "Electronics",
+    description: "PlayStation 5 Disc Edition console in excellent condition. Comes with one DualSense wireless controller, HDMI cable, and power cord. Lightly used, no disc drive issues. Ready for all the latest titles.",
+    featured: true,
   },
   {
     id: 23,
@@ -182,6 +248,9 @@ export const productsData = [
     location: "El Paso, TX",
     time: "6 hours ago",
     image: "https://picsum.photos/seed/coffee23/300/200",
+    category: "Electronics",
+    description: "Keurig K-Elite single-serve coffee maker in brushed slate. Features strong brew mode, iced coffee setting, and 12oz brew size. 75oz water reservoir. Cleaned and descaled regularly. All original parts included.",
+    featured: true,
   },
   {
     id: 24,
@@ -190,6 +259,9 @@ export const productsData = [
     location: "Las Vegas, NV",
     time: "1 day ago",
     image: "https://picsum.photos/seed/car24/300/200",
+    category: "Vehicles",
+    description: "2021 BMW 330i with 8-speed automatic transmission and rear-wheel drive. Alpine White exterior with black leather interior. 25,000 miles, fully loaded with premium package, HUD, and 18-inch wheels. One owner, clean carfax.",
+    featured: true,
   },
   {
     id: 25,
@@ -198,6 +270,9 @@ export const productsData = [
     location: "Memphis, TN",
     time: "8 hours ago",
     image: "https://picsum.photos/seed/laptop25/300/200",
+    category: "Electronics",
+    description: "Dell XPS 15 with Intel Core i7-12700H, 16GB RAM, 512GB NVMe SSD, and NVIDIA RTX 3050 Ti. 15.6-inch OLED display. Barely used, no scratches. Comes with original charger and box. Great for work and light gaming.",
+    featured: true,
   },
   {
     id: 26,
@@ -206,6 +281,9 @@ export const productsData = [
     location: "Louisville, KY",
     time: "3 days ago",
     image: "https://picsum.photos/seed/chair26/300/200",
+    category: "Furniture",
+    description: "Premium ergonomic office chair with breathable mesh back, adjustable lumbar support, and 4D armrests. Seat height and tilt tension fully adjustable. Supports up to 300 lbs. Used for 1 year in home office. No tears.",
+    featured: true,
   },
   {
     id: 27,
@@ -214,6 +292,9 @@ export const productsData = [
     location: "Portland, OR",
     time: "2 hours ago",
     image: "https://picsum.photos/seed/phone27/300/200",
+    category: "Electronics",
+    description: "Google Pixel 8 Pro in Obsidian with 128GB storage. Features 50MP triple camera system, 7 years of Android updates, and Google AI features. Comes with original box and charger. Unlocked, excellent condition.",
+    featured: true,
   },
   {
     id: 28,
@@ -222,6 +303,9 @@ export const productsData = [
     location: "Baltimore, MD",
     time: "5 days ago",
     image: "https://picsum.photos/seed/grill28/300/200",
+    category: "Hobbies",
+    description: "Weber Spirit II E-310 3-burner propane gas grill with 529 sq inch cooking area. GS4 grilling system with porcelain-enameled cast iron grates. Used two summers, cleaned and well-maintained. Propane tank not included.",
+    featured: true,
   },
   {
     id: 29,
@@ -230,6 +314,9 @@ export const productsData = [
     location: "Boston, MA",
     time: "12 hours ago",
     image: "https://picsum.photos/seed/watch29/300/200",
+    category: "Fashion",
+    description: "Rolex Submariner Date in stainless steel with black ceramic bezel and dial. Reference 126610LN. Purchased 2021, serviced by authorized dealer. Comes with original box, papers, and bracelet tools. Keeps perfect time.",
+    featured: true,
   },
   {
     id: 30,
@@ -238,6 +325,9 @@ export const productsData = [
     location: "Milwaukee, WI",
     time: "1 day ago",
     image: "https://picsum.photos/seed/guitar30/300/200",
+    category: "Hobbies",
+    description: "Yamaha FG800 acoustic guitar with solid spruce top and nato back and sides. Rich, full sound ideal for beginners and intermediate players. Light play wear on the fretboard. Comes with a padded gig bag included.",
+    featured: true,
   },
   {
     id: 31,
@@ -246,6 +336,9 @@ export const productsData = [
     location: "Albuquerque, NM",
     time: "4 hours ago",
     image: "https://picsum.photos/seed/switch31/300/200",
+    category: "Electronics",
+    description: "Nintendo Switch OLED model in white. Vibrant 7-inch OLED screen with enhanced audio. Comes with dock, Joy-Con controllers, grip, and straps. Includes 64GB microSD card. Excellent condition, no dead pixels.",
+    featured: true,
   },
   {
     id: 32,
@@ -254,6 +347,9 @@ export const productsData = [
     location: "Tucson, AZ",
     time: "2 days ago",
     image: "https://picsum.photos/seed/truck32/300/200",
+    category: "Vehicles",
+    description: "2017 Chevrolet Silverado 1500 LT with 5.3L V8 and 6-speed automatic. 4WD, crew cab, 5.8ft bed. 61,000 miles, tow package, Z71 off-road package. White exterior, grey interior. Well maintained with full service history.",
+    featured: true,
   },
   {
     id: 33,
@@ -262,6 +358,9 @@ export const productsData = [
     location: "Fresno, CA",
     time: "9 hours ago",
     image: "https://picsum.photos/seed/pot33/300/200",
+    category: "Electronics",
+    description: "Instant Pot Duo 7-in-1 electric pressure cooker, 6-quart capacity. Functions as pressure cooker, slow cooker, rice cooker, steamer, sauté pan, food warmer, and yogurt maker. Lightly used, all parts present and clean.",
+    featured: true,
   },
   {
     id: 34,
@@ -270,6 +369,9 @@ export const productsData = [
     location: "Sacramento, CA",
     time: "6 hours ago",
     image: "https://picsum.photos/seed/camera34/300/200",
+    category: "Hobbies",
+    description: "Fujifilm X-T5 mirrorless camera body with 40.2MP sensor and 5-axis IBIS. Under 3,000 shutter count. Includes original box, battery, charger, and body cap. No scratches or sensor issues. Stunning image quality.",
+    featured: true,
   },
   {
     id: 35,
@@ -278,6 +380,9 @@ export const productsData = [
     location: "Kansas City, MO",
     time: "3 days ago",
     image: "https://picsum.photos/seed/mattress35/300/200",
+    category: "Furniture",
+    description: "King size 12-inch memory foam mattress with cooling gel layer and CertiPUR-US certified foam. Medium-firm feel. Used for 18 months, no stains, comes with mattress protector. Compressed and rolled for easy transport.",
+    featured: true,
   },
   {
     id: 36,
@@ -286,6 +391,9 @@ export const productsData = [
     location: "Mesa, AZ",
     time: "5 hours ago",
     image: "https://picsum.photos/seed/gopro36/300/200",
+    category: "Hobbies",
+    description: "GoPro HERO11 Black action camera with 5.3K video and 27MP photo capability. HyperSmooth 5.0 stabilization. Comes with 2 batteries, dual charger, mounting hardware, and original box. Waterproof to 33ft. Excellent condition.",
+    featured: true,
   },
   {
     id: 37,
@@ -294,6 +402,9 @@ export const productsData = [
     location: "Atlanta, GA",
     time: "1 hour ago",
     image: "https://picsum.photos/seed/jacket37/300/200",
+    category: "Fashion",
+    description: "Under Armour Storm Armour Fleece full-zip training jacket in size Large. Moisture-wicking fabric with water-repellent finish. Black with reflective UA logo. Worn twice, like-new condition. Great for the gym or outdoor workouts.",
+    featured: true,
   },
   {
     id: 38,
@@ -302,6 +413,9 @@ export const productsData = [
     location: "Raleigh, NC",
     time: "1 day ago",
     image: "https://picsum.photos/seed/car38/300/200",
+    category: "Vehicles",
+    description: "2022 Tesla Model 3 Long Range AWD with 358-mile EPA-estimated range. Pearl White exterior, black interior. 19,000 miles. Autopilot included, premium audio, glass roof. Home charging cable and J1772 adapter included.",
+    featured: true,
   },
   {
     id: 39,
@@ -310,6 +424,9 @@ export const productsData = [
     location: "Omaha, NE",
     time: "3 hours ago",
     image: "https://picsum.photos/seed/speaker39/300/200",
+    category: "Electronics",
+    description: "Bose SoundLink Flex portable Bluetooth speaker in Stone Blue. Waterproof, dustproof, and drop-proof. Up to 12 hours playtime. PositionIQ technology adapts sound automatically. Comes with original box and charging cable.",
+    featured: true,
   },
   {
     id: 40,
@@ -318,6 +435,9 @@ export const productsData = [
     location: "Minneapolis, MN",
     time: "4 days ago",
     image: "https://picsum.photos/seed/desk40/300/200",
+    category: "Furniture",
+    description: "Electric height-adjustable standing desk with dual motors and 4 memory presets. 60\" x 24\" bamboo desktop. Height range 25–51 inches. Cable management tray included. Used for 1 year in a home office, excellent condition.",
+    featured: true,
   },
   {
     id: 41,
@@ -326,6 +446,9 @@ export const productsData = [
     location: "Cleveland, OH",
     time: "2 hours ago",
     image: "https://picsum.photos/seed/ipad41/300/200",
+    category: "Electronics",
+    description: "iPad Air 5th generation with M1 chip, 64GB storage, and Wi-Fi. Space Gray, 10.9-inch Liquid Retina display. Comes with USB-C cable, original box, and Smart Folio case. No scratches on screen. Battery health 96%.",
+    featured: true,
   },
   {
     id: 42,
@@ -334,6 +457,9 @@ export const productsData = [
     location: "Wichita, KS",
     time: "6 days ago",
     image: "https://picsum.photos/seed/moto42/300/200",
+    category: "Vehicles",
+    description: "2019 Harley-Davidson Street 750 in Vivid Black with 8,400 miles. Liquid-cooled Revolution X 750cc engine. Recent oil change and tire inspection. Title in hand. Great urban commuter and starter cruiser. Low seat height.",
+    featured: true,
   },
   {
     id: 43,
@@ -342,6 +468,9 @@ export const productsData = [
     location: "Arlington, TX",
     time: "7 hours ago",
     image: "https://picsum.photos/seed/coffee43/300/200",
+    category: "Electronics",
+    description: "Nespresso Vertuo Next coffee and espresso machine in Matte Black. Brews 5 cup sizes with Centrifusion technology. Wi-Fi and Bluetooth enabled. Comes with original box and Welcome Kit of 12 capsules. Descaled and clean.",
+    featured: true,
   },
   {
     id: 44,
@@ -350,6 +479,9 @@ export const productsData = [
     location: "New Orleans, LA",
     time: "35 minutes ago",
     image: "https://picsum.photos/seed/glasses44/300/200",
+    category: "Fashion",
+    description: "Ray-Ban Aviator Classic sunglasses with gold metal frame and G-15 green lenses. 58mm lens size. Comes with original case, cleaning cloth, and certificate of authenticity. No scratches on lenses. A timeless accessory.",
+    featured: true,
   },
   {
     id: 45,
@@ -358,6 +490,9 @@ export const productsData = [
     location: "Tampa, FL",
     time: "1 hour ago",
     image: "https://picsum.photos/seed/xbox45/300/200",
+    category: "Electronics",
+    description: "Xbox Series X console in excellent condition. Comes with one wireless controller, HDMI cable, and power brick. 1TB internal SSD. Plays all Xbox One games. No scratches on the unit. 3-month Game Pass Ultimate included.",
+    featured: true,
   },
   {
     id: 46,
@@ -366,6 +501,9 @@ export const productsData = [
     location: "Aurora, CO",
     time: "2 days ago",
     image: "https://picsum.photos/seed/washer46/300/200",
+    category: "Electronics",
+    description: "Whirlpool front-load washer with 4.5 Cu Ft capacity and 12 wash cycles. Steam cleaning and allergen cycle. White exterior, no dents or rust. 2 years old, works perfectly. Hoses and installation manual included.",
+    featured: true,
   },
   {
     id: 47,
@@ -374,6 +512,9 @@ export const productsData = [
     location: "Honolulu, HI",
     time: "4 hours ago",
     image: "https://picsum.photos/seed/jacket47/300/200",
+    category: "Fashion",
+    description: "Patagonia Down Sweater Jacket in Classic Navy, size Medium. 800-fill-power responsibly sourced down. Packable into its own chest pocket. Worn a handful of times, no damage or staining. Perfect for layering in cool weather.",
+    featured: true,
   },
   {
     id: 48,
@@ -382,6 +523,9 @@ export const productsData = [
     location: "Anaheim, CA",
     time: "3 hours ago",
     image: "https://picsum.photos/seed/car48/300/200",
+    category: "Vehicles",
+    description: "2020 Audi A4 Premium Plus with Quattro AWD and 2.0T engine. Mythos Black exterior, black leather interior. 32,000 miles. Virtual cockpit, Bang & Olufsen sound system, panoramic sunroof. Clean Carfax, single owner.",
+    featured: true,
   },
   {
     id: 49,
@@ -390,6 +534,9 @@ export const productsData = [
     location: "Corpus Christi, TX",
     time: "8 hours ago",
     image: "https://picsum.photos/seed/bulb49/300/200",
+    category: "Electronics",
+    description: "Philips Hue White and Color Ambiance starter kit with 4 A19 smart bulbs and Hue Bridge. Compatible with Alexa, Google Home, and Apple HomeKit. 16 million colors. Gently used, all bulbs functioning perfectly.",
+    featured: true,
   },
   {
     id: 50,
@@ -398,6 +545,9 @@ export const productsData = [
     location: "Riverside, CA",
     time: "5 days ago",
     image: "https://picsum.photos/seed/table50/300/200",
+    category: "Furniture",
+    description: "Round marble-top coffee table with gold metal base. 36-inch diameter, 16-inch height. White Carrara marble with natural veining, no chips or cracks. Moving and must sell. Elegant centerpiece for any living room.",
+    featured: true,
   },
   {
     id: 51,
@@ -406,6 +556,9 @@ export const productsData = [
     location: "Lexington, KY",
     time: "1 day ago",
     image: "https://picsum.photos/seed/drone51/300/200",
+    category: "Hobbies",
+    description: "DJI Mini 3 Pro drone with 4K/60fps camera and tri-directional obstacle sensing. Under 249g — no FAA registration required. Comes with RC-N1 controller, 2 batteries, charging hub, ND filter set, and carrying bag.",
+    featured: true,
   },
   {
     id: 52,
@@ -414,6 +567,9 @@ export const productsData = [
     location: "St. Louis, MO",
     time: "15 minutes ago",
     image: "https://picsum.photos/seed/shoes52/300/200",
+    category: "Fashion",
+    description: "Converse Chuck Taylor All Star Hi-Top in classic Optical White, size 8. Worn only twice, rubber sole still white with minimal scuffing. Original box included. A wardrobe staple that pairs with almost anything.",
+    featured: true,
   },
   {
     id: 53,
@@ -422,6 +578,9 @@ export const productsData = [
     location: "Pittsburgh, PA",
     time: "4 days ago",
     image: "https://picsum.photos/seed/fridge53/300/200",
+    category: "Electronics",
+    description: "LG 26 Cu Ft French Door refrigerator in PrintProof Stainless Steel. Features Door-in-Door access, craft ice maker, and InstaView panel. 3 years old, works perfectly, no dents. Buyer responsible for pickup and transport.",
+    featured: true,
   },
   {
     id: 54,
@@ -430,6 +589,9 @@ export const productsData = [
     location: "Cincinnati, OH",
     time: "2 days ago",
     image: "https://picsum.photos/seed/car54/300/200",
+    category: "Vehicles",
+    description: "2021 Jeep Wrangler Unlimited Sport S in Firecracker Red. 4-door, 4WD, 3.6L Pentastar V6. 38,000 miles. Removable hardtop, Apple CarPlay, backup camera, and tow package. Clean title, never off-roaded aggressively.",
+    featured: true,
   },
   {
     id: 55,
@@ -438,6 +600,9 @@ export const productsData = [
     location: "Anchorage, AK",
     time: "6 hours ago",
     image: "https://picsum.photos/seed/nightstand55/300/200",
+    category: "Furniture",
+    description: "Solid wood 3-drawer nightstand in rich walnut finish. Mid-century modern style with tapered legs. Dimensions: 24\" H x 18\" W x 16\" D. Drawers glide smoothly, no scratches on top. Great addition to any bedroom.",
+    featured: true,
   },
   {
     id: 56,
@@ -446,6 +611,9 @@ export const productsData = [
     location: "St. Paul, MN",
     time: "3 hours ago",
     image: "https://picsum.photos/seed/kindle56/300/200",
+    category: "Books",
+    description: "Kindle Paperwhite 11th generation with 8GB storage, adjustable warm light, and IPX8 waterproof rating. 300 ppi glare-free display. Comes with original box and USB-C charging cable. Battery lasts weeks. Excellent condition.",
+    featured: true,
   },
   {
     id: 57,
@@ -454,6 +622,9 @@ export const productsData = [
     location: "Greensboro, NC",
     time: "2 hours ago",
     image: "https://picsum.photos/seed/jacket57/300/200",
+    category: "Fashion",
+    description: "The North Face Thermoball Eco insulated jacket in size Large, TNF Black. Made with 100% recycled materials. Packable, lightweight, and warm down to 25°F. Worn only a few times, no damage or pilling. DWR finish intact.",
+    featured: true,
   },
   {
     id: 58,
@@ -462,6 +633,9 @@ export const productsData = [
     location: "Plano, TX",
     time: "1 day ago",
     image: "https://picsum.photos/seed/car58/300/200",
+    category: "Vehicles",
+    description: "2022 Subaru Outback Premium with Symmetrical AWD and 2.5L BOXER engine. Wilderness Green exterior, grey cloth interior. 22,000 miles. EyeSight driver assist, 11.6-inch infotainment, and heated front seats. One owner.",
+    featured: true,
   },
 ];
 
