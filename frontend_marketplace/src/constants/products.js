@@ -1,4 +1,4 @@
-const products = [
+export const productsData = [
   {
     id: 1,
     title: "Toyota Camry 2020",
@@ -465,4 +465,4 @@ const products = [
   },
 ];
 
-export default products;
+export default productsData;
