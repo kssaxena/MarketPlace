@@ -106,12 +106,11 @@ function Home() {
         </div>
 
        {/* POST AD */}
-      <button className="bg-emerald-500 text-white px-6 py-3 rounded-2xl font-semibold 
-shadow-md hover:bg-emerald-600 hover:shadow-lg 
-transition-all duration-300 active:scale-95">
-
+      <button
+  onClick={() => setIsModalOpen(true)}
+  className="bg-green-600 text-white px-8 py-3 rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 font-semibold"
+>
   + Post Ad
-
 </button>
 
         <button className="cta-btn">

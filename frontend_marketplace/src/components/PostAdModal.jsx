@@ -1,113 +1,60 @@
 import { useState } from "react";
 
-function PostAdModal({ onClose, onSubmit }) {
-  const [title, setTitle] = useState("");
-  const [image, setImage] = useState("");
-  const [description, setDescription] = useState("");
-  const [location, setLocation] = useState("");
-  const [price, setPrice] = useState("");
-
-  const handleSubmit = () => {
-    if (!title || !image || !description || !location || !price) {
-      alert("Please fill all fields!");
-      return;
-    }
-
-    onSubmit({
-      title,
-      image,
-      description,
-      location,
-      price,
-      time: "Just now",
-      featured: false,
-      category: "Misc",
-    });
-
-    onClose();
-  };
+function PostAdModal({ isOpen, onClose }) {
+  console.log("MODAL RECEIVED:", isOpen);
+  if (!isOpen) return null;
 
   return (
-    <div
-      onClick={onClose}
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center p-4 z-50"
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        className="bg-white w-full max-w-lg rounded-2xl p-6 shadow-xl relative"
-      >
-
-        {/* CLOSE BUTTON */}
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50">
+      
+      {/* Modal Box */}
+      <div className="bg-white w-[90%] max-w-lg rounded-2xl p-6 shadow-2xl relative animate-fadeIn">
+        
+        {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-red-500 hover:text-black text-xl"
+          className="absolute top-3 right-4 text-gray-500 hover:text-black text-xl"
         >
           ✕
         </button>
 
-        <h2 className="text-2xl font-semibold mb-4">Post a New Ad</h2>
+        {/* Title */}
+        <h2 className="text-2xl font-bold mb-4 text-green-600">
+          Post Your Ad
+        </h2>
 
-        <div className="mb-4">
-          <label className="block mb-1 text-sm font-medium">Product Title</label>
+        {/* Form */}
+        <form className="flex flex-col gap-4">
+          
           <input
             type="text"
-            className="w-full border p-3 rounded-xl"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="e.g. iPhone 14 Pro Max"
+            placeholder="Product Title"
+            className="border p-2 rounded-md focus:outline-green-500"
           />
-        </div>
 
-        <div className="mb-4">
-          <label className="block mb-1 text-sm font-medium">Image URL</label>
-          <input
-            type="text"
-            className="w-full border p-3 rounded-xl"
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
-            placeholder="Paste image link"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block mb-1 text-sm font-medium">Description</label>
           <textarea
-            className="w-full border p-3 rounded-xl h-28"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Describe your product..."
-          ></textarea>
-        </div>
-
-        <div className="mb-4">
-          <label className="block mb-1 text-sm font-medium">Location</label>
-          <input
-            type="text"
-            className="w-full border p-3 rounded-xl"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            placeholder="City, State"
+            placeholder="Description"
+            className="border p-2 rounded-md focus:outline-green-500"
           />
-        </div>
 
-        <div className="mb-6">
-          <label className="block mb-1 text-sm font-medium">Price</label>
           <input
-            type="text"
-            className="w-full border p-3 rounded-xl"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            placeholder="$100"
+            type="number"
+            placeholder="Price (₹)"
+            className="border p-2 rounded-md focus:outline-green-500"
           />
-        </div>
 
-        <button
-          className="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl text-lg font-medium"
-          onClick={handleSubmit}
-        >
-          Submit Ad
-        </button>
+          <input
+            type="file"
+            className="border p-2 rounded-md"
+          />
 
+          <button
+            type="submit"
+            className="bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition"
+          >
+            Submit Ad
+          </button>
+        </form>
       </div>
     </div>
   );
