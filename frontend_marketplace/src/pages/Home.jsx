@@ -33,12 +33,10 @@ function Home() {
 
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Auto slide
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroImages.length);
     }, 3000);
-
     return () => clearInterval(interval);
   }, []);
 
@@ -65,33 +63,27 @@ function Home() {
 
       {/* HEADER */}
       <div className="flex items-center gap-6 px-6 py-4">
+        <div className="flex items-center gap-4">
+          <h1 className="text-2xl font-bold text-emerald-600">Marketplace</h1>
+          <button className="bg-gray-100 px-4 py-2 rounded-lg">
+            ☰ Categories
+          </button>
+        </div>
 
-  {/* LEFT */}
-  <div className="flex items-center gap-4">
-    <h1 className="text-2xl font-bold text-emerald-600">Marketplace</h1>
+        <div className="flex-1">
+          <input
+            type="text"
+            placeholder="Search for anything..."
+            className="w-full px-6 py-4 rounded-full border border-gray-200 bg-gray-50 outline-none focus:ring-2 focus:ring-emerald-400"
+          />
+        </div>
 
-    <button className="bg-gray-100 px-4 py-2 rounded-lg">
-      ☰ Categories
-    </button>
-  </div>
-
-  {/* 🔥 SEARCH (IMPORTANT) */}
-  <div className="flex-1">
-    <input
-      type="text"
-      placeholder="Search for anything..."
-      className="w-full px-6 py-4 rounded-full border border-gray-200 bg-gray-50 outline-none focus:ring-2 focus:ring-emerald-400"
-    />
-  </div>
-
-  {/* RIGHT ICONS */}
-  <div className="flex items-center gap-6">
-    <span>👤</span>
-    <span>📍</span>
-    <span>🛒</span>
-  </div>
-
-</div>
+        <div className="flex items-center gap-6">
+          <span>👤</span>
+          <span>📍</span>
+          <span>🛒</span>
+        </div>
+      </div>
 
       {/* NAVBAR */}
       <div className="navbar">
@@ -105,13 +97,13 @@ function Home() {
           <span>Contact</span>
         </div>
 
-       {/* POST AD */}
-      <button
-  onClick={() => setIsModalOpen(true)}
-  className="bg-green-600 text-white px-8 py-3 rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 font-semibold"
->
-  + Post Ad
-</button>
+        {/* ✅ FIXED: was calling setIsModalOpen(true) which doesn't exist */}
+        <button
+          onClick={() => setShowPostAd(true)}
+          className="bg-green-600 text-white px-8 py-3 rounded-full shadow-md hover:scale-105 transition"
+        >
+          + Post Ad
+        </button>
 
         <button className="cta-btn">
           Get the Best Deals Right Here!
@@ -122,9 +114,7 @@ function Home() {
       <section className="hero">
         <div
           className="hero-slide"
-          style={{
-            backgroundImage: `url(${heroImages[currentSlide]})`
-          }}
+          style={{ backgroundImage: `url(${heroImages[currentSlide]})` }}
         >
           <div className="hero-overlay">
             <h1>Buy & Sell Anything</h1>
@@ -146,7 +136,6 @@ function Home() {
         {filteredProducts.length === 0 && (
           <p className="no-products">No products available</p>
         )}
-
         <div className="grid">
           {filteredProducts.map((item, index) => (
             <div
@@ -155,7 +144,6 @@ function Home() {
               className="card"
             >
               <img src={item.image} alt={item.title} />
-
               <div className="card-body">
                 <h4>₹ {item.price}</h4>
                 <p>{item.title}</p>
@@ -167,59 +155,57 @@ function Home() {
 
       {/* FOOTER */}
       <footer className="bg-gray-100 border-t mt-16">
+        <div className="max-w-7xl mx-auto px-6 py-14 grid grid-cols-1 md:grid-cols-4 gap-10">
 
-  {/* MAIN FOOTER */}
-  <div className="max-w-7xl mx-auto px-6 py-14 grid grid-cols-1 md:grid-cols-4 gap-10">
+          <div>
+            <div className="flex items-center gap-3 mb-3">
+              <h1 className="text-2xl font-bold text-emerald-600">Marketplace</h1>
+            </div>
+            <p className="text-sm text-gray-500">Buy and sell anything locally.</p>
+          </div>
 
-    {/* LOGO + TEXT */}
-    <div>
-      <div className="flex items-center gap-3 mb-3">
-        <h1 className="text-2xl font-bold text-emerald-600">Marketplace</h1>
-      </div>
+          <div>
+            <h3 className="font-semibold mb-3">Quick Links</h3>
+            <ul className="space-y-2 text-sm text-gray-500">
+              <li className="hover:text-emerald-600 cursor-pointer">Home</li>
+              <li
+                className="hover:text-emerald-600 cursor-pointer"
+                onClick={() => setShowPostAd(true)}
+              >
+                Post an Ad
+              </li>
+              <li className="hover:text-emerald-600 cursor-pointer">My Ads</li>
+            </ul>
+          </div>
 
-      <p className="text-sm text-gray-500">
-        Buy and sell anything locally.
-      </p>
-    </div>
+          <div>
+            <h3 className="font-semibold mb-3">Support</h3>
+            <ul className="space-y-2 text-sm text-gray-500">
+              <li className="hover:text-emerald-600 cursor-pointer">Help Center</li>
+              <li className="hover:text-emerald-600 cursor-pointer">Safety Tips</li>
+              <li
+                className="hover:text-emerald-600 cursor-pointer"
+                onClick={() => setShowContact(true)}
+              >
+                Contact Us
+              </li>
+            </ul>
+          </div>
 
-    {/* QUICK LINKS */}
-    <div>
-      <h3 className="font-semibold mb-3">Quick Links</h3>
-      <ul className="space-y-2 text-sm text-gray-500">
-        <li className="hover:text-emerald-600 cursor-pointer">Home</li>
-        <li className="hover:text-emerald-600 cursor-pointer">Post an Ad</li>
-        <li className="hover:text-emerald-600 cursor-pointer">My Ads</li>
-      </ul>
-    </div>
+          <div>
+            <h3 className="font-semibold mb-3">Legal</h3>
+            <ul className="space-y-2 text-sm text-gray-500">
+              <li className="hover:text-emerald-600 cursor-pointer">Terms of Service</li>
+              <li className="hover:text-emerald-600 cursor-pointer">Privacy Policy</li>
+              <li className="hover:text-emerald-600 cursor-pointer">Cookie Policy</li>
+            </ul>
+          </div>
 
-    {/* SUPPORT */}
-    <div>
-      <h3 className="font-semibold mb-3">Support</h3>
-      <ul className="space-y-2 text-sm text-gray-500">
-        <li className="hover:text-emerald-600 cursor-pointer">Help Center</li>
-        <li className="hover:text-emerald-600 cursor-pointer">Safety Tips</li>
-        <li className="hover:text-emerald-600 cursor-pointer">Contact Us</li>
-      </ul>
-    </div>
-
-    {/* LEGAL */}
-    <div>
-      <h3 className="font-semibold mb-3">Legal</h3>
-      <ul className="space-y-2 text-sm text-gray-500">
-        <li className="hover:text-emerald-600 cursor-pointer">Terms of Service</li>
-        <li className="hover:text-emerald-600 cursor-pointer">Privacy Policy</li>
-        <li className="hover:text-emerald-600 cursor-pointer">Cookie Policy</li>
-      </ul>
-    </div>
-
-  </div>
-
-  {/* BOTTOM BAR */}
-  <div className="border-t text-center text-sm text-gray-400 py-4">
-    © 2026 Marketplace.
-  </div>
-
-</footer>
+        </div>
+        <div className="border-t text-center text-sm text-gray-400 py-4">
+          © 2026 Marketplace.
+        </div>
+      </footer>
 
       {/* MODALS */}
       {popup && <DemoPopUp onClose={() => setShowPopup(false)} />}
@@ -229,12 +215,12 @@ function Home() {
           onClose={() => setSelectedProduct(null)}
         />
       )}
-      {showPostAd && (
-        <PostAdModal
-          onClose={() => setShowPostAd(false)}
-          onSubmit={handleAddProduct}
-        />
-      )}
+      {/* TO THIS */}
+<PostAdModal
+  isOpen={showPostAd}
+  onClose={() => setShowPostAd(false)}
+  onSubmit={handleAddProduct}
+/>
       {showLogin && <LoginModal onClose={() => setShowLogin(false)} />}
       {showRegister && <RegisterModal onClose={() => setShowRegister(false)} />}
       {showCategories && <CategoriesModal onClose={() => setShowCategories(false)} />}
