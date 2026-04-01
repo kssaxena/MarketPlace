@@ -152,7 +152,9 @@ function Home() {
           <span>Vendors</span>
           <span>Pages</span>
           <span>Blog</span>
-          <span>Contact</span>
+          <li onClick={() => setShowContact(true)} style={{ cursor: "pointer" }}>
+  Contact
+</li>
         </div>
 
         <button
