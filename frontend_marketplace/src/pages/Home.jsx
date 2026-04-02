@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "./Home.css";
+import { useNavigate, Link } from "react-router-dom";
 import DemoPopUp from "../components/demopopup.jsx";
 import ProductModal from "../components/ProductModal.jsx";
 import PostAdModal from "../components/PostAdModal.jsx";
@@ -15,6 +16,7 @@ import { productsData } from "../constants/products.js";
 
 function Home() {
   const [popup, setShowPopup] = useState(false);
+  const navigate = useNavigate();
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showPostAd, setShowPostAd] = useState(false);
   const [showCategories, setShowCategories] = useState(false);
