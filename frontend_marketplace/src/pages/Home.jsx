@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import "./Home.css";
-import { useNavigate, Link } from "react-router-dom";
 import DemoPopUp from "../components/demopopup.jsx";
 import ProductModal from "../components/ProductModal.jsx";
 import PostAdModal from "../components/PostAdModal.jsx";
@@ -16,11 +15,8 @@ import { productsData } from "../constants/products.js";
 
 function Home() {
   const [popup, setShowPopup] = useState(false);
-  const navigate = useNavigate();
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showPostAd, setShowPostAd] = useState(false);
-  const [showLogin, setShowLogin] = useState(false);
-  const [showRegister, setShowRegister] = useState(false);
   const [showCategories, setShowCategories] = useState(false);
   const [showContact, setShowContact] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
@@ -76,9 +72,9 @@ function Home() {
       {/* TOP BAR */}
       <div className="topbar">
         <div className="topbar-right">
-          <div style={{ position: "relative" }}>
+          <div className="topbar-dropdown-wrapper">
             <span
-              style={{ cursor: "pointer" }}
+              className="topbar-dropdown-trigger"
               onClick={() => setShowLangMenu(!showLangMenu)}
             >
               {language} ▾
@@ -91,9 +87,9 @@ function Home() {
             )}
           </div>
 
-          <div style={{ position: "relative", marginLeft: "20px" }}>
+          <div className="topbar-dropdown-wrapper topbar-dropdown-currency">
             <span
-              style={{ cursor: "pointer" }}
+              className="topbar-dropdown-trigger"
               onClick={() => setShowCurrencyMenu(!showCurrencyMenu)}
             >
               {currency} ▾
@@ -106,17 +102,17 @@ function Home() {
             )}
           </div>
 
-          <span onClick={() => setShowOrderPopup(true)} style={{ cursor: "pointer" }}>
+          <span className="topbar-order-status" onClick={() => setShowOrderPopup(true)}>
             Order Status
           </span>
         </div>
       </div>
 
       {/* HEADER */}
-      <div className="flex items-center gap-6 px-6 py-4">
-        <div className="flex items-center gap-4">
+      <div className="header-bar">
+        <div className="header-logo-wrap">
           <Link to="/" className="logo-link">
-            <h1 className="text-2xl font-bold text-emerald-600">Marketplace</h1>
+            <h1 className="logo-text">Marketplace</h1>
           </Link>
         </div>
 
@@ -127,18 +123,18 @@ function Home() {
           ☰ CATEGORIES
         </button>
 
-        <div className="flex-1">
+        <div className="header-search">
           <input
             type="text"
             placeholder="Search for anything..."
-            className="w-full px-6 py-4 rounded-full border border-gray-200 bg-gray-50 outline-none focus:ring-2 focus:ring-emerald-400"
+            className="search-bar"
           />
         </div>
 
-        <div className="flex items-center gap-6">
-          <span onClick={() => setShowProfile(true)} style={{ cursor: "pointer" }}>👤</span>
-          <span onClick={() => setShowChat(true)} style={{ cursor: "pointer" }}>💬</span>
-          <span onClick={() => setShowCart(true)} style={{ cursor: "pointer" }}>🛒</span>
+        <div className="header-icons">
+          <span className="header-icon" onClick={() => setShowProfile(true)}>👤</span>
+          <span className="header-icon" onClick={() => setShowChat(true)}>💬</span>
+          <span className="header-icon" onClick={() => setShowCart(true)}>🛒</span>
         </div>
       </div>
 
@@ -146,21 +142,17 @@ function Home() {
       <div className="navbar">
         <div className="nav-links">
           <span>Home</span>
-          <li onClick={() => setShowAbout(true)} style={{ cursor: "pointer" }}>
-  About
-</li>
+          <li className="nav-link-item" onClick={() => setShowAbout(true)}>About</li>
           <span>Shop</span>
           <span>Vendors</span>
           <span>Pages</span>
           <span>Blog</span>
-          <li onClick={() => setShowContact(true)} style={{ cursor: "pointer" }}>
-  Contact
-</li>
+          <li className="nav-link-item" onClick={() => setShowContact(true)}>Contact</li>
         </div>
 
         <button
           onClick={() => setShowPostAd(true)}
-          className="bg-green-600 text-white px-8 py-3 rounded-full shadow-md hover:scale-105 transition"
+          className="post-ad-btn"
         >
           + Post Ad
         </button>
@@ -177,7 +169,7 @@ function Home() {
           style={{ backgroundImage: `url(${heroImages[currentSlide]})` }}
         >
           <div className="hero-overlay">
-            <h1>Buy & Sell Anything</h1>
+            <h1>Buy &amp; Sell Anything</h1>
             <p>Find great deals near you or list your items for free</p>
           </div>
         </div>
@@ -214,78 +206,71 @@ function Home() {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-gray-100 border-t mt-16">
-        <div className="max-w-7xl mx-auto px-6 py-14 grid grid-cols-1 md:grid-cols-4 gap-10">
+      <footer className="footer-main">
+        <div className="footer-grid">
           <div>
-            <div className="flex items-center gap-3 mb-3">
-              <h1 className="text-2xl font-bold text-emerald-600">Marketplace</h1>
+            <div className="footer-brand">
+              <h1 className="logo-text">Marketplace</h1>
             </div>
-            <p className="text-sm text-gray-500">Buy and sell anything locally.</p>
+            <p className="footer-tagline">Buy and sell anything locally.</p>
           </div>
-
           <div>
-            <h3 className="font-semibold mb-3">Quick Links</h3>
-            <ul className="space-y-2 text-sm text-gray-500">
-              <li className="hover:text-emerald-600 cursor-pointer">Home</li>
-              <li className="hover:text-emerald-600 cursor-pointer" onClick={() => setShowPostAd(true)}>Post an Ad</li>
-              <li className="hover:text-emerald-600 cursor-pointer">My Ads</li>
+            <h3 className="footer-heading">Quick Links</h3>
+            <ul className="footer-list">
+              <li className="footer-list-item">Home</li>
+              <li className="footer-list-item" onClick={() => setShowPostAd(true)}>Post an Ad</li>
+              <li className="footer-list-item">My Ads</li>
             </ul>
           </div>
-
           <div>
-            <h3 className="font-semibold mb-3">Support</h3>
-            <ul className="space-y-2 text-sm text-gray-500">
-              <li className="hover:text-emerald-600 cursor-pointer">Help Center</li>
-              <li className="hover:text-emerald-600 cursor-pointer">Safety Tips</li>
-              <li className="hover:text-emerald-600 cursor-pointer" onClick={() => setShowContact(true)}>Contact Us</li>
+            <h3 className="footer-heading">Support</h3>
+            <ul className="footer-list">
+              <li className="footer-list-item">Help Center</li>
+              <li className="footer-list-item">Safety Tips</li>
+              <li className="footer-list-item" onClick={() => setShowContact(true)}>Contact Us</li>
             </ul>
           </div>
-
           <div>
-            <h3 className="font-semibold mb-3">Legal</h3>
-            <ul className="space-y-2 text-sm text-gray-500">
-              <li className="hover:text-emerald-600 cursor-pointer">Terms of Service</li>
-              <li className="hover:text-emerald-600 cursor-pointer">Privacy Policy</li>
-              <li className="hover:text-emerald-600 cursor-pointer">Cookie Policy</li>
+            <h3 className="footer-heading">Legal</h3>
+            <ul className="footer-list">
+              <li className="footer-list-item">Terms of Service</li>
+              <li className="footer-list-item">Privacy Policy</li>
+              <li className="footer-list-item">Cookie Policy</li>
             </ul>
           </div>
         </div>
-        <div className="border-t text-center text-sm text-gray-400 py-4">
+        <div className="footer-bottom">
           © 2026 Marketplace.
         </div>
       </footer>
 
       {/* MODALS */}
-      <ProfileModal 
-  isOpen={showProfile} 
-  onClose={() => setShowProfile(false)} 
-/>
-
+      <ProfileModal
+        isOpen={showProfile}
+        onClose={() => setShowProfile(false)}
+      />
       <CartModal
-  isOpen={showCart}
-  onClose={() => setShowCart(false)}
-  cartItems={cartItems}
-  setCartItems={setCartItems}
-/>
-
+        isOpen={showCart}
+        onClose={() => setShowCart(false)}
+        cartItems={cartItems}
+        setCartItems={setCartItems}
+      />
       <ChatModal
-  isOpen={showChat}
-  onClose={() => setShowChat(false)}
-  messages={messages}
-  setMessages={setMessages}
-  input={input}
-  setInput={setInput}
-/>
-
-      <OrderModal
-  isOpen={showOrderPopup}
-  onClose={() => setShowOrderPopup(false)}
-  orderId={orderId}
-  setOrderId={setOrderId}
-  orderStatus={orderStatus}
-  setOrderStatus={setOrderStatus}
-/>
-
+        isOpen={showChat}
+        onClose={() => setShowChat(false)}
+        messages={messages}
+        setMessages={setMessages}
+        input={input}
+        setInput={setInput}
+      />
+      <OrderStatusModal
+        isOpen={showOrderPopup}
+        onClose={() => setShowOrderPopup(false)}
+        orderId={orderId}
+        setOrderId={setOrderId}
+        orderStatus={orderStatus}
+        setOrderStatus={setOrderStatus}
+      />
       {popup && <DemoPopUp onClose={() => setShowPopup(false)} />}
       {selectedProduct && (
         <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />
