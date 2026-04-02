@@ -4,13 +4,14 @@ import { useNavigate, Link } from "react-router-dom";
 import DemoPopUp from "../components/demopopup.jsx";
 import ProductModal from "../components/ProductModal.jsx";
 import PostAdModal from "../components/PostAdModal.jsx";
-import LoginModal from "../components/LoginModal.jsx";
-import RegisterModal from "../components/RegisterModal.jsx";
 import CategoriesModal from "../components/CategoriesModal.jsx";
 import ContactModal from "../components/ContactModal.jsx";
 import AboutModal from "../components/AboutModal.jsx";
 import CategoriesBar from "../components/CategoriesBar.jsx";
-
+import ProfileModal from "../components/ProfileModal.jsx";
+import OrderStatusModal from "../components/OrderStatusModal.jsx";
+import ChatModal from "../components/ChatModal.jsx";
+import CartModal from "../components/CartModal.jsx";
 import { productsData } from "../constants/products.js";
 
 function Home() {
@@ -255,119 +256,35 @@ function Home() {
       </footer>
 
       {/* MODALS */}
-      {showProfile && (
-        <div className="profile-overlay">
-          <div className="profile-box">
-            <div className="profile-header">
-              <div className="avatar">L</div>
-              <div>
-                <h4>Lil</h4>
-                <p>lil@email.com</p>
-              </div>
-              <button onClick={() => setShowProfile(false)}>✕</button>
-            </div>
-            <div className="profile-stats">
-              <div><h5>12</h5><p>Ads</p></div>
-              <div><h5>5</h5><p>Sold</p></div>
-              <div><h5>3</h5><p>Active</p></div>
-            </div>
-            <div className="profile-actions">
-              <button>My Ads</button>
-              <button>Saved Items</button>
-              <button>Settings</button>
-              <button className="logout">Logout</button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ProfileModal 
+  isOpen={showProfile} 
+  onClose={() => setShowProfile(false)} 
+/>
 
-      {showCart && (
-        <div className="cart-overlay">
-          <div className="cart-box">
-            <div className="cart-header">
-              <h4>Your Cart</h4>
-              <button onClick={() => setShowCart(false)}>✕</button>
-            </div>
-            <div className="cart-items">
-              {cartItems.length === 0 ? (
-                <p className="empty">Your cart is empty</p>
-              ) : (
-                cartItems.map(item => (
-                  <div key={item.id} className="cart-item">
-                    <div>
-                      <h5>{item.name}</h5>
-                      <p>₹ {item.price}</p>
-                    </div>
-                    <div className="qty">
-                      <button onClick={() => setCartItems(cartItems.map(i => i.id === item.id ? { ...i, qty: i.qty - 1 } : i))}>-</button>
-                      <span>{item.qty}</span>
-                      <button onClick={() => setCartItems(cartItems.map(i => i.id === item.id ? { ...i, qty: i.qty + 1 } : i))}>+</button>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-            <div className="cart-footer">
-              <h4>Total: ₹ {cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)}</h4>
-              <button className="checkout-btn">Checkout →</button>
-            </div>
-          </div>
-        </div>
-      )}
+      <CartModal
+  isOpen={showCart}
+  onClose={() => setShowCart(false)}
+  cartItems={cartItems}
+  setCartItems={setCartItems}
+/>
 
-      {showChat && (
-        <div className="chat-overlay">
-          <div className="chat-box">
-            <div className="chat-header">
-              <h4>Messages</h4>
-              <button onClick={() => setShowChat(false)}>✕</button>
-            </div>
-            <div className="chat-messages">
-              {messages.map((msg, i) => (
-                <div key={i} className={`msg ${msg.sender}`}>{msg.text}</div>
-              ))}
-            </div>
-            <div className="chat-input">
-              <input
-                type="text"
-                placeholder="Type a message..."
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-              />
-              <button onClick={() => {
-                if (!input) return;
-                setMessages([...messages, { text: input, sender: "me" }]);
-                setInput("");
-              }}>➤</button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ChatModal
+  isOpen={showChat}
+  onClose={() => setShowChat(false)}
+  messages={messages}
+  setMessages={setMessages}
+  input={input}
+  setInput={setInput}
+/>
 
-      {showOrderPopup && (
-        <div className="order-overlay">
-          <div className="order-modal">
-            <h3>Track Your Order</h3>
-            <input
-              type="text"
-              placeholder="Enter Order ID"
-              value={orderId}
-              onChange={(e) => setOrderId(e.target.value)}
-            />
-            <button onClick={() => {
-              if (orderId === "123") setOrderStatus("Delivered");
-              else if (orderId === "456") setOrderStatus("Shipped");
-              else setOrderStatus("Processing");
-            }}>
-              Check Status
-            </button>
-            {orderStatus && (
-              <div className="status-box">Status: <strong>{orderStatus}</strong></div>
-            )}
-            <button className="close-btn" onClick={() => setShowOrderPopup(false)}>✕</button>
-          </div>
-        </div>
-      )}
+      <OrderModal
+  isOpen={showOrderPopup}
+  onClose={() => setShowOrderPopup(false)}
+  orderId={orderId}
+  setOrderId={setOrderId}
+  orderStatus={orderStatus}
+  setOrderStatus={setOrderStatus}
+/>
 
       {popup && <DemoPopUp onClose={() => setShowPopup(false)} />}
       {selectedProduct && (
@@ -378,8 +295,6 @@ function Home() {
         onClose={() => setShowPostAd(false)}
         onSubmit={handleAddProduct}
       />
-      {showLogin && <LoginModal onClose={() => setShowLogin(false)} />}
-      {showRegister && <RegisterModal onClose={() => setShowRegister(false)} />}
       {showCategories && <CategoriesModal onClose={() => setShowCategories(false)} />}
       {showContact && <ContactModal onClose={() => setShowContact(false)} />}
       {showAbout && <AboutModal onClose={() => setShowAbout(false)} />}
