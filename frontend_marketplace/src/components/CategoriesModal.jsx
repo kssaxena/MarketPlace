@@ -154,13 +154,15 @@ function CategoriesModal({ onClose }) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-white w-full max-w-5xl rounded-2xl shadow-2xl overflow-hidden relative flex"
+        className="relative flex w-full max-w-5xl overflow-hidden rounded-[28px] bg-white shadow-2xl"
         style={{ minHeight: 480, maxHeight: "80vh" }}
       >
         {/* LEFT SIDEBAR — Category List */}
-        <div className="w-52 bg-gray-50 border-r border-gray-200 flex-shrink-0 overflow-y-auto">
-          <div className="py-3 px-4 border-b border-gray-200">
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">All Categories</span>
+        <div className="w-56 flex-shrink-0 overflow-y-auto border-r border-gray-200 bg-gray-50">
+          <div className="border-b border-gray-200 px-4 py-3">
+            <span className="text-[0.7rem] font-bold uppercase tracking-[0.28em] text-gray-400">
+              All Categories
+            </span>
           </div>
           {categoryData.map((cat) => {
             const isActive = activeCategory?.name === cat.name;
@@ -169,19 +171,23 @@ function CategoriesModal({ onClose }) {
                 key={cat.name}
                 onMouseEnter={() => setActiveCategory(cat)}
                 onClick={() => setActiveCategory(cat)}
-                className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-all group
+                className={`group flex w-full items-center gap-3 border-l-4 px-4 py-3 text-left transition-all
                   ${isActive
-                    ? "bg-white border-l-4 border-emerald-500 text-emerald-700 font-semibold"
-                    : "border-l-4 border-transparent text-gray-600 hover:bg-white hover:text-emerald-600"
+                    ? "border-green-600 bg-white text-green-700"
+                    : "border-transparent text-gray-600 hover:bg-white hover:text-green-600"
                   }`}
               >
-                <span className={`${isActive ? "text-emerald-500" : "text-gray-400 group-hover:text-emerald-400"} transition-colors`}>
+                <span
+                  className={`${
+                    isActive ? "text-green-600" : "text-gray-400 group-hover:text-green-500"
+                  } transition-colors`}
+                >
                   {cat.icon}
                 </span>
-                <span className="text-sm">{cat.name}</span>
+                <span className="text-[0.92rem] font-medium">{cat.name}</span>
                 <FaChevronRight
                   size={10}
-                  className={`ml-auto transition-all ${isActive ? "text-emerald-400 opacity-100" : "opacity-0 group-hover:opacity-50"}`}
+                  className={`ml-auto transition-all ${isActive ? "text-green-500 opacity-100" : "opacity-0 group-hover:opacity-50"}`}
                 />
               </button>
             );
@@ -191,25 +197,32 @@ function CategoriesModal({ onClose }) {
         {/* RIGHT PANEL — Subcategories */}
         <div className="flex-1 overflow-y-auto p-6">
           {/* Header */}
-          <div className="flex items-center gap-2 mb-5 pb-3 border-b border-gray-100">
-            <span className="text-emerald-500">{activeCategory?.icon}</span>
-            <h2 className="text-lg font-bold text-gray-800">{activeCategory?.name}</h2>
+          <div className="mb-5 flex items-center gap-2 border-b border-gray-100 pb-3">
+            <span className="text-green-600">{activeCategory?.icon}</span>
+            <h2 className="text-[1.1rem] font-semibold tracking-[-0.02em] text-gray-900">
+              {activeCategory?.name}
+            </h2>
           </div>
 
           {/* Subcategory columns */}
-          <div className="grid gap-x-8 gap-y-2" style={{ gridTemplateColumns: `repeat(${Math.min(columns.length + 1, 3)}, 1fr)` }}>
+          <div
+            className="grid gap-x-8 gap-y-2"
+            style={{ gridTemplateColumns: `repeat(${Math.min(columns.length + 1, 3)}, 1fr)` }}
+          >
             {groupKeys.map((groupName) => (
               <div key={groupName} className="mb-4">
                 {/* Group heading */}
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="text-sm font-bold text-gray-800">{groupName}</span>
+                  <span className="text-[0.88rem] font-semibold tracking-[-0.01em] text-gray-800">
+                    {groupName}
+                  </span>
                 </div>
                 <div className="border-b border-gray-200 mb-3" />
                 {/* Items */}
                 <ul className="space-y-1">
                   {subcatGroups[groupName].map((item) => (
                     <li key={item}>
-                      <button className="text-sm text-gray-500 hover:text-emerald-600 hover:translate-x-1 transition-all text-left w-full">
+                      <button className="w-full text-left text-[0.86rem] text-gray-500 transition-all hover:translate-x-1 hover:text-green-600">
                         {item}
                       </button>
                     </li>
@@ -223,7 +236,7 @@ function CategoriesModal({ onClose }) {
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-3 right-4 w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-all text-lg font-light"
+          className="absolute right-4 top-3 flex h-8 w-8 items-center justify-center rounded-full text-lg font-light text-gray-400 transition-all hover:bg-gray-100 hover:text-gray-700"
         >
           ✕
         </button>

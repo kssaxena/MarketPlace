@@ -1,5 +1,22 @@
+import { useState } from "react";
+import { addToCart, addToWishlist } from "../utility/marketplaceStore.js";
+
 function ProductModal({ product, onClose }) {
+  const [toast, setToast] = useState("");
+
   if (!product) return null;
+
+  const handleAddToCart = () => {
+    addToCart(product);
+    setToast("Added to cart");
+    setTimeout(() => setToast(""), 1400);
+  };
+
+  const handleAddToWishlist = () => {
+    addToWishlist(product);
+    setToast("Added to wishlist");
+    setTimeout(() => setToast(""), 1400);
+  };
 
   return (
     <div
@@ -31,7 +48,9 @@ function ProductModal({ product, onClose }) {
           <h2 className="text-2xl font-semibold mb-2">{product.title}</h2>
 
           <p className="text-green-600 text-xl font-bold mb-4">
-            ₹ {product.price}
+            {String(product.price).startsWith("$") || String(product.price).startsWith("₹")
+              ? product.price
+              : `₹ ${product.price}`}
           </p>
 
           <p className="text-gray-700 leading-relaxed mb-6">
@@ -52,6 +71,24 @@ function ProductModal({ product, onClose }) {
               </p>
             </div>
           )}
+
+          <div className="mb-5 flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={handleAddToCart}
+              className="rounded-xl bg-green-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-green-700"
+            >
+              Add to Cart
+            </button>
+            <button
+              type="button"
+              onClick={handleAddToWishlist}
+              className="rounded-xl border border-gray-300 bg-white px-5 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-50"
+            >
+              Add to Wishlist
+            </button>
+            {toast && <span className="text-sm font-medium text-green-700">{toast}</span>}
+          </div>
 
           {/* LOCATION & TIME */}
           <div className="text-sm text-gray-500 flex justify-between">
