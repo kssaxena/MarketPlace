@@ -1,8 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { addToCart, addToWishlist } from "../utility/marketplaceStore.js";
+import {
+  formatCurrency,
+  getSelectedCurrency,
+  subscribeCurrencyChange,
+} from "../utility/currency.js";
 
 function ProductModal({ product, onClose }) {
   const [toast, setToast] = useState("");
+  const [currency, setCurrency] = useState(() => getSelectedCurrency());
+
+  useEffect(() => subscribeCurrencyChange(setCurrency), []);
 
   if (!product) return null;
 
@@ -48,9 +56,7 @@ function ProductModal({ product, onClose }) {
           <h2 className="text-2xl font-semibold mb-2">{product.title}</h2>
 
           <p className="text-teal-600 text-xl font-bold mb-4">
-            {String(product.price).startsWith("$") || String(product.price).startsWith("₹")
-              ? product.price
-              : `₹ ${product.price}`}
+            {formatCurrency(product.price, currency)}
           </p>
 
           <p className="text-gray-700 leading-relaxed mb-6">

@@ -6,6 +6,11 @@ import {
   getWishlistItems,
   subscribeMarketplaceStore,
 } from "../../utility/marketplaceStore.js";
+import {
+  formatCurrency,
+  getSelectedCurrency,
+  subscribeCurrencyChange,
+} from "../../utility/currency.js";
 
 const progressSteps = [
   { label: "Order Placed", time: "Oct 24, 10:15 AM", done: true },
@@ -15,6 +20,10 @@ const progressSteps = [
 ];
 
 function OverviewPanel({ orderItems, wishlistItems, subtotal, tax, total }) {
+  const [currency, setCurrency] = useState(() => getSelectedCurrency());
+
+  useEffect(() => subscribeCurrencyChange(setCurrency), []);
+
   return (
     <section className="space-y-6">
       <div>
@@ -71,13 +80,13 @@ function OverviewPanel({ orderItems, wishlistItems, subtotal, tax, total }) {
       <article className="rounded-[24px] bg-white border border-gray-200 p-5 shadow-sm">
         <p className="text-[0.72rem] font-bold uppercase tracking-[0.24em] text-teal-600">Payment Summary</p>
         <div className="mt-4 space-y-2 text-[0.9rem]">
-          <div className="flex justify-between text-gray-600"><span>Subtotal</span><span>₹ {subtotal.toLocaleString()}</span></div>
+          <div className="flex justify-between text-gray-600"><span>Subtotal</span><span>{formatCurrency(subtotal, currency)}</span></div>
           <div className="flex justify-between text-gray-600"><span>Shipping</span><span className="text-teal-600">Free</span></div>
-          <div className="flex justify-between text-gray-600"><span>Tax</span><span>₹ {tax.toLocaleString()}</span></div>
+          <div className="flex justify-between text-gray-600"><span>Tax</span><span>{formatCurrency(tax, currency)}</span></div>
           <div className="mt-4 border-t border-gray-200 pt-3">
             <div className="flex justify-between text-xl font-bold">
               <span>Total Paid</span>
-              <span>₹ {total.toLocaleString()}</span>
+              <span>{formatCurrency(total, currency)}</span>
             </div>
           </div>
         </div>
@@ -149,7 +158,7 @@ function RecentOrdersPanel({ orderItems }) {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-[1.2rem] font-bold tracking-[-0.02em] text-gray-900">₹ {(item.price * (item.qty ?? 1)).toLocaleString()}</p>
+                  <p className="text-[1.2rem] font-bold tracking-[-0.02em] text-gray-900">{formatCurrency(item.price * (item.qty ?? 1), currency)}</p>
                   <button className="mt-1 text-[0.76rem] font-semibold text-teal-600 hover:text-teal-700">Track item</button>
                 </div>
               </div>
@@ -191,7 +200,7 @@ function SavedItemsPanel({ wishlistItems }) {
                   </div>
                   <div>
                     <p className="text-[0.92rem] font-medium text-gray-900">{item.title}</p>
-                    <p className="text-xs text-gray-500">₹ {item.price?.toLocaleString?.() ?? item.price}</p>
+                    <p className="text-xs text-gray-500">{formatCurrency(item.price, currency)}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -264,6 +273,10 @@ function SettingsPanel() {
 }
 
 function RightSidebar({ subtotal, tax, total }) {
+  const [currency, setCurrency] = useState(() => getSelectedCurrency());
+
+  useEffect(() => subscribeCurrencyChange(setCurrency), []);
+
   return (
     <aside className="space-y-5">
       <article className="rounded-[24px] border border-gray-200 bg-white p-5 shadow-sm">
@@ -283,13 +296,13 @@ function RightSidebar({ subtotal, tax, total }) {
       <article className="rounded-[24px] bg-white border border-gray-200 p-5 shadow-sm">
         <p className="text-[0.72rem] font-bold uppercase tracking-[0.24em] text-teal-600">Payment Summary</p>
         <div className="mt-4 space-y-2 text-[0.9rem]">
-          <div className="flex justify-between text-gray-600"><span>Subtotal</span><span>₹ {subtotal.toLocaleString()}</span></div>
+          <div className="flex justify-between text-gray-600"><span>Subtotal</span><span>{formatCurrency(subtotal, currency)}</span></div>
           <div className="flex justify-between text-gray-600"><span>Shipping</span><span className="text-teal-600">Free</span></div>
-          <div className="flex justify-between text-gray-600"><span>Tax</span><span>₹ {tax.toLocaleString()}</span></div>
+          <div className="flex justify-between text-gray-600"><span>Tax</span><span>{formatCurrency(tax, currency)}</span></div>
           <div className="mt-4 border-t border-gray-200 pt-3">
             <div className="flex justify-between text-xl font-bold">
               <span>Total Paid</span>
-              <span>₹ {total.toLocaleString()}</span>
+              <span>{formatCurrency(total, currency)}</span>
             </div>
           </div>
         </div>

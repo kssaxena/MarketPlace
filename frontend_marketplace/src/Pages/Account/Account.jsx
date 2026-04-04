@@ -7,6 +7,11 @@ import {
   subscribeMarketplaceStore,
 } from "../../utility/marketplaceStore.js";
 import { isDarkModeEnabled, setDarkMode as setGlobalDarkMode } from "../../utility/theme.js";
+import {
+  formatCurrency,
+  getSelectedCurrency,
+  subscribeCurrencyChange,
+} from "../../utility/currency.js";
 
 const DUMMY_USER = {
   name: "Alex Johnson",
@@ -41,6 +46,7 @@ export default function Account() {
   const [location, setLocation] = useState(user?.location || DUMMY_USER.location);
   const [notifications, setNotifications] = useState(true);
   const [darkMode, setDarkMode] = useState(() => isDarkModeEnabled());
+  const [currency, setCurrency] = useState(() => getSelectedCurrency());
 
   // ── My Ads — from localStorage ──
   const [myAds, setMyAds] = useState(() =>
@@ -65,6 +71,8 @@ export default function Account() {
     window.addEventListener("themechange", onThemeChange);
     return () => window.removeEventListener("themechange", onThemeChange);
   }, []);
+
+  useEffect(() => subscribeCurrencyChange(setCurrency), []);
 
   const logout = () => {
     localStorage.removeItem("user");
@@ -210,7 +218,7 @@ export default function Account() {
                       <img src={ad.image} alt={ad.title} className="w-20 h-14 rounded-lg object-cover flex-shrink-0" />
                       <div className="flex-1 min-w-0">
                         <p className="font-medium text-gray-800 truncate">{ad.title}</p>
-                        <p className="text-teal-600 font-semibold text-sm mt-1">{ad.price}</p>
+                        <p className="text-teal-600 font-semibold text-sm mt-1">{formatCurrency(ad.price, currency)}</p>
                         <p className="text-xs text-gray-400 mt-0.5">{ad.category}</p>
                       </div>
                       <div className="flex flex-col items-end gap-2">
@@ -278,7 +286,7 @@ export default function Account() {
                         <p className="text-xs text-gray-400 mt-1">{item.location}</p>
                       </div>
                       <p className="text-teal-600 font-semibold text-sm flex-shrink-0">
-                        ${item.price?.toLocaleString?.() ?? item.price}
+                        {formatCurrency(item.price, currency)}
                       </p>
                       <button
                         onClick={() => removeFromWishlist(item.id)}
