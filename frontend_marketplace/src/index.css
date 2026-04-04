@@ -4,6 +4,16 @@
 :root {
   color-scheme: light;
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  --color-green-50: #f0fdfa;
+  --color-green-100: #ccfbf1;
+  --color-green-200: #99f6e4;
+  --color-green-300: #5eead4;
+  --color-green-400: #2dd4bf;
+  --color-green-500: #14b8a6;
+  --color-green-600: #0f766e;
+  --color-green-700: #115e59;
+  --color-green-800: #134e4a;
+  --color-green-900: #042f2e;
 }
 
 html {
