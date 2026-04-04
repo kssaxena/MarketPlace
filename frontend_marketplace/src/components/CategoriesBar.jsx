@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import {
   FaCar,
   FaHome,
@@ -23,6 +24,7 @@ const categories = [
 
 
 function CategoriesBar({ selectedCategory, setSelectedCategory }) {
+  const navigate = useNavigate();
   return (
     <div className="w-full mt-10 py-4">
       <h2 className="mb-5 text-[1.35rem] font-semibold tracking-[-0.02em] text-gray-900">
@@ -33,7 +35,8 @@ function CategoriesBar({ selectedCategory, setSelectedCategory }) {
         {categories.map((cat, i) => (
           <button
             key={i}
-            onClick={() => setSelectedCategory(cat.name)}
+            onClick={() => {setSelectedCategory(cat.name);
+              navigate(`/category/${cat.name.toLowerCase()}`);}}
             className={`group inline-flex items-center gap-2 rounded-2xl border px-4 py-3 text-[0.95rem] font-medium tracking-[-0.01em] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sm
               ${
                 selectedCategory === cat.name

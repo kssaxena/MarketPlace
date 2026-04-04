@@ -15,10 +15,13 @@ import Cookies from "./Pages/Cookies/Cookies.jsx";
 import Blog from "./Pages/Blog/Blog.jsx";
 import TermsConditions from "./Pages/Terms_and_Conditions/Terms_and_Conditions.jsx";
 import Footer from "./components/Footer.jsx";
+import CategoryPage from "./Pages/CategoryPage/CategoryPage.jsx";
 
 function App() {
   return (
     <BrowserRouter>
+     <div className="flex min-h-screen flex-col">
+      <div className="flex-1">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -38,8 +41,11 @@ function App() {
         <Route path="/my-ads" element={<Account />} />
         <Route path="/terms" element={<TermsConditions />} />
         <Route path="/terms-and-conditions" element={<TermsConditions />} />
+        <Route path="/category/:categoryName/:subCategory" element={<CategoryPage />} />
       </Routes>
+      </div>
       <Footer />
+      </div>
     </BrowserRouter>
   );
 }
