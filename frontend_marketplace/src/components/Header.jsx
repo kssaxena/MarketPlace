@@ -12,6 +12,11 @@ import {
   subscribeMarketplaceStore,
   updateCartQty,
 } from "../utility/marketplaceStore.js";
+import {
+  getSelectedCurrency,
+  setSelectedCurrency,
+  subscribeCurrencyChange,
+} from "../utility/currency.js";
 
 function Header({
   activePage = "home",
@@ -29,7 +34,7 @@ function Header({
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
   const [showCurrencyMenu, setShowCurrencyMenu] = useState(false);
   const [language, setLanguage] = useState("English");
-  const [currency, setCurrency] = useState("INR");
+  const [currency, setCurrency] = useState(() => getSelectedCurrency());
   const [messages, setMessages] = useState([
     { text: "Hey! Is this still available?", sender: "other" },
     { text: "Yes, it's available.", sender: "me" },
@@ -47,6 +52,8 @@ function Header({
     sync();
     return subscribeMarketplaceStore(sync);
   }, []);
+
+  useEffect(() => subscribeCurrencyChange(setCurrency), []);
 
   const linkClass = (page) =>
     page === activePage ? "text-teal-600 font-semibold" : "text-black hover:text-teal-600";
@@ -105,7 +112,7 @@ function Header({
                     key={item}
                     type="button"
                     onClick={() => {
-                      setCurrency(item);
+                      setSelectedCurrency(item);
                       setShowCurrencyMenu(false);
                     }}
                     className="block w-full rounded-xl px-3 py-2 text-left text-[0.85rem] text-gray-700 transition hover:bg-teal-50 hover:text-teal-700"

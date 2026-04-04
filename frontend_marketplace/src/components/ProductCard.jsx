@@ -1,5 +1,15 @@
+import { useEffect, useState } from "react";
+import {
+  formatCurrency,
+  getSelectedCurrency,
+  subscribeCurrencyChange,
+} from "../utility/currency.js";
+
 function ProductCard({ product, onClick }) {
   const condition = product.condition || "Good";
+  const [currency, setCurrency] = useState(() => getSelectedCurrency());
+
+  useEffect(() => subscribeCurrencyChange(setCurrency), []);
 
   return (
     <div
@@ -30,7 +40,7 @@ function ProductCard({ product, onClick }) {
 
       <div className="p-5">
         <p className="text-[1.4rem] font-bold tracking-[-0.03em] text-teal-600">
-          {product.price}
+          {formatCurrency(product.price, currency)}
         </p>
         <h3 className="mt-2 text-[1.02rem] font-semibold leading-7 tracking-[-0.02em] text-gray-900">
           {product.title}
