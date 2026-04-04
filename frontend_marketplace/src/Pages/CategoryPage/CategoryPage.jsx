@@ -1,8 +1,9 @@
 import { useState, useMemo } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { productsData } from "../../constants/products";
 import ProductCard from "../../components/ProductCard";
 import ProductModal from "../../components/ProductModal";
+import Header from "../../components/Header";
 
 const SORT_OPTIONS = [
   { label: "Newest First", value: "newest" },
@@ -16,12 +17,14 @@ function parsePrice(str) {
 
 function CategoryPage() {
   const { categoryName, subCategory } = useParams();
+  const navigate = useNavigate();
 
   const [sortBy, setSortBy] = useState("newest");
   const [maxPrice, setMaxPrice] = useState("");
   const [minPrice, setMinPrice] = useState("");
   const [condition, setCondition] = useState("");
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const decodedCategory = decodeURIComponent(categoryName || "");
   const decodedSubCategory = subCategory ? decodeURIComponent(subCategory) : null;
@@ -69,8 +72,22 @@ function CategoryPage() {
     setCondition("");
   };
 
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+    const trimmedQuery = searchQuery.trim();
+    navigate(trimmedQuery ? `/search?q=${encodeURIComponent(trimmedQuery)}` : "/search");
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
+      <Header
+        activePage="home"
+        searchQuery={searchQuery}
+        onSearchQueryChange={setSearchQuery}
+        onSearchSubmit={handleSearchSubmit}
+        onPostAdClick={() => navigate("/post-ad")}
+      />
+
       <div className="max-w-7xl mx-auto px-4 py-8">
 
         <div className="mb-6">
