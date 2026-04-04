@@ -1,18 +1,217 @@
+import { useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
+import { productsData } from "../../constants/products";
+import ProductCard from "../../components/ProductCard";
+import ProductModal from "../../components/ProductModal";
+
+const SORT_OPTIONS = [
+  { label: "Newest First", value: "newest" },
+  { label: "Price: Low to High", value: "price_asc" },
+  { label: "Price: High to Low", value: "price_desc" },
+];
+
+function parsePrice(str) {
+  return Number(String(str).replace(/[^0-9.]/g, "")) || 0;
+}
 
 function CategoryPage() {
   const { categoryName, subCategory } = useParams();
 
-  return (
-    <div className="p-6">
-      <h1 className="text-2xl font-semibold">
-        {categoryName} Ads
-      </h1>
+  const [sortBy, setSortBy] = useState("newest");
+  const [maxPrice, setMaxPrice] = useState("");
+  const [minPrice, setMinPrice] = useState("");
+  const [condition, setCondition] = useState("");
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
-      <p className="mt-6 text-gray-600">
-        Showing ads for: {categoryName}
-        {subCategory && ` > ${subCategory}`}
-      </p>
+  const decodedCategory = decodeURIComponent(categoryName || "");
+  const decodedSubCategory = subCategory ? decodeURIComponent(subCategory) : null;
+
+  const filteredAds = useMemo(() => {
+    let ads = productsData;
+
+    if (decodedCategory.toLowerCase() !== "all ads") {
+      ads = ads.filter(
+        (ad) => ad.category?.toLowerCase() === decodedCategory.toLowerCase()
+      );
+    }
+
+    if (decodedSubCategory) {
+      const subcatFiltered = ads.filter(
+        (ad) => ad.subCategory?.toLowerCase() === decodedSubCategory.toLowerCase()
+      );
+      if (subcatFiltered.length > 0) ads = subcatFiltered;
+    }
+
+    if (minPrice !== "") ads = ads.filter((ad) => parsePrice(ad.price) >= Number(minPrice));
+    if (maxPrice !== "") ads = ads.filter((ad) => parsePrice(ad.price) <= Number(maxPrice));
+
+    if (condition !== "") {
+      ads = ads.filter(
+        (ad) => ad.condition?.toLowerCase() === condition.toLowerCase()
+      );
+    }
+
+    if (sortBy === "price_asc") {
+      ads = [...ads].sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
+    } else if (sortBy === "price_desc") {
+      ads = [...ads].sort((a, b) => parsePrice(b.price) - parsePrice(a.price));
+    } else {
+      ads = [...ads].reverse();
+    }
+
+    return ads;
+  }, [decodedCategory, decodedSubCategory, sortBy, minPrice, maxPrice, condition]);
+
+  const clearFilters = () => {
+    setSortBy("newest");
+    setMinPrice("");
+    setMaxPrice("");
+    setCondition("");
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 py-8">
+
+        <div className="mb-6">
+          <h1 className="text-2xl font-semibold text-gray-900 capitalize">
+            {decodedCategory} Ads
+          </h1>
+          {decodedSubCategory && (
+            <p className="text-sm text-gray-500 mt-1">
+              {decodedCategory} &rsaquo; {decodedSubCategory}
+            </p>
+          )}
+          <p className="text-sm text-gray-400 mt-1">{filteredAds.length} ads found</p>
+        </div>
+
+        <div className="flex flex-col md:flex-row gap-6">
+
+          {/* ── Filters sidebar ── */}
+          <aside className="w-full md:w-56 flex-shrink-0">
+            <div className="rounded-2xl border border-gray-200 bg-white overflow-hidden">
+
+              <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+                <span className="text-xs font-medium tracking-wide text-gray-700 uppercase">
+                  Filters
+                </span>
+                <button
+                  onClick={clearFilters}
+                  className="text-xs text-green-700 bg-green-50 rounded-full px-3 py-1 font-medium hover:bg-green-100 transition"
+                >
+                  Clear
+                </button>
+              </div>
+
+              <div className="p-4 space-y-4">
+
+                <div>
+                  <p className="text-xs font-medium text-gray-500 mb-2">Sort by</p>
+                  <div className="space-y-2">
+                    {SORT_OPTIONS.map((o) => (
+                      <label
+                        key={o.value}
+                        className="flex items-center gap-2 cursor-pointer text-sm text-gray-700"
+                      >
+                        <input
+                          type="radio"
+                          name="sort"
+                          value={o.value}
+                          checked={sortBy === o.value}
+                          onChange={() => setSortBy(o.value)}
+                          className="accent-green-600"
+                        />
+                        {o.label}
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <hr className="border-gray-100" />
+
+                <div>
+                  <p className="text-xs font-medium text-gray-500 mb-2">Price range</p>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="number"
+                      placeholder="Min"
+                      value={minPrice}
+                      onChange={(e) => setMinPrice(e.target.value)}
+                      className="w-0 flex-1 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                    />
+                    <span className="text-gray-300 text-xs">—</span>
+                    <input
+                      type="number"
+                      placeholder="Max"
+                      value={maxPrice}
+                      onChange={(e) => setMaxPrice(e.target.value)}
+                      className="w-0 flex-1 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                    />
+                  </div>
+                </div>
+
+                <hr className="border-gray-100" />
+
+                <div>
+                  <p className="text-xs font-medium text-gray-500 mb-2">Condition</p>
+                  <div className="flex flex-wrap gap-2">
+                    {["New", "Used", "Refurbished"].map((c) => (
+                      <button
+                        key={c}
+                        onClick={() => setCondition(condition === c ? "" : c)}
+                        className={`text-xs px-3 py-1 rounded-full border font-medium transition ${
+                          condition === c
+                            ? "border-green-600 bg-green-50 text-green-700"
+                            : "border-gray-200 bg-gray-50 text-gray-500 hover:border-gray-300"
+                        }`}
+                      >
+                        {c}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+              </div>
+
+              <div className="px-4 pb-4 pt-1">
+                <button className="w-full bg-green-700 text-green-50 rounded-xl py-2.5 text-sm font-medium hover:bg-green-800 transition">
+                  Apply filters
+                </button>
+              </div>
+
+            </div>
+          </aside>
+
+          {/* ── Ads grid ── */}
+          <div className="flex-1">
+            {filteredAds.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-24 text-gray-400">
+                <span className="text-5xl mb-4">🔍</span>
+                <p className="text-lg font-medium">No ads found</p>
+                <p className="text-sm mt-1">Try adjusting your filters</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                {filteredAds.map((ad) => (
+                  <ProductCard
+                    key={ad.id}
+                    product={ad}
+                    onClick={() => setSelectedProduct(ad)}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+
+        </div>
+      </div>
+
+      {selectedProduct && (
+        <ProductModal
+          product={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+        />
+      )}
     </div>
   );
 }

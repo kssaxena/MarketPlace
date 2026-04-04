@@ -16,6 +16,7 @@ import Blog from "./Pages/Blog/Blog.jsx";
 import TermsConditions from "./Pages/Terms_and_Conditions/Terms_and_Conditions.jsx";
 import Footer from "./components/Footer.jsx";
 import CategoryPage from "./Pages/CategoryPage/CategoryPage.jsx";
+import Header from "./components/Header.jsx";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
         <Route path="/my-ads" element={<Account />} />
         <Route path="/terms" element={<TermsConditions />} />
         <Route path="/terms-and-conditions" element={<TermsConditions />} />
+        <Route path="/category/:categoryName" element={<CategoryPage />} />
         <Route path="/category/:categoryName/:subCategory" element={<CategoryPage />} />
       </Routes>
       </div>
