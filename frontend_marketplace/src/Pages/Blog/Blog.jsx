@@ -85,7 +85,7 @@ function Blog() {
             <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/35 to-transparent" />
             <div className="relative z-10 h-full flex items-end p-8">
               <div className="max-w-xl text-white">
-                <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.25em] text-green-200">
+                <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.25em] text-teal-200">
                   <span>{featuredPosts[0].tag}</span>
                   <span>•</span>
                   <span>{featuredPosts[0].readTime}</span>
@@ -111,18 +111,18 @@ function Blog() {
 
           <aside className="rounded-[28px] bg-white shadow-xl p-6 md:p-8 flex flex-col justify-between gap-6">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.25em] text-green-600">Search Blog</p>
+              <p className="text-xs font-bold uppercase tracking-[0.25em] text-teal-600">Search Blog</p>
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(event) => setSearchQuery(event.target.value)}
                 placeholder="Search articles..."
-                className="mt-4 w-full rounded-2xl border bg-gray-50 px-4 py-3 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-green-400"
+                className="mt-4 w-full rounded-2xl border bg-gray-50 px-4 py-3 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-teal-400"
               />
             </div>
 
-            <div className="rounded-3xl bg-green-50 p-6">
-              <p className="text-sm font-semibold text-green-700">The Weekly Glow</p>
+            <div className="rounded-3xl bg-teal-50 p-6">
+              <p className="text-sm font-semibold text-teal-700">The Weekly Glow</p>
               <h2 className="mt-2 text-2xl font-black leading-tight">
                 Curated ideas for marketplace sellers.
               </h2>
@@ -132,7 +132,7 @@ function Blog() {
               <div className="mt-5 rounded-full bg-white px-4 py-3 text-sm text-gray-400 shadow-sm">
                 Email Address
               </div>
-              <button className="mt-4 w-full rounded-full bg-green-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-green-700">
+              <button className="mt-4 w-full rounded-full bg-teal-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-teal-700">
                 Subscribe
               </button>
             </div>
@@ -156,7 +156,7 @@ function Blog() {
             <div className="mb-5 flex items-center justify-between">
               <h2 className="text-2xl font-black">Recent Insights</h2>
               <div className="flex gap-2 text-sm font-semibold text-gray-500">
-                <span className="rounded-full bg-green-50 px-4 py-2 shadow-sm text-green-700">All</span>
+                <span className="rounded-full bg-teal-50 px-4 py-2 shadow-sm text-teal-700">All</span>
                 <span className="rounded-full px-4 py-2">Tips</span>
                 <span className="rounded-full px-4 py-2">News</span>
               </div>
@@ -227,7 +227,7 @@ function Blog() {
         <div className="flex justify-end">
           <Link
             to="/"
-            className="rounded-full bg-green-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-green-700"
+            className="rounded-full bg-teal-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-teal-700"
           >
             Back to Home
           </Link>

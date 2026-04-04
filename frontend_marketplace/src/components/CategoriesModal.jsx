@@ -184,17 +184,17 @@ function CategoriesModal({ onClose }) {
                 onClick={() => goToCategory(cat.name)}
                 className={`group flex w-full items-center gap-3 border-l-4 px-4 py-3 text-left transition-all
                   ${isActive
-                    ? "border-green-600 bg-white text-green-700"
-                    : "border-transparent text-gray-600 hover:bg-white hover:text-green-600"
+                    ? "border-teal-600 bg-white text-teal-700"
+                    : "border-transparent text-gray-600 hover:bg-white hover:text-teal-600"
                   }`}
               >
-                <span className={`${isActive ? "text-green-600" : "text-gray-400 group-hover:text-green-500"} transition-colors`}>
+                <span className={`${isActive ? "text-teal-600" : "text-gray-400 group-hover:text-teal-500"} transition-colors`}>
                   {cat.icon}
                 </span>
                 <span className="text-[0.92rem] font-medium">{cat.name}</span>
                 <FaChevronRight
                   size={10}
-                  className={`ml-auto transition-all ${isActive ? "text-green-500 opacity-100" : "opacity-0 group-hover:opacity-50"}`}
+                  className={`ml-auto transition-all ${isActive ? "text-teal-500 opacity-100" : "opacity-0 group-hover:opacity-50"}`}
                 />
               </button>
             );
@@ -209,11 +209,11 @@ function CategoriesModal({ onClose }) {
               onClick={() => goToCategory(activeCategory.name)}
               className="flex items-center gap-2 group"
             >
-              <span className="text-green-600">{activeCategory?.icon}</span>
-              <h2 className="text-[1.1rem] font-semibold tracking-[-0.02em] text-gray-900 group-hover:text-green-600 transition-colors">
+              <span className="text-teal-600">{activeCategory?.icon}</span>
+              <h2 className="text-[1.1rem] font-semibold tracking-[-0.02em] text-gray-900 group-hover:text-teal-600 transition-colors">
                 {activeCategory?.name}
               </h2>
-              <span className="text-xs text-gray-400 group-hover:text-green-500 transition-colors ml-1">
+              <span className="text-xs text-gray-400 group-hover:text-teal-500 transition-colors ml-1">
                 View all →
               </span>
             </button>
@@ -237,7 +237,7 @@ function CategoriesModal({ onClose }) {
                     <li key={item}>
                       <button
                         onClick={() => goToSubcategory(activeCategory.name, item)}
-                        className="w-full text-left text-[0.86rem] text-gray-500 transition-all hover:translate-x-1 hover:text-green-600"
+                        className="w-full text-left text-[0.86rem] text-gray-500 transition-all hover:translate-x-1 hover:text-teal-600"
                       >
                         {item}
                       </button>

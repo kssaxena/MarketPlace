@@ -64,7 +64,7 @@ function CartModal({
                       {item.image ? (
                         <img src={item.image} alt={item.title} className="h-full w-full object-cover" />
                       ) : (
-                        <div className="h-full w-full bg-gradient-to-br from-green-200 to-green-500" />
+                        <div className="h-full w-full bg-gradient-to-br from-teal-200 to-teal-500" />
                       )}
                     </div>
                     <div>
@@ -115,7 +115,7 @@ function CartModal({
                       {item.image ? (
                         <img src={item.image} alt={item.title} className="h-full w-full object-cover" />
                       ) : (
-                        <div className="h-full w-full bg-gradient-to-br from-green-200 to-green-500" />
+                        <div className="h-full w-full bg-gradient-to-br from-teal-200 to-teal-500" />
                       )}
                     </div>
                     <div>
@@ -128,7 +128,7 @@ function CartModal({
                     <button
                       type="button"
                       onClick={() => onMoveWishlistToCart(item.id)}
-                      className="rounded-lg bg-green-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-green-700"
+                      className="rounded-lg bg-teal-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-teal-700"
                     >
                       Move to cart
                     </button>
@@ -149,7 +149,7 @@ function CartModal({
         {activeTab === "cart" && (
           <div className="mt-4 border-t pt-3">
             <h4 className="font-semibold mb-2">Total: ₹ {total.toLocaleString()}</h4>
-            <button className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">
+            <button className="w-full bg-teal-600 text-white py-2 rounded-lg hover:bg-teal-700">
               Checkout →
             </button>
           </div>

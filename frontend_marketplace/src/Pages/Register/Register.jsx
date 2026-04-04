@@ -127,7 +127,7 @@ export default function Register() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              className="w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-600"
+              className="w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-teal-600"
             />
           </div>
 
@@ -143,7 +143,7 @@ export default function Register() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-600"
+              className="w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-teal-600"
             />
           </div>
 
@@ -158,7 +158,7 @@ export default function Register() {
               <select
                 value={countryCode}
                 onChange={(e) => setCountryCode(e.target.value)}
-                className="px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-600"
+                className="px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-teal-600"
               >
                 {countryCodes.map((c) => (
                   <option key={c.code} value={c.code}>
@@ -176,7 +176,7 @@ export default function Register() {
                   setPhone(digits);
                   setPhoneError("");
                 }}
-                className="flex-1 px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-600"
+                className="flex-1 px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-teal-600"
               />
 
             </div>
@@ -203,7 +203,7 @@ export default function Register() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-600"
+                className="w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-teal-600"
               />
 
               <button
@@ -227,7 +227,7 @@ export default function Register() {
                         ? "w-1/3 bg-red-500"
                         : strength === "medium"
                         ? "w-2/3 bg-yellow-500"
-                        : "w-full bg-green-600"
+                        : "w-full bg-teal-600"
                     }`}
                   />
 
@@ -244,7 +244,7 @@ export default function Register() {
           {/* SUBMIT */}
           <button
             type="submit"
-            className="w-full bg-green-600 text-white py-2.5 rounded-md font-medium hover:bg-green-700 transition"
+            className="w-full bg-teal-600 text-white py-2.5 rounded-md font-medium hover:bg-teal-700 transition"
           >
             Create Account
           </button>
@@ -256,7 +256,7 @@ export default function Register() {
           Already have an account?{" "}
           <Link
             to="/login"
-            className="text-green-600 font-medium hover:underline"
+            className="text-teal-600 font-medium hover:underline"
           >
             Log In
           </Link>
@@ -266,7 +266,7 @@ export default function Register() {
         <div className="text-center mt-4">
           <Link
             to="/"
-            className="text-xs text-green-600 hover:underline"
+            className="text-xs text-teal-600 hover:underline"
           >
             ← Back to Home
           </Link>

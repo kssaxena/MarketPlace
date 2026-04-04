@@ -85,7 +85,7 @@ export default function Account() {
         <div className="w-64 min-h-screen bg-white shadow-md p-6 flex flex-col">
 
           <div className="flex flex-col items-center mb-8">
-            <div className="w-20 h-20 rounded-full bg-green-600 text-white flex items-center justify-center text-3xl font-bold mb-3">
+            <div className="w-20 h-20 rounded-full bg-teal-600 text-white flex items-center justify-center text-3xl font-bold mb-3">
               {user?.name?.charAt(0).toUpperCase()}
             </div>
             <h2 className="font-semibold text-lg text-center">{user?.name}</h2>
@@ -99,18 +99,18 @@ export default function Account() {
                 onClick={() => setActiveTab(item)}
                 className={`text-left px-3 py-2 rounded-lg transition font-medium flex items-center justify-between ${
                   activeTab === item
-                    ? "bg-green-50 text-green-700"
-                    : "text-gray-600 hover:bg-gray-50 hover:text-green-600"
+                    ? "bg-teal-50 text-teal-700"
+                    : "text-gray-600 hover:bg-gray-50 hover:text-teal-600"
                 }`}
               >
                 {item}
                 {item === "Favorites" && wishlist.length > 0 && (
-                  <span className="text-xs bg-green-600 text-white rounded-full w-5 h-5 flex items-center justify-center">
+                  <span className="text-xs bg-teal-600 text-white rounded-full w-5 h-5 flex items-center justify-center">
                     {wishlist.length}
                   </span>
                 )}
                 {item === "My Ads" && myAds.length > 0 && (
-                  <span className="text-xs bg-green-600 text-white rounded-full w-5 h-5 flex items-center justify-center">
+                  <span className="text-xs bg-teal-600 text-white rounded-full w-5 h-5 flex items-center justify-center">
                     {myAds.length}
                   </span>
                 )}
@@ -136,9 +136,9 @@ export default function Account() {
               <div className="flex justify-between mb-6">
                 <h3 className="font-semibold text-lg">Personal Information</h3>
                 {editing ? (
-                  <button onClick={saveProfile} className="text-green-600 text-sm font-medium">Save</button>
+                  <button onClick={saveProfile} className="text-teal-600 text-sm font-medium">Save</button>
                 ) : (
-                  <button onClick={() => setEditing(true)} className="text-green-600 text-sm font-medium">Edit Profile</button>
+                  <button onClick={() => setEditing(true)} className="text-teal-600 text-sm font-medium">Edit Profile</button>
                 )}
               </div>
               <div className="grid grid-cols-2 gap-6 text-sm">
@@ -181,7 +181,7 @@ export default function Account() {
                 <h3 className="font-semibold text-lg">My Ads</h3>
                 <button
                   onClick={() => navigate("/post-ad")}
-                  className="text-sm bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
+                  className="text-sm bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition"
                 >
                   + Post New Ad
                 </button>
@@ -200,12 +200,12 @@ export default function Account() {
                       <img src={ad.image} alt={ad.title} className="w-20 h-14 rounded-lg object-cover flex-shrink-0" />
                       <div className="flex-1 min-w-0">
                         <p className="font-medium text-gray-800 truncate">{ad.title}</p>
-                        <p className="text-green-600 font-semibold text-sm mt-1">{ad.price}</p>
+                        <p className="text-teal-600 font-semibold text-sm mt-1">{ad.price}</p>
                         <p className="text-xs text-gray-400 mt-0.5">{ad.category}</p>
                       </div>
                       <div className="flex flex-col items-end gap-2">
                         <span className={`text-xs px-3 py-1 rounded-full font-medium ${
-                          ad.status === "Active" ? "bg-green-50 text-green-700" : "bg-gray-100 text-gray-500"
+                          ad.status === "Active" ? "bg-teal-50 text-teal-700" : "bg-gray-100 text-gray-500"
                         }`}>
                           {ad.status}
                         </span>
@@ -230,7 +230,7 @@ export default function Account() {
               <div className="flex flex-col gap-3">
                 {DUMMY_MESSAGES.map((msg) => (
                   <div key={msg.id} className="flex items-center gap-4 p-4 border border-gray-100 rounded-xl hover:bg-gray-50 cursor-pointer transition">
-                    <div className="w-10 h-10 rounded-full bg-green-100 text-green-700 flex items-center justify-center font-semibold text-sm flex-shrink-0">
+                    <div className="w-10 h-10 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center font-semibold text-sm flex-shrink-0">
                       {msg.avatar}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -267,7 +267,7 @@ export default function Account() {
                         <p className="font-medium text-gray-800 truncate">{item.title}</p>
                         <p className="text-xs text-gray-400 mt-1">{item.location}</p>
                       </div>
-                      <p className="text-green-600 font-semibold text-sm flex-shrink-0">
+                      <p className="text-teal-600 font-semibold text-sm flex-shrink-0">
                         ${item.price?.toLocaleString?.() ?? item.price}
                       </p>
                       <button
@@ -303,7 +303,7 @@ export default function Account() {
                       <td className="py-3 font-medium text-gray-800">{tx.title}</td>
                       <td className="py-3">
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          tx.type === "Sale" ? "bg-green-50 text-green-700" : "bg-blue-50 text-blue-700"
+                          tx.type === "Sale" ? "bg-teal-50 text-teal-700" : "bg-blue-50 text-blue-700"
                         }`}>
                           {tx.type}
                         </span>
@@ -330,7 +330,7 @@ export default function Account() {
                   </div>
                   <button
                     onClick={() => setNotifications(!notifications)}
-                    className={`w-11 h-6 rounded-full transition-colors relative ${notifications ? "bg-green-500" : "bg-gray-200"}`}
+                    className={`w-11 h-6 rounded-full transition-colors relative ${notifications ? "bg-teal-500" : "bg-gray-200"}`}
                   >
                     <span className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${notifications ? "left-6" : "left-1"}`} />
                   </button>
@@ -343,7 +343,7 @@ export default function Account() {
                   </div>
                   <button
                     onClick={() => setDarkMode(!darkMode)}
-                    className={`w-11 h-6 rounded-full transition-colors relative ${darkMode ? "bg-green-500" : "bg-gray-200"}`}
+                    className={`w-11 h-6 rounded-full transition-colors relative ${darkMode ? "bg-teal-500" : "bg-gray-200"}`}
                   >
                     <span className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${darkMode ? "left-6" : "left-1"}`} />
                   </button>
@@ -354,7 +354,7 @@ export default function Account() {
                     <p className="font-medium text-gray-800">Change Password</p>
                     <p className="text-gray-400 text-xs mt-0.5">Update your account password</p>
                   </div>
-                  <button className="text-green-600 font-medium hover:underline">Update</button>
+                  <button className="text-teal-600 font-medium hover:underline">Update</button>
                 </div>
 
                 <div className="flex items-center justify-between py-3">

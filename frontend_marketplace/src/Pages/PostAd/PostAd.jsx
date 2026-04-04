@@ -62,17 +62,17 @@ export default function PostAd() {
           <div className="relative flex items-center justify-between mb-10">
             <div className="absolute top-1/2 left-0 w-full h-[3px] bg-gray-200 -translate-y-1/2" />
             <div
-              className="absolute top-1/2 left-0 h-[3px] bg-green-600 -translate-y-1/2 transition-all duration-500"
+              className="absolute top-1/2 left-0 h-[3px] bg-teal-600 -translate-y-1/2 transition-all duration-500"
               style={{ width: `${((step - 1) / (steps.length - 1)) * 100}%` }}
             />
             {steps.map((label, index) => (
               <div key={index} className="relative z-10 flex flex-col items-center">
                 <div className={`w-8 h-8 flex items-center justify-center rounded-full text-sm font-bold transition ${
-                  step >= index + 1 ? "bg-green-600 text-white" : "bg-gray-200 text-gray-600"
+                  step >= index + 1 ? "bg-teal-600 text-white" : "bg-gray-200 text-gray-600"
                 }`}>
                   {index + 1}
                 </div>
-                <span className={`mt-2 text-xs ${step >= index + 1 ? "text-green-600 font-medium" : "text-gray-500"}`}>
+                <span className={`mt-2 text-xs ${step >= index + 1 ? "text-teal-600 font-medium" : "text-gray-500"}`}>
                   {label}
                 </span>
               </div>
@@ -128,8 +128,8 @@ export default function PostAd() {
           {step === 3 && (
             <section className="mb-8">
               <h3 className="font-semibold mb-4">Upload Photos</h3>
-              <label className="border-2 border-dashed rounded-lg p-8 text-center text-sm text-gray-600 block cursor-pointer hover:border-green-400 transition">
-                <div className="text-green-600 text-2xl mb-2">☁️</div>
+              <label className="border-2 border-dashed rounded-lg p-8 text-center text-sm text-gray-600 block cursor-pointer hover:border-teal-400 transition">
+                <div className="text-teal-600 text-2xl mb-2">☁️</div>
                 <p className="font-medium">Drag & drop photos here</p>
                 <p className="text-xs mt-1">or click to browse</p>
                 <p className="text-xs text-gray-400 mt-2">Max 10 photos • JPG, PNG, WEBP</p>
@@ -165,14 +165,14 @@ export default function PostAd() {
             {step < steps.length ? (
               <button
                 onClick={() => setStep(step + 1)}
-                className="bg-green-600 text-white px-6 py-2 rounded-md text-sm"
+                className="bg-teal-600 text-white px-6 py-2 rounded-md text-sm"
               >
                 Next
               </button>
             ) : (
               <button
                 onClick={handleSubmit}
-                className="bg-green-600 text-white px-6 py-2 rounded-md text-sm"
+                className="bg-teal-600 text-white px-6 py-2 rounded-md text-sm"
               >
                 Post My Ad
               </button>

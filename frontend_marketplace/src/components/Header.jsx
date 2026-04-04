@@ -46,7 +46,7 @@ function Header({
   }, []);
 
   const linkClass = (page) =>
-    page === activePage ? "text-green-600 font-semibold" : "text-black hover:text-green-600";
+    page === activePage ? "text-teal-600 font-semibold" : "text-black hover:text-teal-600";
 
   return (
     <>
@@ -59,7 +59,7 @@ function Header({
                 setShowCurrencyMenu(false);
                 setShowLanguageMenu((value) => !value);
               }}
-              className="flex items-center gap-1 transition hover:text-green-600"
+              className="flex items-center gap-1 transition hover:text-teal-600"
             >
               {language} <span className="text-[0.65rem]">▾</span>
             </button>
@@ -74,7 +74,7 @@ function Header({
                       setLanguage(item);
                       setShowLanguageMenu(false);
                     }}
-                    className="block w-full rounded-xl px-3 py-2 text-left text-[0.85rem] text-gray-700 transition hover:bg-green-50 hover:text-green-700"
+                    className="block w-full rounded-xl px-3 py-2 text-left text-[0.85rem] text-gray-700 transition hover:bg-teal-50 hover:text-teal-700"
                   >
                     {item}
                   </button>
@@ -90,7 +90,7 @@ function Header({
                 setShowLanguageMenu(false);
                 setShowCurrencyMenu((value) => !value);
               }}
-              className="flex items-center gap-1 transition hover:text-green-600"
+              className="flex items-center gap-1 transition hover:text-teal-600"
             >
               {currency} <span className="text-[0.65rem]">▾</span>
             </button>
@@ -105,7 +105,7 @@ function Header({
                       setCurrency(item);
                       setShowCurrencyMenu(false);
                     }}
-                    className="block w-full rounded-xl px-3 py-2 text-left text-[0.85rem] text-gray-700 transition hover:bg-green-50 hover:text-green-700"
+                    className="block w-full rounded-xl px-3 py-2 text-left text-[0.85rem] text-gray-700 transition hover:bg-teal-50 hover:text-teal-700"
                   >
                     {item}
                   </button>
@@ -122,7 +122,7 @@ function Header({
 
       <div className="flex items-center gap-6 border-b bg-white px-6 py-4">
         <Link to="/">
-          <h1 className="text-[1.7rem] font-extrabold tracking-[-0.03em] text-green-500">
+          <h1 className="text-[1.7rem] font-extrabold tracking-[-0.03em] text-teal-500">
             Marketplace
           </h1>
         </Link>
@@ -141,7 +141,7 @@ function Header({
             placeholder="Search..."
             value={searchQuery}
             onChange={(e) => onSearchQueryChange?.(e.target.value)}
-            className="w-full rounded-full border bg-gray-50 px-6 py-3 text-[0.95rem] outline-none focus:ring-2 focus:ring-green-400"
+            className="w-full rounded-full border bg-gray-50 px-6 py-3 text-[0.95rem] outline-none focus:ring-2 focus:ring-teal-400"
           />
         </form>
 
@@ -157,7 +157,7 @@ function Header({
           </button>
           <Link
             to="/register"
-            className="rounded-full border border-green-600 px-4 py-1.5 text-[0.82rem] font-semibold text-green-600 transition-colors hover:bg-green-600 hover:text-white"
+            className="rounded-full border border-teal-600 px-4 py-1.5 text-[0.82rem] font-semibold text-teal-600 transition-colors hover:bg-teal-600 hover:text-white"
           >
             Register
           </Link>
@@ -175,12 +175,12 @@ function Header({
         <div className="flex gap-4 text-[0.9rem] font-semibold">
           <button
             onClick={onPostAdClick}
-            className="rounded-full bg-green-600 px-6 py-2 text-white transition hover:scale-[1.02]"
+            className="rounded-full bg-teal-600 px-6 py-2 text-white transition hover:scale-[1.02]"
           >
             + Post Ad
           </button>
 
-          <button className="rounded-full bg-green-500 px-4 py-2 text-white transition hover:bg-green-600">
+          <button className="rounded-full bg-teal-500 px-4 py-2 text-white transition hover:bg-teal-600">
             Best Deals
           </button>
         </div>

@@ -47,7 +47,7 @@ function ProductModal({ product, onClose }) {
         <div className="p-6">
           <h2 className="text-2xl font-semibold mb-2">{product.title}</h2>
 
-          <p className="text-green-600 text-xl font-bold mb-4">
+          <p className="text-teal-600 text-xl font-bold mb-4">
             {String(product.price).startsWith("$") || String(product.price).startsWith("₹")
               ? product.price
               : `₹ ${product.price}`}
@@ -76,7 +76,7 @@ function ProductModal({ product, onClose }) {
             <button
               type="button"
               onClick={handleAddToCart}
-              className="rounded-xl bg-green-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-green-700"
+              className="rounded-xl bg-teal-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-teal-700"
             >
               Add to Cart
             </button>
@@ -87,7 +87,7 @@ function ProductModal({ product, onClose }) {
             >
               Add to Wishlist
             </button>
-            {toast && <span className="text-sm font-medium text-green-700">{toast}</span>}
+            {toast && <span className="text-sm font-medium text-teal-700">{toast}</span>}
           </div>
 
           {/* LOCATION & TIME */}

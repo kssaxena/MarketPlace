@@ -29,7 +29,7 @@ function ProductCard({ product, onClick }) {
       </div>
 
       <div className="p-5">
-        <p className="text-[1.4rem] font-bold tracking-[-0.03em] text-green-600">
+        <p className="text-[1.4rem] font-bold tracking-[-0.03em] text-teal-600">
           {product.price}
         </p>
         <h3 className="mt-2 text-[1.02rem] font-semibold leading-7 tracking-[-0.02em] text-gray-900">

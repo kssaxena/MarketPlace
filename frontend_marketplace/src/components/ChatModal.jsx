@@ -46,7 +46,7 @@ function ChatModal({ isOpen, onClose, messages, setMessages, input, setInput }) 
               key={msg.id}
               className={`max-w-[70%] px-3 py-2 rounded-lg text-sm ${
                 msg.sender === "me"
-                  ? "bg-green-500 text-white ml-auto"
+                  ? "bg-teal-500 text-white ml-auto"
                   : "bg-gray-200 text-black"
               }`}
             >
@@ -69,7 +69,7 @@ function ChatModal({ isOpen, onClose, messages, setMessages, input, setInput }) 
           />
           <button
             onClick={sendMessage}
-            className="bg-green-600 text-white px-4 rounded-lg"
+            className="bg-teal-600 text-white px-4 rounded-lg"
           >
             ➤
           </button>

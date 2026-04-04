@@ -39,7 +39,7 @@ export default function Cookies() {
         </div>
 
         <div className="mt-12 flex gap-3 flex-wrap">
-          <Link to="/privacy" className="bg-green-600 px-5 py-2 rounded-md text-sm font-medium text-white text-center">
+          <Link to="/privacy" className="bg-teal-600 px-5 py-2 rounded-md text-sm font-medium text-white text-center">
             Privacy Policy
           </Link>
           <Link to="/terms-and-conditions" className="border border-gray-300 px-5 py-2 rounded-md text-sm text-gray-700 text-center">

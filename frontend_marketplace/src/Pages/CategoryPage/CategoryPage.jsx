@@ -97,7 +97,7 @@ function CategoryPage() {
                 </span>
                 <button
                   onClick={clearFilters}
-                  className="text-xs text-green-700 bg-green-50 rounded-full px-3 py-1 font-medium hover:bg-green-100 transition"
+                  className="text-xs text-teal-700 bg-teal-50 rounded-full px-3 py-1 font-medium hover:bg-teal-100 transition"
                 >
                   Clear
                 </button>
@@ -119,7 +119,7 @@ function CategoryPage() {
                           value={o.value}
                           checked={sortBy === o.value}
                           onChange={() => setSortBy(o.value)}
-                          className="accent-green-600"
+                          className="accent-teal-600"
                         />
                         {o.label}
                       </label>
@@ -137,7 +137,7 @@ function CategoryPage() {
                       placeholder="Min"
                       value={minPrice}
                       onChange={(e) => setMinPrice(e.target.value)}
-                      className="w-0 flex-1 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                      className="w-0 flex-1 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
                     />
                     <span className="text-gray-300 text-xs">—</span>
                     <input
@@ -145,7 +145,7 @@ function CategoryPage() {
                       placeholder="Max"
                       value={maxPrice}
                       onChange={(e) => setMaxPrice(e.target.value)}
-                      className="w-0 flex-1 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                      className="w-0 flex-1 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
                     />
                   </div>
                 </div>
@@ -161,7 +161,7 @@ function CategoryPage() {
                         onClick={() => setCondition(condition === c ? "" : c)}
                         className={`text-xs px-3 py-1 rounded-full border font-medium transition ${
                           condition === c
-                            ? "border-green-600 bg-green-50 text-green-700"
+                            ? "border-teal-600 bg-teal-50 text-teal-700"
                             : "border-gray-200 bg-gray-50 text-gray-500 hover:border-gray-300"
                         }`}
                       >
@@ -174,7 +174,7 @@ function CategoryPage() {
               </div>
 
               <div className="px-4 pb-4 pt-1">
-                <button className="w-full bg-green-700 text-green-50 rounded-xl py-2.5 text-sm font-medium hover:bg-green-800 transition">
+                <button className="w-full bg-teal-700 text-teal-50 rounded-xl py-2.5 text-sm font-medium hover:bg-teal-800 transition">
                   Apply filters
                 </button>
               </div>

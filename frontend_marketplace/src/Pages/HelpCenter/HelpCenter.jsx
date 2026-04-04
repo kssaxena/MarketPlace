@@ -36,22 +36,22 @@ export default function HelpCenter() {
             placeholder="Search for articles, guides, and more..."
             className="flex-1 px-4 py-3 text-sm focus:outline-none"
           />
-          <button className="bg-green-600 text-white px-6 text-sm font-medium">
+          <button className="bg-teal-600 text-white px-6 text-sm font-medium">
             Search
           </button>
         </div>
 
         <p className="text-xs text-gray-600 mt-3">
           Popular:
-          <span className="text-green-600 ml-2 cursor-pointer">
+          <span className="text-teal-600 ml-2 cursor-pointer">
             Safety guidelines
           </span>
           ,
-          <span className="text-green-600 ml-1 cursor-pointer">
+          <span className="text-teal-600 ml-1 cursor-pointer">
             Payment methods
           </span>
           ,
-          <span className="text-green-600 ml-1 cursor-pointer">
+          <span className="text-teal-600 ml-1 cursor-pointer">
             Account verification
           </span>
         </p>
@@ -61,7 +61,7 @@ export default function HelpCenter() {
       <section className="max-w-7xl mx-auto px-6 py-14">
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-xl font-semibold">Browse by Category</h2>
-          <span className="text-sm text-green-600 cursor-pointer">
+          <span className="text-sm text-teal-600 cursor-pointer">
             View all categories →
           </span>
         </div>
@@ -72,7 +72,7 @@ export default function HelpCenter() {
               key={index}
               className="bg-white rounded-xl shadow p-6 hover:shadow-md transition cursor-pointer"
             >
-              <div className="w-10 h-10 bg-green-50 text-green-600 flex items-center justify-center rounded mb-4">
+              <div className="w-10 h-10 bg-teal-50 text-teal-600 flex items-center justify-center rounded mb-4">
                 {item.icon}
               </div>
               <h3 className="font-semibold mb-1">{item.title}</h3>
@@ -110,7 +110,7 @@ export default function HelpCenter() {
         </div>
         <Link
           to="/contact"
-          className="bg-green-600 px-4 py-2 rounded-md text-sm font-medium"
+          className="bg-teal-600 px-4 py-2 rounded-md text-sm font-medium"
         >
           Contact Us
         </Link>
