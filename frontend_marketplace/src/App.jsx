@@ -19,6 +19,7 @@ import Footer from "./components/Footer.jsx";
 import CategoryPage from "./Pages/CategoryPage/CategoryPage.jsx";
 import Header from "./components/Header.jsx";
 import { applyTheme, isDarkModeEnabled } from "./utility/theme.js";
+import BestDeals from "./Pages/BestDeals/BestDeals.jsx";
 
 function App() {
   useEffect(() => {
@@ -50,6 +51,7 @@ function App() {
         <Route path="/terms-and-conditions" element={<TermsConditions />} />
         <Route path="/category/:categoryName" element={<CategoryPage />} />
         <Route path="/category/:categoryName/:subCategory" element={<CategoryPage />} />
+        <Route path="/best-deals" element={<BestDeals />} />
       </Routes>
       </div>
       <Footer />

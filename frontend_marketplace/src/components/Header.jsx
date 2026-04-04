@@ -183,9 +183,9 @@ function Header({
             + Post Ad
           </button>
 
-          <button className="rounded-full bg-teal-500 px-4 py-2 text-white transition hover:bg-teal-600">
+          <Link to="/best-deals" className="rounded-full bg-teal-500 px-4 py-2 text-white transition hover:bg-teal-600">
             Best Deals
-          </button>
+          </Link>
 
           {showDarkModeToggle && (
             <button
