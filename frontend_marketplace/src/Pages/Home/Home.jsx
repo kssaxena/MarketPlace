@@ -5,6 +5,7 @@ import CategoriesBar from "../../components/CategoriesBar.jsx";
 import ProductCard from "../../components/ProductCard.jsx";
 import Header from "../../components/Header.jsx";
 import { productsData } from "../../constants/products.js";
+import { isDarkModeEnabled, setDarkMode } from "../../utility/theme.js";
 
 function Home() {
   const navigate = useNavigate();
@@ -26,12 +27,22 @@ function Home() {
   ];
 
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [darkMode, setDarkModeState] = useState(() => isDarkModeEnabled());
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroImages.length);
     }, 3000);
     return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const onThemeChange = (event) => {
+      setDarkModeState(Boolean(event.detail?.darkMode));
+    };
+
+    window.addEventListener("themechange", onThemeChange);
+    return () => window.removeEventListener("themechange", onThemeChange);
   }, []);
 
   const filteredProducts =
@@ -58,6 +69,9 @@ function Home() {
         onSearchQueryChange={setSearchQuery}
         onSearchSubmit={handleSearchSubmit}
         onPostAdClick={() => navigate("/post-ad")}
+        darkMode={darkMode}
+        onToggleDarkMode={() => setDarkMode(!darkMode)}
+        showDarkModeToggle
       />
 
       {/* HERO */}

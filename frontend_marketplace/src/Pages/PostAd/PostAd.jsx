@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header.jsx";
+import { isDarkModeEnabled, setDarkMode as setGlobalDarkMode } from "../../utility/theme.js";
 
 const steps = ["Category", "Details", "Photos"];
 
@@ -9,12 +10,22 @@ const CATEGORIES = ["Vehicles", "Property", "Electronics", "Furniture", "Books",
 export default function PostAd() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
+  const [isDarkMode, setIsDarkMode] = useState(() => isDarkModeEnabled());
 
   const [category, setCategory] = useState("Vehicles");
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [photos, setPhotos] = useState([]);
+
+  useEffect(() => {
+    const onThemeChange = (event) => {
+      setIsDarkMode(Boolean(event.detail?.darkMode));
+    };
+
+    window.addEventListener("themechange", onThemeChange);
+    return () => window.removeEventListener("themechange", onThemeChange);
+  }, []);
 
   const handlePhotoUpload = (e) => {
     const files = Array.from(e.target.files).slice(0, 10);
@@ -48,19 +59,37 @@ export default function PostAd() {
     navigate("/account");
   };
 
+  const toggleDarkMode = () => {
+    const next = !isDarkMode;
+    setIsDarkMode(next);
+    setGlobalDarkMode(next);
+  };
+
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className={`${isDarkMode ? "bg-slate-950 text-slate-100" : "bg-gray-50 text-gray-900"} min-h-screen transition-colors duration-300`}>
       <Header activePage="post-ad" />
 
       <div className="py-10">
-        <div className="max-w-4xl mx-auto bg-white rounded-xl shadow p-8">
+        <div className={`${isDarkMode ? "bg-slate-900 border border-slate-800 shadow-slate-950/60" : "bg-white shadow"} max-w-4xl mx-auto rounded-xl p-8 transition-colors duration-300`}>
+
+          <div className="flex justify-end mb-4">
+            <button
+              type="button"
+              onClick={toggleDarkMode}
+              className={`${isDarkMode ? "bg-slate-800 text-slate-200 border-slate-700" : "bg-white text-gray-700 border-gray-200"} px-3 py-1.5 rounded-md border text-xs font-medium hover:opacity-90 transition`}
+            >
+              {isDarkMode ? "Light Mode" : "Dark Mode"}
+            </button>
+          </div>
 
           <h1 className="text-2xl font-semibold mb-1">Post an Ad</h1>
-          <p className="text-sm text-gray-600 mb-8">Fill out the details to list your item locally.</p>
+          <p className={`${isDarkMode ? "text-slate-400" : "text-gray-600"} text-sm mb-8`}>
+            Fill out the details to list your item locally.
+          </p>
 
           {/* STEP PROGRESS BAR */}
           <div className="relative flex items-center justify-between mb-10">
-            <div className="absolute top-1/2 left-0 w-full h-[3px] bg-gray-200 -translate-y-1/2" />
+            <div className={`${isDarkMode ? "bg-slate-700" : "bg-gray-200"} absolute top-1/2 left-0 w-full h-[3px] -translate-y-1/2`} />
             <div
               className="absolute top-1/2 left-0 h-[3px] bg-teal-600 -translate-y-1/2 transition-all duration-500"
               style={{ width: `${((step - 1) / (steps.length - 1)) * 100}%` }}
@@ -68,11 +97,19 @@ export default function PostAd() {
             {steps.map((label, index) => (
               <div key={index} className="relative z-10 flex flex-col items-center">
                 <div className={`w-8 h-8 flex items-center justify-center rounded-full text-sm font-bold transition ${
-                  step >= index + 1 ? "bg-teal-600 text-white" : "bg-gray-200 text-gray-600"
+                  step >= index + 1
+                    ? "bg-teal-600 text-white"
+                    : isDarkMode
+                      ? "bg-slate-700 text-slate-300"
+                      : "bg-gray-200 text-gray-600"
                 }`}>
                   {index + 1}
                 </div>
-                <span className={`mt-2 text-xs ${step >= index + 1 ? "text-teal-600 font-medium" : "text-gray-500"}`}>
+                <span
+                  className={`mt-2 text-xs ${
+                    step >= index + 1 ? "text-teal-500 font-medium" : isDarkMode ? "text-slate-400" : "text-gray-500"
+                  }`}
+                >
                   {label}
                 </span>
               </div>
@@ -86,7 +123,7 @@ export default function PostAd() {
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="border rounded-md px-4 py-2 text-sm w-full"
+                className={`${isDarkMode ? "bg-slate-800 border-slate-700 text-slate-100" : "bg-white border-gray-300 text-gray-900"} border rounded-md px-4 py-2 text-sm w-full`}
               >
                 {CATEGORIES.map((c) => (
                   <option key={c}>{c}</option>
@@ -105,21 +142,21 @@ export default function PostAd() {
                   placeholder="Ad Title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="border rounded-md px-4 py-2 text-sm"
+                  className={`${isDarkMode ? "bg-slate-800 border-slate-700 text-slate-100 placeholder:text-slate-400" : "bg-white border-gray-300 text-gray-900"} border rounded-md px-4 py-2 text-sm`}
                 />
                 <input
                   type="number"
                   placeholder="Price"
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
-                  className="border rounded-md px-4 py-2 text-sm"
+                  className={`${isDarkMode ? "bg-slate-800 border-slate-700 text-slate-100 placeholder:text-slate-400" : "bg-white border-gray-300 text-gray-900"} border rounded-md px-4 py-2 text-sm`}
                 />
               </div>
               <textarea
                 placeholder="Describe your item in detail..."
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="border rounded-md px-4 py-3 text-sm w-full mt-4 h-28 resize-none"
+                className={`${isDarkMode ? "bg-slate-800 border-slate-700 text-slate-100 placeholder:text-slate-400" : "bg-white border-gray-300 text-gray-900"} border rounded-md px-4 py-3 text-sm w-full mt-4 h-28 resize-none`}
               />
             </section>
           )}
@@ -128,11 +165,15 @@ export default function PostAd() {
           {step === 3 && (
             <section className="mb-8">
               <h3 className="font-semibold mb-4">Upload Photos</h3>
-              <label className="border-2 border-dashed rounded-lg p-8 text-center text-sm text-gray-600 block cursor-pointer hover:border-teal-400 transition">
+              <label
+                className={`${isDarkMode ? "border-slate-700 text-slate-400 hover:border-teal-500 bg-slate-900/30" : "border-gray-300 text-gray-600 hover:border-teal-400"} border-2 border-dashed rounded-lg p-8 text-center text-sm block cursor-pointer transition`}
+              >
                 <div className="text-teal-600 text-2xl mb-2">☁️</div>
                 <p className="font-medium">Drag & drop photos here</p>
                 <p className="text-xs mt-1">or click to browse</p>
-                <p className="text-xs text-gray-400 mt-2">Max 10 photos • JPG, PNG, WEBP</p>
+                <p className={`${isDarkMode ? "text-slate-500" : "text-gray-400"} text-xs mt-2`}>
+                  Max 10 photos • JPG, PNG, WEBP
+                </p>
                 <input
                   type="file"
                   accept="image/*"
@@ -145,7 +186,12 @@ export default function PostAd() {
               {photos.length > 0 && (
                 <div className="mt-4 flex flex-wrap gap-3">
                   {photos.map((url, i) => (
-                    <img key={i} src={url} alt="" className="w-24 h-20 object-cover rounded-lg border" />
+                    <img
+                      key={i}
+                      src={url}
+                      alt=""
+                      className={`${isDarkMode ? "border-slate-700" : "border-gray-300"} w-24 h-20 object-cover rounded-lg border`}
+                    />
                   ))}
                 </div>
               )}
@@ -157,7 +203,7 @@ export default function PostAd() {
             <button
               disabled={step === 1}
               onClick={() => setStep(step - 1)}
-              className="px-4 py-2 border rounded-md text-sm disabled:opacity-40"
+              className={`${isDarkMode ? "border-slate-700 text-slate-200 hover:bg-slate-800" : "border-gray-300 text-gray-700 hover:bg-gray-100"} px-4 py-2 border rounded-md text-sm disabled:opacity-40 transition`}
             >
               Back
             </button>

@@ -6,6 +6,7 @@ import {
   removeFromWishlist,
   subscribeMarketplaceStore,
 } from "../../utility/marketplaceStore.js";
+import { isDarkModeEnabled, setDarkMode as setGlobalDarkMode } from "../../utility/theme.js";
 
 const DUMMY_USER = {
   name: "Alex Johnson",
@@ -39,7 +40,7 @@ export default function Account() {
   const [phone, setPhone] = useState(user?.phone || DUMMY_USER.phone);
   const [location, setLocation] = useState(user?.location || DUMMY_USER.location);
   const [notifications, setNotifications] = useState(true);
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => isDarkModeEnabled());
 
   // ── My Ads — from localStorage ──
   const [myAds, setMyAds] = useState(() =>
@@ -54,6 +55,15 @@ export default function Account() {
       setWishlist(getWishlistItems());
     });
     return unsub;
+  }, []);
+
+  useEffect(() => {
+    const onThemeChange = (event) => {
+      setDarkMode(Boolean(event.detail?.darkMode));
+    };
+
+    window.addEventListener("themechange", onThemeChange);
+    return () => window.removeEventListener("themechange", onThemeChange);
   }, []);
 
   const logout = () => {
@@ -76,7 +86,7 @@ export default function Account() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className={`${darkMode ? "min-h-screen bg-slate-950 text-slate-100" : "min-h-screen bg-gray-100"}`}>
       <Header activePage="account" />
 
       <div className="flex">
@@ -319,14 +329,14 @@ export default function Account() {
 
           {/* ── SETTINGS ── */}
           {activeTab === "Settings" && (
-            <div className="bg-white p-6 rounded-xl shadow">
+            <div className={`${darkMode ? "bg-slate-900 border border-slate-800" : "bg-white"} p-6 rounded-xl shadow`}>
               <h3 className="font-semibold text-lg mb-6">Settings</h3>
               <div className="flex flex-col gap-5 text-sm">
 
-                <div className="flex items-center justify-between py-3 border-b border-gray-100">
+                <div className={`${darkMode ? "border-slate-800" : "border-gray-100"} flex items-center justify-between py-3 border-b`}>
                   <div>
-                    <p className="font-medium text-gray-800">Email Notifications</p>
-                    <p className="text-gray-400 text-xs mt-0.5">Receive updates about your ads and messages</p>
+                    <p className={`${darkMode ? "text-slate-100" : "text-gray-800"} font-medium`}>Email Notifications</p>
+                    <p className={`${darkMode ? "text-slate-400" : "text-gray-400"} text-xs mt-0.5`}>Receive updates about your ads and messages</p>
                   </div>
                   <button
                     onClick={() => setNotifications(!notifications)}
@@ -336,23 +346,23 @@ export default function Account() {
                   </button>
                 </div>
 
-                <div className="flex items-center justify-between py-3 border-b border-gray-100">
+                <div className={`${darkMode ? "border-slate-800" : "border-gray-100"} flex items-center justify-between py-3 border-b`}>
                   <div>
-                    <p className="font-medium text-gray-800">Dark Mode</p>
-                    <p className="text-gray-400 text-xs mt-0.5">Switch to a darker interface</p>
+                    <p className={`${darkMode ? "text-slate-100" : "text-gray-800"} font-medium`}>Dark Mode</p>
+                    <p className={`${darkMode ? "text-slate-400" : "text-gray-400"} text-xs mt-0.5`}>Switch to a darker interface</p>
                   </div>
                   <button
-                    onClick={() => setDarkMode(!darkMode)}
+                    onClick={() => setGlobalDarkMode(!darkMode)}
                     className={`w-11 h-6 rounded-full transition-colors relative ${darkMode ? "bg-teal-500" : "bg-gray-200"}`}
                   >
                     <span className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${darkMode ? "left-6" : "left-1"}`} />
                   </button>
                 </div>
 
-                <div className="flex items-center justify-between py-3 border-b border-gray-100">
+                <div className={`${darkMode ? "border-slate-800" : "border-gray-100"} flex items-center justify-between py-3 border-b`}>
                   <div>
-                    <p className="font-medium text-gray-800">Change Password</p>
-                    <p className="text-gray-400 text-xs mt-0.5">Update your account password</p>
+                    <p className={`${darkMode ? "text-slate-100" : "text-gray-800"} font-medium`}>Change Password</p>
+                    <p className={`${darkMode ? "text-slate-400" : "text-gray-400"} text-xs mt-0.5`}>Update your account password</p>
                   </div>
                   <button className="text-teal-600 font-medium hover:underline">Update</button>
                 </div>
@@ -360,7 +370,7 @@ export default function Account() {
                 <div className="flex items-center justify-between py-3">
                   <div>
                     <p className="font-medium text-red-500">Delete Account</p>
-                    <p className="text-gray-400 text-xs mt-0.5">Permanently remove your account</p>
+                    <p className={`${darkMode ? "text-slate-400" : "text-gray-400"} text-xs mt-0.5`}>Permanently remove your account</p>
                   </div>
                   <button className="text-red-500 font-medium hover:underline">Delete</button>
                 </div>

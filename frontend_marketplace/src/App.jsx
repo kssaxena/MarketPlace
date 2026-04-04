@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home/Home.jsx";
 import About from "./Pages/About/About.jsx";
@@ -17,8 +18,13 @@ import TermsConditions from "./Pages/Terms_and_Conditions/Terms_and_Conditions.j
 import Footer from "./components/Footer.jsx";
 import CategoryPage from "./Pages/CategoryPage/CategoryPage.jsx";
 import Header from "./components/Header.jsx";
+import { applyTheme, isDarkModeEnabled } from "./utility/theme.js";
 
 function App() {
+  useEffect(() => {
+    applyTheme(isDarkModeEnabled());
+  }, []);
+
   return (
     <BrowserRouter>
      <div className="flex min-h-screen flex-col">

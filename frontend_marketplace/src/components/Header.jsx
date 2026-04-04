@@ -19,6 +19,9 @@ function Header({
   onSearchQueryChange,
   onSearchSubmit = (event) => event.preventDefault(),
   onPostAdClick = () => {},
+  darkMode = false,
+  onToggleDarkMode,
+  showDarkModeToggle = false,
 }) {
   const [showCategories, setShowCategories] = useState(false);
   const [showCart, setShowCart] = useState(false);
@@ -183,6 +186,19 @@ function Header({
           <button className="rounded-full bg-teal-500 px-4 py-2 text-white transition hover:bg-teal-600">
             Best Deals
           </button>
+
+          {showDarkModeToggle && (
+            <button
+              type="button"
+              onClick={onToggleDarkMode}
+              className="flex items-center gap-2 rounded-full border border-gray-300 bg-white px-3 py-1.5 text-[0.8rem] font-medium text-gray-700 transition hover:border-teal-500 hover:text-teal-600"
+            >
+              <span>Dark Mode</span>
+              <span className={`relative h-4 w-8 rounded-full transition ${darkMode ? "bg-teal-500" : "bg-gray-300"}`}>
+                <span className={`absolute top-0.5 h-3 w-3 rounded-full bg-white transition-all ${darkMode ? "left-4.5" : "left-0.5"}`} />
+              </span>
+            </button>
+          )}
         </div>
       </div>
 
