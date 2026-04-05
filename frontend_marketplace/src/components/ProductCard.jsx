@@ -42,10 +42,10 @@ function ProductCard({ product, onClick }) {
         <p className="text-[1.4rem] font-bold tracking-[-0.03em] text-teal-600">
           {formatCurrency(product.price, currency)}
         </p>
-        <h3 className="mt-2 text-[1.02rem] font-semibold leading-7 tracking-[-0.02em] text-gray-900">
+        <h3 className="product-card__title mt-2 text-[1.02rem] font-semibold leading-7 tracking-[-0.02em] text-gray-900">
           {product.title}
         </h3>
-        <p className="mt-2 text-[0.9rem] font-medium text-gray-500">
+        <p className="product-card__location mt-2 text-[0.9rem] font-medium text-gray-500">
           {product.location}
         </p>
       </div>

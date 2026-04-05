@@ -1,8 +1,14 @@
 import { useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header.jsx";
 import ProductModal from "../../components/ProductModal.jsx";
 import { productsData } from "../../constants/products.js";
+import {
+  formatCurrency,
+  getSelectedCurrency,
+  subscribeCurrencyChange,
+} from "../../utility/currency.js";
 
 const CATEGORIES = ["All", "Electronics", "Vehicles", "Furniture", "Fashion", "Books", "Hobbies"];
 
@@ -24,8 +30,11 @@ export default function BestDeals() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [sortBy, setSortBy] = useState("default");
   const [searchQuery, setSearchQuery] = useState("");
+  const [currency, setCurrency] = useState(() => getSelectedCurrency());
 
   const featuredProducts = productsData.filter((p) => p.featured);
+
+  useEffect(() => subscribeCurrencyChange(setCurrency), []);
 
   const filtered = featuredProducts
     .filter((p) => activeCategory === "All" || p.category === activeCategory)
@@ -128,7 +137,7 @@ export default function BestDeals() {
                     <h2 className="mt-2 text-[1.6rem] font-bold tracking-[-0.02em] text-gray-900">{topPick.title}</h2>
                     <p className="mt-3 text-[0.9rem] leading-relaxed text-gray-500 line-clamp-3">{topPick.description}</p>
                     <div className="mt-5 flex items-center justify-between">
-                      <p className="text-[2rem] font-extrabold tracking-[-0.03em] text-teal-600">{topPick.price}</p>
+                      <p className="text-[2rem] font-extrabold tracking-[-0.03em] text-teal-600">{formatCurrency(topPick.price, currency)}</p>
                       <div className="text-right text-[0.8rem] text-gray-400">
                         <p>📍 {topPick.location}</p>
                         <p className="mt-1">🕒 {topPick.time}</p>
@@ -168,8 +177,7 @@ export default function BestDeals() {
                   </div>
                   <div className="p-4">
                     <p className="text-[0.7rem] font-bold uppercase tracking-[0.18em] text-teal-500">{product.category}</p>
-                    <h3 className="mt-1 text-[0.95rem] font-semibold leading-snug text-gray-900 line-clamp-2">{product.title}</h3>
-                    <p className="mt-2 text-[1.3rem] font-extrabold tracking-[-0.02em] text-teal-600">{product.price}</p>
+                    <p className="mt-2 text-[1.3rem] font-extrabold tracking-[-0.02em] text-teal-600">{formatCurrency(product.price, currency)}</p>
                     <p className="mt-1 text-[0.78rem] text-gray-400">📍 {product.location}</p>
                   </div>
                 </div>
