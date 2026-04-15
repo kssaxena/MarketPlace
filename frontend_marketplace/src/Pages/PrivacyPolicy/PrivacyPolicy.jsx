@@ -30,7 +30,7 @@ export default function PrivacyPolicy() {
           {/* 1 */}
           <section>
             <h2 className="flex items-center gap-2 text-lg font-semibold mb-3">
-              <span className="text-green-600">①</span>
+              <span className="text-teal-600">①</span>
               Information We Collect
             </h2>
 
@@ -45,7 +45,7 @@ export default function PrivacyPolicy() {
           {/* 2 */}
           <section>
             <h2 className="flex items-center gap-2 text-lg font-semibold mb-3">
-              <span className="text-green-600">②</span>
+              <span className="text-teal-600">②</span>
               How We Use Information
             </h2>
 
@@ -83,7 +83,7 @@ export default function PrivacyPolicy() {
           {/* 3 */}
           <section>
             <h2 className="flex items-center gap-2 text-lg font-semibold mb-3">
-              <span className="text-green-600">③</span>
+              <span className="text-teal-600">③</span>
               Data Sharing & Disclosure
             </h2>
 
@@ -101,7 +101,7 @@ export default function PrivacyPolicy() {
           {/* 4 */}
           <section>
             <h2 className="flex items-center gap-2 text-lg font-semibold mb-3">
-              <span className="text-green-600">④</span>
+              <span className="text-teal-600">④</span>
               Your Privacy Rights
             </h2>
 
@@ -131,7 +131,7 @@ export default function PrivacyPolicy() {
           {/* 5 */}
           <section>
             <h2 className="flex items-center gap-2 text-lg font-semibold mb-3">
-              <span className="text-green-600">⑤</span>
+              <span className="text-teal-600">⑤</span>
               Data Security Measures
             </h2>
 
@@ -144,7 +144,7 @@ export default function PrivacyPolicy() {
           {/* 6 */}
           <section>
             <h2 className="flex items-center gap-2 text-lg font-semibold mb-3">
-              <span className="text-green-600">⑥</span>
+              <span className="text-teal-600">⑥</span>
               Information Transfers
             </h2>
 
@@ -157,7 +157,7 @@ export default function PrivacyPolicy() {
           {/* 7 */}
           <section>
             <h2 className="flex items-center gap-2 text-lg font-semibold mb-3">
-              <span className="text-green-600">⑦</span>
+              <span className="text-teal-600">⑦</span>
               Policy Updates
             </h2>
 

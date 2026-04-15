@@ -12,6 +12,11 @@ import {
   subscribeMarketplaceStore,
   updateCartQty,
 } from "../utility/marketplaceStore.js";
+import {
+  getSelectedCurrency,
+  setSelectedCurrency,
+  subscribeCurrencyChange,
+} from "../utility/currency.js";
 
 function Header({
   activePage = "home",
@@ -19,6 +24,9 @@ function Header({
   onSearchQueryChange,
   onSearchSubmit = (event) => event.preventDefault(),
   onPostAdClick = () => {},
+  darkMode = false,
+  onToggleDarkMode,
+  showDarkModeToggle = false,
 }) {
   const [showCategories, setShowCategories] = useState(false);
   const [showCart, setShowCart] = useState(false);
@@ -26,7 +34,7 @@ function Header({
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
   const [showCurrencyMenu, setShowCurrencyMenu] = useState(false);
   const [language, setLanguage] = useState("English");
-  const [currency, setCurrency] = useState("INR");
+  const [currency, setCurrency] = useState(() => getSelectedCurrency());
   const [messages, setMessages] = useState([
     { text: "Hey! Is this still available?", sender: "other" },
     { text: "Yes, it's available.", sender: "me" },
@@ -45,8 +53,10 @@ function Header({
     return subscribeMarketplaceStore(sync);
   }, []);
 
+  useEffect(() => subscribeCurrencyChange(setCurrency), []);
+
   const linkClass = (page) =>
-    page === activePage ? "text-green-600 font-semibold" : "text-black hover:text-green-600";
+    page === activePage ? "text-teal-600 font-semibold" : "text-black hover:text-teal-600";
 
   return (
     <>
@@ -59,7 +69,7 @@ function Header({
                 setShowCurrencyMenu(false);
                 setShowLanguageMenu((value) => !value);
               }}
-              className="flex items-center gap-1 transition hover:text-green-600"
+              className="flex items-center gap-1 transition hover:text-teal-600"
             >
               {language} <span className="text-[0.65rem]">▾</span>
             </button>
@@ -74,7 +84,7 @@ function Header({
                       setLanguage(item);
                       setShowLanguageMenu(false);
                     }}
-                    className="block w-full rounded-xl px-3 py-2 text-left text-[0.85rem] text-gray-700 transition hover:bg-green-50 hover:text-green-700"
+                    className="block w-full rounded-xl px-3 py-2 text-left text-[0.85rem] text-gray-700 transition hover:bg-teal-50 hover:text-teal-700"
                   >
                     {item}
                   </button>
@@ -90,7 +100,7 @@ function Header({
                 setShowLanguageMenu(false);
                 setShowCurrencyMenu((value) => !value);
               }}
-              className="flex items-center gap-1 transition hover:text-green-600"
+              className="flex items-center gap-1 transition hover:text-teal-600"
             >
               {currency} <span className="text-[0.65rem]">▾</span>
             </button>
@@ -102,10 +112,10 @@ function Header({
                     key={item}
                     type="button"
                     onClick={() => {
-                      setCurrency(item);
+                      setSelectedCurrency(item);
                       setShowCurrencyMenu(false);
                     }}
-                    className="block w-full rounded-xl px-3 py-2 text-left text-[0.85rem] text-gray-700 transition hover:bg-green-50 hover:text-green-700"
+                    className="block w-full rounded-xl px-3 py-2 text-left text-[0.85rem] text-gray-700 transition hover:bg-teal-50 hover:text-teal-700"
                   >
                     {item}
                   </button>
@@ -122,7 +132,7 @@ function Header({
 
       <div className="flex items-center gap-6 border-b bg-white px-6 py-4">
         <Link to="/">
-          <h1 className="text-[1.7rem] font-extrabold tracking-[-0.03em] text-green-500">
+          <h1 className="text-[1.7rem] font-extrabold tracking-[-0.03em] text-teal-500">
             Marketplace
           </h1>
         </Link>
@@ -141,7 +151,7 @@ function Header({
             placeholder="Search..."
             value={searchQuery}
             onChange={(e) => onSearchQueryChange?.(e.target.value)}
-            className="w-full rounded-full border bg-gray-50 px-6 py-3 text-[0.95rem] outline-none focus:ring-2 focus:ring-green-400"
+            className="w-full rounded-full border bg-gray-50 px-6 py-3 text-[0.95rem] outline-none focus:ring-2 focus:ring-teal-400"
           />
         </form>
 
@@ -157,7 +167,7 @@ function Header({
           </button>
           <Link
             to="/register"
-            className="rounded-full border border-green-600 px-4 py-1.5 text-[0.82rem] font-semibold text-green-600 transition-colors hover:bg-green-600 hover:text-white"
+            className="rounded-full border border-teal-600 px-4 py-1.5 text-[0.82rem] font-semibold text-teal-600 transition-colors hover:bg-teal-600 hover:text-white"
           >
             Register
           </Link>
@@ -175,14 +185,27 @@ function Header({
         <div className="flex gap-4 text-[0.9rem] font-semibold">
           <button
             onClick={onPostAdClick}
-            className="rounded-full bg-green-600 px-6 py-2 text-white transition hover:scale-[1.02]"
+            className="rounded-full bg-teal-600 px-6 py-2 text-white transition hover:scale-[1.02]"
           >
             + Post Ad
           </button>
 
-          <button className="rounded-full bg-green-500 px-4 py-2 text-white transition hover:bg-green-600">
+          <Link to="/best-deals" className="rounded-full bg-teal-500 px-4 py-2 text-white transition hover:bg-teal-600">
             Best Deals
-          </button>
+          </Link>
+
+          {showDarkModeToggle && (
+            <button
+              type="button"
+              onClick={onToggleDarkMode}
+              className="flex items-center gap-2 rounded-full border border-gray-300 bg-white px-3 py-1.5 text-[0.8rem] font-medium text-gray-700 transition hover:border-teal-500 hover:text-teal-600"
+            >
+              <span>Dark Mode</span>
+              <span className={`relative h-4 w-8 rounded-full transition ${darkMode ? "bg-teal-500" : "bg-gray-300"}`}>
+                <span className={`absolute top-0.5 h-3 w-3 rounded-full bg-white transition-all ${darkMode ? "left-4.5" : "left-0.5"}`} />
+              </span>
+            </button>
+          )}
         </div>
       </div>
 

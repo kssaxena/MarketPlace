@@ -150,7 +150,7 @@ export default function TermsConditions() {
             {/* CONTACT SUPPORT */}
             <Link
               to="/contact"
-              className="bg-green-600 px-5 py-2 rounded-md text-sm font-medium text-white text-center"
+              className="bg-teal-600 px-5 py-2 rounded-md text-sm font-medium text-white text-center"
             >
               Contact Support
             </Link>

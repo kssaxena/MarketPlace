@@ -92,7 +92,7 @@ export default function Login() {
               placeholder="name@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-600"
+              className="w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-teal-600"
               required
             />
           </div>
@@ -105,7 +105,7 @@ export default function Login() {
                 Password
               </label>
 
-              <span className="text-xs text-green-600 cursor-pointer hover:underline">
+              <span className="text-xs text-teal-600 cursor-pointer hover:underline">
                 Forgot Password?
               </span>
             </div>
@@ -117,7 +117,7 @@ export default function Login() {
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-600"
+                className="w-full px-4 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-teal-600"
                 required
               />
 
@@ -136,7 +136,7 @@ export default function Login() {
           {/* LOGIN BUTTON */}
           <button
             type="submit"
-            className="w-full bg-green-600 text-white py-2.5 rounded-md font-medium hover:bg-green-700 transition"
+            className="w-full bg-teal-600 text-white py-2.5 rounded-md font-medium hover:bg-teal-700 transition"
           >
             Login
           </button>
@@ -148,7 +148,7 @@ export default function Login() {
           Don’t have an account?{" "}
           <Link
             to="/register"
-            className="text-green-600 font-medium hover:underline"
+            className="text-teal-600 font-medium hover:underline"
           >
             Sign Up
           </Link>
@@ -171,7 +171,7 @@ export default function Login() {
         <div className="text-center mt-4">
           <Link
             to="/"
-            className="text-xs text-green-600 hover:underline"
+            className="text-xs text-teal-600 hover:underline"
           >
             ← Back to Home
           </Link>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   FaCar, FaMotorcycle, FaCog, FaBicycle,
   FaHome, FaBuilding, FaStore,
@@ -132,11 +133,11 @@ const categoryData = [
 
 function CategoriesModal({ onClose }) {
   const [activeCategory, setActiveCategory] = useState(categoryData[0]);
+  const navigate = useNavigate();
 
   const subcatGroups = activeCategory?.subcategories || {};
   const groupKeys = Object.keys(subcatGroups);
 
-  // Distribute groups into columns (max 2–3 groups per column)
   const columns = [];
   let col = [];
   groupKeys.forEach((key, i) => {
@@ -146,6 +147,16 @@ function CategoriesModal({ onClose }) {
       col = [];
     }
   });
+
+  const goToCategory = (catName) => {
+    navigate(`/category/${catName.toLowerCase()}`);
+    onClose();
+  };
+
+  const goToSubcategory = (catName, item) => {
+    navigate(`/category/${catName.toLowerCase()}/${encodeURIComponent(item)}`);
+    onClose();
+  };
 
   return (
     <div
@@ -157,7 +168,7 @@ function CategoriesModal({ onClose }) {
         className="relative flex w-full max-w-5xl overflow-hidden rounded-[28px] bg-white shadow-2xl"
         style={{ minHeight: 480, maxHeight: "80vh" }}
       >
-        {/* LEFT SIDEBAR — Category List */}
+        {/* LEFT SIDEBAR */}
         <div className="w-56 flex-shrink-0 overflow-y-auto border-r border-gray-200 bg-gray-50">
           <div className="border-b border-gray-200 px-4 py-3">
             <span className="text-[0.7rem] font-bold uppercase tracking-[0.28em] text-gray-400">
@@ -170,38 +181,42 @@ function CategoriesModal({ onClose }) {
               <button
                 key={cat.name}
                 onMouseEnter={() => setActiveCategory(cat)}
-                onClick={() => setActiveCategory(cat)}
+                onClick={() => goToCategory(cat.name)}
                 className={`group flex w-full items-center gap-3 border-l-4 px-4 py-3 text-left transition-all
                   ${isActive
-                    ? "border-green-600 bg-white text-green-700"
-                    : "border-transparent text-gray-600 hover:bg-white hover:text-green-600"
+                    ? "border-teal-600 bg-white text-teal-700"
+                    : "border-transparent text-gray-600 hover:bg-white hover:text-teal-600"
                   }`}
               >
-                <span
-                  className={`${
-                    isActive ? "text-green-600" : "text-gray-400 group-hover:text-green-500"
-                  } transition-colors`}
-                >
+                <span className={`${isActive ? "text-teal-600" : "text-gray-400 group-hover:text-teal-500"} transition-colors`}>
                   {cat.icon}
                 </span>
                 <span className="text-[0.92rem] font-medium">{cat.name}</span>
                 <FaChevronRight
                   size={10}
-                  className={`ml-auto transition-all ${isActive ? "text-green-500 opacity-100" : "opacity-0 group-hover:opacity-50"}`}
+                  className={`ml-auto transition-all ${isActive ? "text-teal-500 opacity-100" : "opacity-0 group-hover:opacity-50"}`}
                 />
               </button>
             );
           })}
         </div>
 
-        {/* RIGHT PANEL — Subcategories */}
+        {/* RIGHT PANEL */}
         <div className="flex-1 overflow-y-auto p-6">
-          {/* Header */}
-          <div className="mb-5 flex items-center gap-2 border-b border-gray-100 pb-3">
-            <span className="text-green-600">{activeCategory?.icon}</span>
-            <h2 className="text-[1.1rem] font-semibold tracking-[-0.02em] text-gray-900">
-              {activeCategory?.name}
-            </h2>
+          {/* Header — clicking the category title navigates to category page */}
+          <div className="mb-5 border-b border-gray-100 pb-3">
+            <button
+              onClick={() => goToCategory(activeCategory.name)}
+              className="flex items-center gap-2 group"
+            >
+              <span className="text-teal-600">{activeCategory?.icon}</span>
+              <h2 className="text-[1.1rem] font-semibold tracking-[-0.02em] text-gray-900 group-hover:text-teal-600 transition-colors">
+                {activeCategory?.name}
+              </h2>
+              <span className="text-xs text-gray-400 group-hover:text-teal-500 transition-colors ml-1">
+                View all →
+              </span>
+            </button>
           </div>
 
           {/* Subcategory columns */}
@@ -211,18 +226,19 @@ function CategoriesModal({ onClose }) {
           >
             {groupKeys.map((groupName) => (
               <div key={groupName} className="mb-4">
-                {/* Group heading */}
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-[0.88rem] font-semibold tracking-[-0.01em] text-gray-800">
                     {groupName}
                   </span>
                 </div>
                 <div className="border-b border-gray-200 mb-3" />
-                {/* Items */}
                 <ul className="space-y-1">
                   {subcatGroups[groupName].map((item) => (
                     <li key={item}>
-                      <button className="w-full text-left text-[0.86rem] text-gray-500 transition-all hover:translate-x-1 hover:text-green-600">
+                      <button
+                        onClick={() => goToSubcategory(activeCategory.name, item)}
+                        className="w-full text-left text-[0.86rem] text-gray-500 transition-all hover:translate-x-1 hover:text-teal-600"
+                      >
                         {item}
                       </button>
                     </li>

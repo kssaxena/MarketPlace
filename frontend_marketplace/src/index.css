@@ -4,6 +4,16 @@
 :root {
   color-scheme: light;
   font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  --color-green-50: #f0fdfa;
+  --color-green-100: #ccfbf1;
+  --color-green-200: #99f6e4;
+  --color-green-300: #5eead4;
+  --color-green-400: #2dd4bf;
+  --color-green-500: #14b8a6;
+  --color-green-600: #0f766e;
+  --color-green-700: #115e59;
+  --color-green-800: #134e4a;
+  --color-green-900: #042f2e;
 }
 
 html {
@@ -41,7 +51,7 @@ img {
 }
 
 ::selection {
-  background: rgba(22, 163, 74, 0.18);
+  background: rgba(13, 148, 136, 0.18);
   color: #111827;
 }
 
@@ -58,4 +68,96 @@ img {
 
 .animate-fadeIn {
   animation: fadeIn 0.2s ease-in-out;
+}
+
+.dark,
+body.dark {
+  color-scheme: dark;
+}
+
+.dark body,
+body.dark {
+  background: #020617;
+  color: #e2e8f0;
+}
+
+.dark .bg-white {
+  background-color: #0f172a !important;
+}
+
+.dark .bg-gray-50,
+.dark .bg-gray-100 {
+  background-color: #020617 !important;
+}
+
+.dark .bg-teal-50 {
+  background-color: rgba(20, 184, 166, 0.12) !important;
+}
+
+.dark .text-black,
+.dark .text-gray-800,
+.dark .text-gray-700,
+.dark .text-gray-600,
+.dark .text-gray-500 {
+  color: #e2e8f0 !important;
+}
+
+.dark .text-gray-400,
+.dark .text-gray-300 {
+  color: #94a3b8 !important;
+}
+
+.dark .border,
+.dark .border-b,
+.dark .border-gray-50,
+.dark .border-gray-100,
+.dark .border-gray-200,
+.dark .border-gray-300 {
+  border-color: #1e293b !important;
+}
+
+.dark input,
+.dark textarea,
+.dark select {
+  background-color: #0b1220;
+  color: #e2e8f0;
+  border-color: #334155;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #94a3b8;
+}
+
+.dark .product-card {
+  background-color: #0f172a !important;
+}
+
+.dark .product-card__overlay {
+  background-color: rgba(255, 255, 255, 0.97) !important;
+  border: 1px solid #e2e8f0;
+}
+
+.dark .product-card__condition {
+  color: #0f172a !important;
+}
+
+.dark .product-card__condition-label {
+  color: #94a3b8 !important;
+}
+
+.dark .product-card__description {
+  color: #334155 !important;
+}
+
+.dark .product-card__time {
+  color: #64748b !important;
+}
+
+.dark .product-card__title {
+  color: #f8fafc !important;
+}
+
+.dark .product-card__location {
+  color: #cbd5e1 !important;
 }

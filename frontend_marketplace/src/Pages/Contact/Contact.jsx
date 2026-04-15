@@ -41,7 +41,7 @@ export default function Contact() {
       <div className="px-4 py-16">
       {/* HEADER */}
       <div className="text-center mb-10">
-        <h1 className="text-3xl font-bold text-green-600 mb-2">
+        <h1 className="text-3xl font-bold text-teal-600 mb-2">
           Contact Us
         </h1>
         <p className="text-gray-600">
@@ -58,7 +58,7 @@ export default function Contact() {
           <input
             type="email"
             placeholder="you@example.com"
-            className="w-full border rounded-md px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600"
+            className="w-full border rounded-md px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-600"
           />
         </div>
 
@@ -69,11 +69,11 @@ export default function Contact() {
           <textarea
             rows="4"
             placeholder="Tell us how we can help..."
-            className="w-full border rounded-md px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600"
+            className="w-full border rounded-md px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-600"
           />
         </div>
 
-        <button className="w-full bg-green-600 text-white py-2.5 rounded-md font-medium hover:bg-green-700">
+        <button className="w-full bg-teal-600 text-white py-2.5 rounded-md font-medium hover:bg-teal-700">
           Send Message
         </button>
       </div>

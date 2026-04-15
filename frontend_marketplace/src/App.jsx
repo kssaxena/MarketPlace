@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home/Home.jsx";
 import About from "./Pages/About/About.jsx";
@@ -15,10 +16,20 @@ import Cookies from "./Pages/Cookies/Cookies.jsx";
 import Blog from "./Pages/Blog/Blog.jsx";
 import TermsConditions from "./Pages/Terms_and_Conditions/Terms_and_Conditions.jsx";
 import Footer from "./components/Footer.jsx";
+import CategoryPage from "./Pages/CategoryPage/CategoryPage.jsx";
+import Header from "./components/Header.jsx";
+import { applyTheme, isDarkModeEnabled } from "./utility/theme.js";
+import BestDeals from "./Pages/BestDeals/BestDeals.jsx";
 
 function App() {
+  useEffect(() => {
+    applyTheme(isDarkModeEnabled());
+  }, []);
+
   return (
     <BrowserRouter>
+     <div className="flex min-h-screen flex-col">
+      <div className="flex-1">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -38,8 +49,13 @@ function App() {
         <Route path="/my-ads" element={<Account />} />
         <Route path="/terms" element={<TermsConditions />} />
         <Route path="/terms-and-conditions" element={<TermsConditions />} />
+        <Route path="/category/:categoryName" element={<CategoryPage />} />
+        <Route path="/category/:categoryName/:subCategory" element={<CategoryPage />} />
+        <Route path="/best-deals" element={<BestDeals />} />
       </Routes>
+      </div>
       <Footer />
+      </div>
     </BrowserRouter>
   );
 }

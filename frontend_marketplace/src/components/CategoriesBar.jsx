@@ -37,7 +37,7 @@ function CategoriesBar({ selectedCategory, setSelectedCategory }) {
             className={`group inline-flex items-center gap-2 rounded-2xl border px-4 py-3 text-[0.95rem] font-medium tracking-[-0.01em] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sm
               ${
                 selectedCategory === cat.name
-                  ? "border-green-500 bg-green-50 text-green-700 shadow-sm"
+                  ? "border-teal-400 bg-teal-50 text-teal-700 shadow-sm"
                   : "border-gray-300 bg-white text-gray-700 hover:border-gray-400 hover:bg-gray-50"
               }`}
           >
@@ -45,8 +45,8 @@ function CategoriesBar({ selectedCategory, setSelectedCategory }) {
               <span
                 className={`text-[1.05rem] transition-colors ${
                   selectedCategory === cat.name
-                    ? "text-green-600"
-                    : "text-green-600/90 group-hover:text-green-700"
+                    ? "text-teal-600"
+                    : "text-teal-600/90 group-hover:text-teal-700"
                 }`}
               >
                 {cat.icon}

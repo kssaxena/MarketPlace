@@ -79,7 +79,7 @@ export default function About() {
 
       {/* CTA */}
       <section className="py-20 px-6">
-        <div className="max-w-5xl mx-auto bg-green-600 rounded-xl text-white text-center py-12 px-6">
+        <div className="max-w-5xl mx-auto bg-teal-600 rounded-xl text-white text-center py-12 px-6">
           <h2 className="text-3xl font-bold mb-4">
             Ready to join your local marketplace?
           </h2>
@@ -90,7 +90,7 @@ export default function About() {
           <div className="flex justify-center gap-4">
              <button
                onClick={() => navigate("/")}
-               className="bg-white text-green-600 px-6 py-3 rounded-md font-medium"
+               className="bg-white text-teal-600 px-6 py-3 rounded-md font-medium"
              >
                Get Started
              </button>

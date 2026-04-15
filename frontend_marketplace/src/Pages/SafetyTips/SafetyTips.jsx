@@ -13,7 +13,7 @@ export default function SafetyTips() {
       <div className="max-w-6xl mx-auto mb-10">
 
         <h1 className="text-3xl font-bold">
-          Your Safety is Our <span className="text-green-600">Priority</span>.
+          Your Safety is Our <span className="text-teal-600">Priority</span>.
         </h1>
 
         <p className="text-gray-500 mt-3 max-w-2xl">
@@ -65,7 +65,7 @@ export default function SafetyTips() {
           <ul className="space-y-3 text-sm text-gray-600">
 
             <li>
-              <span className="font-semibold text-green-600">
+              <span className="font-semibold text-teal-600">
                 Use Platform Payments
               </span>
               <p>Use secure payment systems for protection.</p>
@@ -102,7 +102,7 @@ export default function SafetyTips() {
           </p>
 
           <Link to="/contact">
-            <button className="bg-green-600 px-4 py-2 rounded-md text-sm font-medium hover:bg-green-700 transition">
+            <button className="bg-teal-600 px-4 py-2 rounded-md text-sm font-medium hover:bg-teal-700 transition">
              Report an Issue
             </button>
         </Link>
