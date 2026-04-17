@@ -4,6 +4,7 @@ import {
   getSelectedCurrency,
   subscribeCurrencyChange,
 } from "../utility/currency.js";
+import { isDarkModeEnabled } from "../utility/theme.js";
 
 function CartModal({
   isOpen,
@@ -18,10 +19,20 @@ function CartModal({
 }) {
   const [activeTab, setActiveTab] = useState("cart");
   const [currency, setCurrency] = useState(() => getSelectedCurrency());
+  const [darkMode, setDarkMode] = useState(() => isDarkModeEnabled());
 
   useEffect(() => {
     const unsubscribe = subscribeCurrencyChange(setCurrency);
     return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    const onThemeChange = (event) => {
+      setDarkMode(Boolean(event.detail?.darkMode));
+    };
+
+    window.addEventListener("themechange", onThemeChange);
+    return () => window.removeEventListener("themechange", onThemeChange);
   }, []);
 
   const total = useMemo(
@@ -33,23 +44,23 @@ function CartModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="flex max-h-[80vh] w-[420px] flex-col rounded-2xl bg-white p-5 shadow-xl">
+      <div className={`${darkMode ? "bg-slate-900 text-slate-100" : "bg-white"} flex max-h-[80vh] w-[420px] flex-col rounded-2xl p-5 shadow-xl transition-colors`}>
 
         {/* Header */}
         <div className="mb-4 flex items-center justify-between">
-          <h4 className="text-lg font-semibold text-gray-900">Shopping</h4>
-          <button onClick={onClose}>✕</button>
+          <h4 className={`text-lg font-semibold ${darkMode ? "text-slate-100" : "text-gray-900"}`}>Shopping</h4>
+          <button onClick={onClose} className={darkMode ? "text-slate-400 hover:text-slate-200" : "text-gray-600"}>✕</button>
         </div>
 
         {/* Tabs */}
-        <div className="mb-4 grid grid-cols-2 gap-2 rounded-xl bg-gray-100 p-1 text-sm font-semibold">
+        <div className={`${darkMode ? "bg-slate-800" : "bg-gray-100"} mb-4 grid grid-cols-2 gap-2 rounded-xl p-1 text-sm font-semibold`}>
           <button
             type="button"
             onClick={() => setActiveTab("cart")}
             className={`rounded-lg px-3 py-2 transition ${
               activeTab === "cart"
-                ? "bg-white text-gray-900 shadow-sm"
-                : "text-gray-500"
+                ? darkMode ? "bg-slate-700 text-slate-100 shadow-sm" : "bg-white text-gray-900 shadow-sm"
+                : darkMode ? "text-slate-400" : "text-gray-500"
             }`}
           >
             Cart ({cartItems.length})
@@ -59,8 +70,8 @@ function CartModal({
             onClick={() => setActiveTab("wishlist")}
             className={`rounded-lg px-3 py-2 transition ${
               activeTab === "wishlist"
-                ? "bg-white text-gray-900 shadow-sm"
-                : "text-gray-500"
+                ? darkMode ? "bg-slate-700 text-slate-100 shadow-sm" : "bg-white text-gray-900 shadow-sm"
+                : darkMode ? "text-slate-400" : "text-gray-500"
             }`}
           >
             Wishlist ({wishlistItems.length})
@@ -68,11 +79,11 @@ function CartModal({
         </div>
 
         {/* Items */}
-        <div className="flex-1 space-y-3 overflow-y-auto">
+        <div className={`flex-1 space-y-3 overflow-y-auto ${darkMode ? "bg-slate-800" : ""}`}>
 
           {activeTab === "cart" && (
             cartItems.length === 0
-              ? <p className="py-8 text-center text-gray-500">Your cart is empty</p>
+              ? <p className={`py-8 text-center ${darkMode ? "text-slate-400" : "text-gray-500"}`}>Your cart is empty</p>
               : cartItems.map((item) => (
                 <div key={item.id} className="flex items-center justify-between rounded-xl bg-gray-100 p-3">
                   <div className="flex items-center gap-3">
