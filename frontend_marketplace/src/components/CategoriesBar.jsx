@@ -1,12 +1,12 @@
 import {
-  FaCar,
-  FaHome,
-  FaTv,
-  FaTshirt,
-  FaCouch,
-  FaBriefcase,
-  FaFutbol,
   FaBook,
+  FaBriefcase,
+  FaCar,
+  FaCouch,
+  FaFutbol,
+  FaHome,
+  FaTshirt,
+  FaTv,
 } from "react-icons/fa";
 
 const categories = [
@@ -21,40 +21,42 @@ const categories = [
   { name: "Books", icon: <FaBook /> },
 ];
 
-
 function CategoriesBar({ selectedCategory, setSelectedCategory }) {
   return (
-    <div className="w-full mt-10 py-4">
+    <div className="mt-10 w-full py-4">
       <h2 className="mb-5 text-[1.35rem] font-semibold tracking-[-0.02em] text-gray-900">
         Browse Categories
       </h2>
 
       <div className="flex flex-wrap gap-3">
-        {categories.map((cat, i) => (
-          <button
-            key={i}
-            onClick={() => setSelectedCategory(cat.name)}
-            className={`group inline-flex items-center gap-2 rounded-2xl border px-4 py-3 text-[0.95rem] font-medium tracking-[-0.01em] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sm
-              ${
-                selectedCategory === cat.name
+        {categories.map((cat, i) => {
+          const isActive = selectedCategory === cat.name;
+
+          return (
+            <button
+              key={i}
+              onClick={() => setSelectedCategory(cat.name)}
+              className={`group inline-flex items-center gap-2 rounded-2xl border px-4 py-3 text-[0.95rem] font-medium tracking-[-0.01em] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sm ${
+                isActive
                   ? "border-teal-400 bg-teal-50 text-teal-700 shadow-sm"
                   : "border-gray-300 bg-white text-gray-700 hover:border-gray-400 hover:bg-gray-50"
               }`}
-          >
-            {cat.icon && (
-              <span
-                className={`text-[1.05rem] transition-colors ${
-                  selectedCategory === cat.name
-                    ? "text-teal-600"
-                    : "text-teal-600/90 group-hover:text-teal-700"
-                }`}
-              >
-                {cat.icon}
-              </span>
-            )}
-            {cat.name}
-          </button>
-        ))}
+            >
+              {cat.icon && (
+                <span
+                  className={`text-[1.05rem] transition-colors ${
+                    isActive
+                      ? "text-teal-600"
+                      : "text-teal-600/90 group-hover:text-teal-700"
+                  }`}
+                >
+                  {cat.icon}
+                </span>
+              )}
+              {cat.name}
+            </button>
+          );
+        })}
       </div>
     </div>
   );
