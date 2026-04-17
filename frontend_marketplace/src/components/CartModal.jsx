@@ -85,17 +85,17 @@ function CartModal({
             cartItems.length === 0
               ? <p className={`py-8 text-center ${darkMode ? "text-slate-400" : "text-gray-500"}`}>Your cart is empty</p>
               : cartItems.map((item) => (
-                <div key={item.id} className="flex items-center justify-between rounded-xl bg-gray-100 p-3">
+                <div key={item.id} className={`flex items-center justify-between rounded-xl ${darkMode ? "bg-slate-700 p-3" : "bg-gray-100 p-3"}`}>
                   <div className="flex items-center gap-3">
-                    <div className="h-12 w-12 overflow-hidden rounded-lg bg-gray-200">
+                    <div className={`h-12 w-12 overflow-hidden rounded-lg ${darkMode ? "bg-slate-600" : "bg-gray-200"}`}>
                       {item.image
                         ? <img src={item.image} alt={item.title} className="h-full w-full object-cover" />
                         : <div className="h-full w-full bg-gradient-to-br from-teal-200 to-teal-500" />
                       }
                     </div>
                     <div>
-                      <h5 className="font-medium text-gray-900">{item.title}</h5>
-                      <p className="text-sm text-gray-600">{formatCurrency(item.price, currency)}</p>
+                      <h5 className={`font-medium ${darkMode ? "text-slate-100" : "text-gray-900"}`}>{item.title}</h5>
+                      <p className={`text-sm ${darkMode ? "text-slate-400" : "text-gray-600"}`}>{formatCurrency(item.price, currency)}</p>
                     </div>
                   </div>
 
@@ -103,22 +103,22 @@ function CartModal({
                     <button
                       type="button"
                       onClick={() => onDecreaseQty(item.id)}
-                      className="rounded bg-gray-300 px-2"
+                      className={`rounded ${darkMode ? "bg-slate-600 hover:bg-slate-500 text-slate-100" : "bg-gray-300"} px-2`}
                     >
                       -
                     </button>
-                    <span className="w-6 text-center">{item.qty}</span>
+                    <span className={`w-6 text-center ${darkMode ? "text-slate-100" : ""}`}>{item.qty}</span>
                     <button
                       type="button"
                       onClick={() => onIncreaseQty(item.id)}
-                      className="rounded bg-gray-300 px-2"
+                      className={`rounded ${darkMode ? "bg-slate-600 hover:bg-slate-500 text-slate-100" : "bg-gray-300"} px-2`}
                     >
                       +
                     </button>
                     <button
                       type="button"
                       onClick={() => onRemoveCartItem(item.id)}
-                      className="ml-1 text-xs font-semibold text-red-500 hover:text-red-600"
+                      className={`ml-1 text-xs font-semibold ${darkMode ? "text-red-400 hover:text-red-300" : "text-red-500 hover:text-red-600"}`}
                     >
                       Remove
                     </button>
@@ -129,19 +129,19 @@ function CartModal({
 
           {activeTab === "wishlist" && (
             wishlistItems.length === 0
-              ? <p className="py-8 text-center text-gray-500">Your wishlist is empty</p>
+              ? <p className={`py-8 text-center ${darkMode ? "text-slate-400" : "text-gray-500"}`}>Your wishlist is empty</p>
               : wishlistItems.map((item) => (
-                <div key={item.id} className="flex items-center justify-between rounded-xl bg-gray-100 p-3">
+                <div key={item.id} className={`flex items-center justify-between rounded-xl ${darkMode ? "bg-slate-700 p-3" : "bg-gray-100 p-3"}`}>
                   <div className="flex items-center gap-3">
-                    <div className="h-12 w-12 overflow-hidden rounded-lg bg-gray-200">
+                    <div className={`h-12 w-12 overflow-hidden rounded-lg ${darkMode ? "bg-slate-600" : "bg-gray-200"}`}>
                       {item.image
                         ? <img src={item.image} alt={item.title} className="h-full w-full object-cover" />
                         : <div className="h-full w-full bg-gradient-to-br from-teal-200 to-teal-500" />
                       }
                     </div>
                     <div>
-                      <h5 className="font-medium text-gray-900">{item.title}</h5>
-                      <p className="text-sm text-gray-600">{formatCurrency(item.price, currency)}</p>
+                      <h5 className={`font-medium ${darkMode ? "text-slate-100" : "text-gray-900"}`}>{item.title}</h5>
+                      <p className={`text-sm ${darkMode ? "text-slate-400" : "text-gray-600"}`}>{formatCurrency(item.price, currency)}</p>
                     </div>
                   </div>
 
@@ -156,7 +156,7 @@ function CartModal({
                     <button
                       type="button"
                       onClick={() => onRemoveWishlistItem(item.id)}
-                      className="text-xs font-semibold text-red-500 hover:text-red-600"
+                      className={`text-xs font-semibold ${darkMode ? "text-red-400 hover:text-red-300" : "text-red-500 hover:text-red-600"}`}
                     >
                       Remove
                     </button>
@@ -169,9 +169,9 @@ function CartModal({
 
         {/* Footer */}
         {activeTab === "cart" && (
-          <div className="mt-4 border-t pt-3">
-            <h4 className="mb-2 font-semibold">Total: {formatCurrency(total, currency)}</h4>
-            <button className="w-full rounded-lg bg-teal-600 py-2 text-white hover:bg-teal-700">
+          <div className={`mt-4 border-t ${darkMode ? "border-slate-700" : ""} pt-3`}>
+            <h4 className={`mb-2 font-semibold ${darkMode ? "text-slate-100" : ""}`}>Total: {formatCurrency(total, currency)}</h4>
+            <button className={`w-full rounded-lg ${darkMode ? "bg-teal-600 hover:bg-teal-700" : "bg-teal-600 hover:bg-teal-700"} py-2 text-white`}>
               Checkout →
             </button>
           </div>
