@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header.jsx";
 export default function SafetyTips() {
@@ -9,7 +8,6 @@ export default function SafetyTips() {
 
       <div className="px-10 py-12">
 
-      {/* HEADER */}
       <div className="max-w-6xl mx-auto mb-10">
 
         <h1 className="text-3xl font-bold">
@@ -24,10 +22,8 @@ export default function SafetyTips() {
 
       </div>
 
-      {/* GRID */}
       <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-6">
 
-        {/* GENERAL SAFETY */}
         <div className="bg-white p-6 rounded-xl shadow-sm">
 
           <h3 className="font-semibold text-lg mb-4">
@@ -55,7 +51,6 @@ export default function SafetyTips() {
 
         </div>
 
-        {/* PAYMENT SAFETY */}
         <div className="bg-white p-6 rounded-xl shadow-sm">
 
           <h3 className="font-semibold text-lg mb-4">
@@ -89,7 +84,6 @@ export default function SafetyTips() {
 
         </div>
 
-        {/* REPORTING */}
         <div className="bg-[#1e293b] text-white p-6 rounded-xl shadow-sm">
 
           <h3 className="font-semibold text-lg mb-3">
@@ -111,7 +105,6 @@ export default function SafetyTips() {
 
       </div>
 
-      {/* SCAM SECTION */}
       <div className="max-w-6xl mx-auto mt-10">
 
         <h2 className="text-xl font-semibold mb-4">

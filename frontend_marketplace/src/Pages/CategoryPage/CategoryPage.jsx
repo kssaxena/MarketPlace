@@ -4,14 +4,10 @@ import { productsData } from "../../constants/products";
 import ProductCard from "../../components/ProductCard";
 import ProductModal from "../../components/ProductModal";
 import Header from "../../components/Header";
-
-const SORT_OPTIONS = [
-  { label: "Newest First", value: "newest" },
-  { label: "Price: Low to High", value: "price_asc" },
-  { label: "Price: High to Low", value: "price_desc" },
-];
+import { CATEGORY_PAGE_SORT_OPTIONS } from "../../constants/filters.js";
 
 function parsePrice(str) {
+  // Normalize mixed currency strings into sortable numeric values.
   return Number(String(str).replace(/[^0-9.]/g, "")) || 0;
 }
 
@@ -30,6 +26,7 @@ function CategoryPage() {
   const decodedSubCategory = subCategory ? decodeURIComponent(subCategory) : null;
 
   const filteredAds = useMemo(() => {
+    // Apply filters in stages to keep each branch easy to reason about.
     let ads = productsData;
 
     if (decodedCategory.toLowerCase() !== "all ads") {
@@ -42,6 +39,7 @@ function CategoryPage() {
       const subcatFiltered = ads.filter(
         (ad) => ad.subCategory?.toLowerCase() === decodedSubCategory.toLowerCase()
       );
+      // Only tighten by subcategory when matching data exists.
       if (subcatFiltered.length > 0) ads = subcatFiltered;
     }
 
@@ -104,7 +102,6 @@ function CategoryPage() {
 
         <div className="flex flex-col md:flex-row gap-6">
 
-          {/* ── Filters sidebar ── */}
           <aside className="w-full md:w-56 flex-shrink-0">
             <div className="rounded-2xl border border-gray-200 bg-white overflow-hidden">
 
@@ -125,7 +122,7 @@ function CategoryPage() {
                 <div>
                   <p className="text-xs font-medium text-gray-500 mb-2">Sort by</p>
                   <div className="space-y-2">
-                    {SORT_OPTIONS.map((o) => (
+                    {CATEGORY_PAGE_SORT_OPTIONS.map((o) => (
                       <label
                         key={o.value}
                         className="flex items-center gap-2 cursor-pointer text-sm text-gray-700"
@@ -199,7 +196,6 @@ function CategoryPage() {
             </div>
           </aside>
 
-          {/* ── Ads grid ── */}
           <div className="flex-1">
             {filteredAds.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-24 text-gray-400">

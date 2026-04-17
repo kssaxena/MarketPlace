@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { productsData as products } from "../../constants/products";
 import ProductCard from "../../components/ProductCard.jsx";
 import Header from "../../components/Header.jsx";
+import SavedSearchesWidget from "../../components/SavedSearchesWidget.jsx";
+import { addSavedSearch, addToRecentlyViewed } from "../../utility/userTracking.js";
 
 
 export default function Search() {
@@ -13,7 +15,10 @@ export default function Search() {
   const [searchQuery, setSearchQuery] = useState(queryFromUrl);
 
   useEffect(() => {
-    setSearchQuery(queryFromUrl);
+    // Save searches automatically for quick access later.
+    if (queryFromUrl?.trim()) {
+      addSavedSearch(queryFromUrl);
+    }
   }, [queryFromUrl]);
 
   const handleSearchSubmit = (event) => {
@@ -23,6 +28,7 @@ export default function Search() {
     navigate(trimmedQuery ? `/search?q=${encodeURIComponent(trimmedQuery)}` : "/search");
   };
 
+  // Perform case-insensitive search across multiple fields for flexible product discovery.
   const filteredProducts = products.filter((item) => {
 
     const searchText = searchQuery.toLowerCase();
@@ -46,27 +52,35 @@ export default function Search() {
         onPostAdClick={() => navigate("/post-ad")}
       />
 
-      <div className="max-w-6xl mx-auto p-10 w-full flex-1">
-        <h2 className="mb-8 text-[1.45rem] font-semibold tracking-[-0.02em] text-gray-900">
-          Search Results for "{searchQuery}"
-        </h2>
+      <div className="max-w-6xl mx-auto p-10 w-full flex-1 grid grid-cols-4 gap-6">
+        <aside className="col-span-1">
+          <SavedSearchesWidget />
+        </aside>
 
-        {filteredProducts.length === 0 ? (
+        <div className="col-span-3">
+          <h2 className="mb-8 text-[1.45rem] font-semibold tracking-[-0.02em] text-gray-900">
+            Search Results for "{searchQuery}"
+          </h2>
 
-          <p className="text-gray-500">No items found.</p>
+          {filteredProducts.length === 0 ? (
 
-        ) : (
+            <p className="text-gray-500">No items found.</p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          ) : (
 
-            {filteredProducts.map((item) => (
-              <ProductCard key={item.id} product={item} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-            ))}
+              {filteredProducts.map((item) => (
+                <div key={item.id} onClick={() => addToRecentlyViewed(item)}>
+                  <ProductCard product={item} />
+                </div>
 
-          </div>
+              ))}
 
-        )}
+            </div>
+
+          )}
+        </div>
       </div>
     </div>
   );

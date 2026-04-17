@@ -4,39 +4,38 @@ import ProductModal from "../../components/ProductModal.jsx";
 import CategoriesBar from "../../components/CategoriesBar.jsx";
 import ProductCard from "../../components/ProductCard.jsx";
 import Header from "../../components/Header.jsx";
+import RecentlyViewed from "../../components/RecentlyViewed.jsx";
+import SavedSearchesWidget from "../../components/SavedSearchesWidget.jsx";
 import { productsData } from "../../constants/products.js";
 import { isDarkModeEnabled, setDarkMode } from "../../utility/theme.js";
+import { addToRecentlyViewed } from "../../utility/userTracking.js";
+
+const HERO_IMAGES = [
+  "https://images.unsplash.com/photo-1607083206968-13611e3d76db",
+  "https://images.unsplash.com/photo-1515168833906-d2a3b82b302a",
+  "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da",
+];
 
 function Home() {
   const navigate = useNavigate();
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [products, setProducts] = useState(productsData);
+  const products = productsData;
   const [selectedCategory, setSelectedCategory] = useState("All Ads");
   const [searchQuery, setSearchQuery] = useState("");
-
-  const [showLangMenu, setShowLangMenu] = useState(false);
-  const [language, setLanguage] = useState("English");
-
-  const [showCurrencyMenu, setShowCurrencyMenu] = useState(false);
-  const [currency, setCurrency] = useState("INR");
-
-  const heroImages = [
-    "https://images.unsplash.com/photo-1607083206968-13611e3d76db",
-    "https://images.unsplash.com/photo-1515168833906-d2a3b82b302a",
-    "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da"
-  ];
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [darkMode, setDarkModeState] = useState(() => isDarkModeEnabled());
 
   useEffect(() => {
+    // Rotate hero visuals on a fixed interval for lightweight motion.
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroImages.length);
+      setCurrentSlide((prev) => (prev + 1) % HERO_IMAGES.length);
     }, 3000);
     return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
+    // Keep local UI state aligned with global theme changes.
     const onThemeChange = (event) => {
       setDarkModeState(Boolean(event.detail?.darkMode));
     };
@@ -50,11 +49,8 @@ function Home() {
       ? products
       : products.filter((p) => p.category === selectedCategory);
 
-  const handleAddProduct = (newProduct) => {
-    setProducts([newProduct, ...products]);
-  };
-
   const handleSearchSubmit = (event) => {
+    // Normalize empty searches to the base search route.
     event.preventDefault();
 
     const trimmedQuery = searchQuery.trim();
@@ -74,11 +70,10 @@ function Home() {
         showDarkModeToggle
       />
 
-      {/* HERO */}
       <div className="p-10 bg-gray-100 text-center">
         <div
           className="h-[400px] rounded-xl bg-cover bg-center relative"
-          style={{ backgroundImage: `url(${heroImages[currentSlide]})` }}
+          style={{ backgroundImage: `url(${HERO_IMAGES[currentSlide]})` }}
         >
           <div className="absolute inset-0 bg-black/40 flex flex-col justify-center items-center text-white">
             <h1 className="text-3xl font-bold">Buy & Sell Anything</h1>
@@ -87,7 +82,6 @@ function Home() {
         </div>
       </div>
 
-      {/* CATEGORY BAR */}
       <div className="max-w-6xl mx-auto px-4">
         <CategoriesBar
           selectedCategory={selectedCategory}
@@ -95,7 +89,6 @@ function Home() {
         />
       </div>
 
-      {/* PRODUCTS */}
       <div className="max-w-6xl mx-auto p-6">
         {filteredProducts.length === 0 && <p>No products available</p>}
 
@@ -104,13 +97,17 @@ function Home() {
             <ProductCard
               key={item.id ?? index}
               product={item}
-              onClick={() => setSelectedProduct(item)}
+              onClick={() => {
+                addToRecentlyViewed(item);
+                setSelectedProduct(item);
+              }}
             />
           ))}
         </div>
       </div>
 
-      {/* MODALS */}
+      <RecentlyViewed />
+
       {selectedProduct && <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />}
     </div>
   );

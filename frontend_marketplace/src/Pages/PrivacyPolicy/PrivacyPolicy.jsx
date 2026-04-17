@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import Header from "../../components/Header.jsx";
 export default function PrivacyPolicy() {
@@ -9,7 +8,6 @@ export default function PrivacyPolicy() {
       <div className="py-14 px-4">
       <div className="max-w-5xl mx-auto bg-white rounded-xl shadow p-8">
 
-        {/* HEADER */}
         <div className="mb-10">
           <h1 className="text-3xl font-bold mb-2">Privacy Policy</h1>
           <p className="text-sm text-gray-500">
@@ -17,7 +15,6 @@ export default function PrivacyPolicy() {
           </p>
         </div>
 
-        {/* INTRO */}
         <p className="text-sm text-gray-700 mb-10">
           At <strong>Marketly</strong>, we respect your privacy and are committed
           to protecting your personal data. This Privacy Policy explains how we
@@ -27,7 +24,6 @@ export default function PrivacyPolicy() {
 
         <div className="space-y-10 text-sm text-gray-700 leading-relaxed">
 
-          {/* 1 */}
           <section>
             <h2 className="flex items-center gap-2 text-lg font-semibold mb-3">
               <span className="text-teal-600">①</span>
@@ -42,7 +38,6 @@ export default function PrivacyPolicy() {
             </ul>
           </section>
 
-          {/* 2 */}
           <section>
             <h2 className="flex items-center gap-2 text-lg font-semibold mb-3">
               <span className="text-teal-600">②</span>
@@ -80,7 +75,6 @@ export default function PrivacyPolicy() {
             </div>
           </section>
 
-          {/* 3 */}
           <section>
             <h2 className="flex items-center gap-2 text-lg font-semibold mb-3">
               <span className="text-teal-600">③</span>
@@ -98,7 +92,6 @@ export default function PrivacyPolicy() {
             </ul>
           </section>
 
-          {/* 4 */}
           <section>
             <h2 className="flex items-center gap-2 text-lg font-semibold mb-3">
               <span className="text-teal-600">④</span>
@@ -128,7 +121,6 @@ export default function PrivacyPolicy() {
             </div>
           </section>
 
-          {/* 5 */}
           <section>
             <h2 className="flex items-center gap-2 text-lg font-semibold mb-3">
               <span className="text-teal-600">⑤</span>
@@ -141,7 +133,6 @@ export default function PrivacyPolicy() {
             </div>
           </section>
 
-          {/* 6 */}
           <section>
             <h2 className="flex items-center gap-2 text-lg font-semibold mb-3">
               <span className="text-teal-600">⑥</span>
@@ -154,7 +145,6 @@ export default function PrivacyPolicy() {
             </p>
           </section>
 
-          {/* 7 */}
           <section>
             <h2 className="flex items-center gap-2 text-lg font-semibold mb-3">
               <span className="text-teal-600">⑦</span>
@@ -169,7 +159,6 @@ export default function PrivacyPolicy() {
 
         </div>
 
-        {/* FOOTER */}
         <div className="mt-14 text-xs text-gray-400 text-center">
           © 2024 Marketly. All rights reserved.
         </div>

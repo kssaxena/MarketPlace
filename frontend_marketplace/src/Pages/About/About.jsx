@@ -11,7 +11,6 @@ export default function About() {
     <div className="bg-gray-50 min-h-screen flex flex-col">
       <Header onSearchSubmit={handleSearchSubmit} onPostAdClick={() => navigate("/post-ad")} />
 
-      {/* HERO */}
       <section className="text-center py-20 px-4 bg-white">
         <h1 className="text-4xl font-bold mb-4">
           Connecting Communities, One Item at a Time
@@ -22,7 +21,6 @@ export default function About() {
         </p>
       </section>
 
-      {/* CORE PILLARS */}
       <section className="py-16 px-6 max-w-6xl mx-auto">
         <h2 className="text-2xl font-semibold text-center mb-10">
           Our Core Pillars
@@ -52,7 +50,6 @@ export default function About() {
         </div>
       </section>
 
-      {/* SIMPLE FAST LOCAL */}
       <section className="py-16 bg-white px-6">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-center">
           <div>
@@ -77,7 +74,6 @@ export default function About() {
         </div>
       </section>
 
-      {/* CTA */}
       <section className="py-20 px-6">
         <div className="max-w-5xl mx-auto bg-teal-600 rounded-xl text-white text-center py-12 px-6">
           <h2 className="text-3xl font-bold mb-4">

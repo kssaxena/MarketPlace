@@ -28,6 +28,7 @@ export default function PostAd() {
   }, []);
 
   const handlePhotoUpload = (e) => {
+    // Limit previews to 10 files to match the UI guidance and keep memory use predictable.
     const files = Array.from(e.target.files).slice(0, 10);
     const urls = files.map((f) => URL.createObjectURL(f));
     setPhotos(urls);
@@ -53,6 +54,7 @@ export default function PostAd() {
     };
 
     const existing = JSON.parse(localStorage.getItem("myAds") || "[]");
+    // Newest listing first so it appears at the top in account history.
     localStorage.setItem("myAds", JSON.stringify([newAd, ...existing]));
 
     alert("Ad posted successfully!");
@@ -87,7 +89,6 @@ export default function PostAd() {
             Fill out the details to list your item locally.
           </p>
 
-          {/* STEP PROGRESS BAR */}
           <div className="relative flex items-center justify-between mb-10">
             <div className={`${isDarkMode ? "bg-slate-700" : "bg-gray-200"} absolute top-1/2 left-0 w-full h-[3px] -translate-y-1/2`} />
             <div
@@ -116,7 +117,6 @@ export default function PostAd() {
             ))}
           </div>
 
-          {/* STEP 1: CATEGORY */}
           {step === 1 && (
             <section className="mb-8">
               <h3 className="font-semibold mb-4">Choose Category</h3>
@@ -132,7 +132,6 @@ export default function PostAd() {
             </section>
           )}
 
-          {/* STEP 2: DETAILS */}
           {step === 2 && (
             <section className="mb-8">
               <h3 className="font-semibold mb-4">Ad Details</h3>
@@ -161,7 +160,6 @@ export default function PostAd() {
             </section>
           )}
 
-          {/* STEP 3: PHOTOS */}
           {step === 3 && (
             <section className="mb-8">
               <h3 className="font-semibold mb-4">Upload Photos</h3>
@@ -198,7 +196,6 @@ export default function PostAd() {
             </section>
           )}
 
-          {/* ACTION BUTTONS */}
           <div className="flex justify-between mt-10">
             <button
               disabled={step === 1}

@@ -11,19 +11,9 @@ import {
   getSelectedCurrency,
   subscribeCurrencyChange,
 } from "../../utility/currency.js";
+import { ORDER_PROGRESS_STEPS } from "../../constants/orderStatus.js";
 
-const progressSteps = [
-  { label: "Order Placed", time: "Oct 24, 10:15 AM", done: true },
-  { label: "Shipped", time: "Oct 25, 01:15 PM", done: true },
-  { label: "Out for Delivery", time: "Today, 09:20 AM", done: true },
-  { label: "Delivered", time: "Expected today", done: false },
-];
-
-function OverviewPanel({ orderItems, wishlistItems, subtotal, tax, total }) {
-  const [currency, setCurrency] = useState(() => getSelectedCurrency());
-
-  useEffect(() => subscribeCurrencyChange(setCurrency), []);
-
+function OverviewPanel({ orderItems, wishlistItems, subtotal, tax, total, currency }) {
   return (
     <section className="space-y-6">
       <div>
@@ -95,7 +85,7 @@ function OverviewPanel({ orderItems, wishlistItems, subtotal, tax, total }) {
   );
 }
 
-function RecentOrdersPanel({ orderItems }) {
+function RecentOrdersPanel({ orderItems, currency }) {
   return (
     <section className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -115,9 +105,9 @@ function RecentOrdersPanel({ orderItems }) {
       <article className="rounded-[24px] border border-gray-200 bg-white p-6 shadow-sm">
         <p className="text-[0.72rem] font-bold uppercase tracking-[0.24em] text-gray-400">Tracking Progress</p>
         <div className="mt-6 grid gap-3 sm:grid-cols-4">
-          {progressSteps.map((step, index) => (
+          {ORDER_PROGRESS_STEPS.map((step, index) => (
             <div key={step.label} className="relative">
-              {index < progressSteps.length - 1 && (
+              {index < ORDER_PROGRESS_STEPS.length - 1 && (
                 <div className={`absolute left-[calc(50%+14px)] top-[13px] h-[3px] w-[calc(100%-28px)] ${step.done ? "bg-teal-500" : "bg-gray-200"}`} />
               )}
               <div className={`relative z-10 mx-auto flex h-7 w-7 items-center justify-center rounded-full border-2 text-[0.72rem] font-bold ${step.done ? "border-teal-500 bg-teal-500 text-white" : "border-gray-300 bg-white text-gray-400"}`}>
@@ -170,7 +160,7 @@ function RecentOrdersPanel({ orderItems }) {
   );
 }
 
-function SavedItemsPanel({ wishlistItems }) {
+function SavedItemsPanel({ wishlistItems, currency }) {
   return (
     <section className="space-y-6">
       <div>
@@ -329,8 +319,10 @@ export default function OrderStatus() {
   const [activeTab, setActiveTab] = useState("recent-orders");
   const [orderItems, setOrderItems] = useState(() => getCartItems());
   const [wishlistItems, setWishlistItems] = useState(() => getWishlistItems());
+  const [currency, setCurrency] = useState(() => getSelectedCurrency());
 
   useEffect(() => {
+    // Sync dashboard data whenever the shared marketplace store changes.
     const sync = () => {
       setOrderItems(getCartItems());
       setWishlistItems(getWishlistItems());
@@ -339,6 +331,10 @@ export default function OrderStatus() {
     return subscribeMarketplaceStore(sync);
   }, []);
 
+  // React to currency selection updates from the global currency store.
+  useEffect(() => subscribeCurrencyChange(setCurrency), []);
+
+  // Keep pricing values derived from cart state to avoid redundant local state.
   const subtotal = useMemo(
     () => orderItems.reduce((sum, item) => sum + (item.price ?? 0) * (item.qty ?? 1), 0),
     [orderItems]
@@ -350,7 +346,6 @@ export default function OrderStatus() {
     <div className="min-h-screen bg-white">
       <Header activePage="order-status" />
       <main className="mx-auto grid max-w-[1280px] gap-6 px-4 py-8 xl:grid-cols-[240px_1fr_320px]">
-        {/* Left Sidebar */}
         <aside className="rounded-[24px] border border-gray-200 bg-white p-5 shadow-sm h-fit">
           <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
             <div className="flex h-11 w-11 items-center justify-center rounded-full bg-teal-100 text-sm font-bold text-teal-700">
@@ -392,17 +387,24 @@ export default function OrderStatus() {
           </div>
         </aside>
 
-        {/* Main Content */}
         {activeTab === "overview" && (
-          <OverviewPanel orderItems={orderItems} wishlistItems={wishlistItems} subtotal={subtotal} tax={tax} total={total} />
+          <OverviewPanel
+            orderItems={orderItems}
+            wishlistItems={wishlistItems}
+            subtotal={subtotal}
+            tax={tax}
+            total={total}
+            currency={currency}
+          />
         )}
         {activeTab === "recent-orders" && (
-          <RecentOrdersPanel orderItems={orderItems} subtotal={subtotal} tax={tax} total={total} />
+          <RecentOrdersPanel orderItems={orderItems} currency={currency} />
         )}
-        {activeTab === "saved-items" && <SavedItemsPanel wishlistItems={wishlistItems} />}
+        {activeTab === "saved-items" && (
+          <SavedItemsPanel wishlistItems={wishlistItems} currency={currency} />
+        )}
         {activeTab === "settings" && <SettingsPanel />}
 
-        {/* Right Sidebar */}
         <RightSidebar subtotal={subtotal} tax={tax} total={total} />
       </main>
     </div>

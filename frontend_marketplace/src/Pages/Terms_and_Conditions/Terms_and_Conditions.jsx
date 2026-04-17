@@ -1,8 +1,7 @@
-
 import { Link } from "react-router-dom";
 import Header from "../../components/Header.jsx";
 
-export default function TermsConditions() {
+export default function TermsAndConditions() {
   return (
     <div className="bg-gray-50 min-h-screen">
       <Header activePage="terms" />
@@ -10,7 +9,6 @@ export default function TermsConditions() {
       <div className="py-14 px-4">
         <div className="max-w-5xl mx-auto bg-white rounded-xl shadow p-8">
 
-        {/* HEADER */}
         <div className="mb-10">
           <h1 className="text-3xl font-bold mb-2">Terms & Conditions</h1>
           <p className="text-sm text-gray-500">
@@ -18,10 +16,8 @@ export default function TermsConditions() {
           </p>
         </div>
 
-        {/* CONTENT */}
         <div className="space-y-8 text-sm text-gray-700 leading-relaxed">
 
-          {/* 1 */}
           <section>
             <h2 className="font-semibold text-lg mb-2">1. Introduction</h2>
             <p>
@@ -31,7 +27,6 @@ export default function TermsConditions() {
             </p>
           </section>
 
-          {/* 2 */}
           <section>
             <h2 className="font-semibold text-lg mb-2">
               2. User Accounts and Registration
@@ -43,7 +38,6 @@ export default function TermsConditions() {
             </ul>
           </section>
 
-          {/* 3 */}
           <section>
             <h2 className="font-semibold text-lg mb-2">
               3. Listing Policies
@@ -66,7 +60,6 @@ export default function TermsConditions() {
             </p>
           </section>
 
-          {/* 4 */}
           <section>
             <h2 className="font-semibold text-lg mb-2">
               4. Buying and Selling Transactions
@@ -77,7 +70,6 @@ export default function TermsConditions() {
             </p>
           </section>
 
-          {/* 5 */}
           <section>
             <h2 className="font-semibold text-lg mb-2">
               5. Intellectual Property Rights
@@ -89,7 +81,6 @@ export default function TermsConditions() {
             </p>
           </section>
 
-          {/* 6 */}
           <section>
             <h2 className="font-semibold text-lg mb-2">
               6. User Conduct and Prohibitions
@@ -101,7 +92,6 @@ export default function TermsConditions() {
             </ul>
           </section>
 
-          {/* 7 */}
           <section>
             <h2 className="font-semibold text-lg mb-2">
               7. Limitation of Liability
@@ -112,7 +102,6 @@ export default function TermsConditions() {
             </div>
           </section>
 
-          {/* 8 */}
           <section>
             <h2 className="font-semibold text-lg mb-2">
               8. Privacy Policy
@@ -123,7 +112,6 @@ export default function TermsConditions() {
             </p>
           </section>
 
-          {/* 9 */}
           <section>
             <h2 className="font-semibold text-lg mb-2">
               9. Governing Law
@@ -135,7 +123,6 @@ export default function TermsConditions() {
           </section>
         </div>
 
-        {/* FOOTER CTA */}
         <div className="mt-12 bg-gray-900 text-white rounded-xl p-6 flex flex-col md:flex-row items-center justify-between gap-4">
           <div>
             <h3 className="font-semibold mb-1">
@@ -147,7 +134,6 @@ export default function TermsConditions() {
           </div>
 
           <div className="flex gap-3">
-            {/* CONTACT SUPPORT */}
             <Link
               to="/contact"
               className="bg-teal-600 px-5 py-2 rounded-md text-sm font-medium text-white text-center"
@@ -155,7 +141,6 @@ export default function TermsConditions() {
               Contact Support
             </Link>
 
-            {/* HELP CENTER */}
             <Link
               to="/help"
               className="border border-gray-500 px-5 py-2 rounded-md text-sm text-white text-center"

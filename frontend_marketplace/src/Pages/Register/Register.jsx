@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import Header from "../../components/Header.jsx";
+import { COUNTRY_CODES } from "../../constants/auth.js";
 
 export default function Register() {
 
@@ -23,20 +24,7 @@ export default function Register() {
     navigate(trimmedQuery ? `/search?q=${encodeURIComponent(trimmedQuery)}` : "/search");
   };
 
-  const countryCodes = [
-    { code: "+1", label: "🇺🇸 +1" },
-    { code: "+91", label: "🇮🇳 +91" },
-    { code: "+44", label: "🇬🇧 +44" },
-    { code: "+61", label: "🇦🇺 +61" },
-    { code: "+81", label: "🇯🇵 +81" },
-    { code: "+49", label: "🇩🇪 +49" },
-    { code: "+33", label: "🇫🇷 +33" },
-    { code: "+86", label: "🇨🇳 +86" },
-    { code: "+7", label: "🇷🇺 +7" },
-    { code: "+55", label: "🇧🇷 +55" },
-  ];
-
-  // PASSWORD STRENGTH
+  // Lightweight visual indicator; backend validation remains authoritative.
   const getStrength = () => {
     if (password.length === 0) return null;
     if (password.length < 6) return "weak";
@@ -46,11 +34,11 @@ export default function Register() {
 
   const strength = getStrength();
 
-  // REGISTER FUNCTION
   const handleRegister = async (e) => {
 
     e.preventDefault();
 
+    // Basic client-side guard before sending payload.
     if (phone.length < 6) {
       setPhoneError("Enter a valid phone number");
       return;
@@ -72,13 +60,12 @@ export default function Register() {
 
       const userData = res.data.data;
 
-      // Save user in localStorage
+  // Persist auth context for header/account flows on refresh.
       localStorage.setItem("user", JSON.stringify(userData));
 
-      // Notify Navbar
+  // Notify listeners (for example, the header) without a hard reload.
       window.dispatchEvent(new Event("userLoggedIn"));
 
-      // Redirect to account page
       navigate("/account");
 
     } catch (error) {
@@ -103,7 +90,6 @@ export default function Register() {
 
       <div className="w-full max-w-md bg-white rounded-xl shadow-md p-8">
 
-        {/* HEADER */}
         <h2 className="text-2xl font-semibold text-gray-900 mb-1">
           Join the Marketplace
         </h2>
@@ -112,10 +98,8 @@ export default function Register() {
           Connect with buyers in your neighborhood.
         </p>
 
-        {/* FORM */}
         <form className="space-y-4" onSubmit={handleRegister}>
 
-          {/* NAME */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Full Name
@@ -131,7 +115,6 @@ export default function Register() {
             />
           </div>
 
-          {/* EMAIL */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Email Address
@@ -147,7 +130,6 @@ export default function Register() {
             />
           </div>
 
-          {/* PHONE */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Phone Number
@@ -160,7 +142,7 @@ export default function Register() {
                 onChange={(e) => setCountryCode(e.target.value)}
                 className="px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-teal-600"
               >
-                {countryCodes.map((c) => (
+                {COUNTRY_CODES.map((c) => (
                   <option key={c.code} value={c.code}>
                     {c.label}
                   </option>
@@ -188,7 +170,6 @@ export default function Register() {
             )}
           </div>
 
-          {/* PASSWORD */}
           <div>
 
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -216,7 +197,6 @@ export default function Register() {
 
             </div>
 
-            {/* PASSWORD STRENGTH */}
             {strength && (
               <>
                 <div className="mt-2 h-1 w-full bg-gray-200 rounded">
@@ -241,7 +221,6 @@ export default function Register() {
 
           </div>
 
-          {/* SUBMIT */}
           <button
             type="submit"
             className="w-full bg-teal-600 text-white py-2.5 rounded-md font-medium hover:bg-teal-700 transition"
@@ -251,7 +230,6 @@ export default function Register() {
 
         </form>
 
-        {/* LOGIN LINK */}
         <p className="text-center text-sm text-gray-600 mt-6">
           Already have an account?{" "}
           <Link
@@ -262,7 +240,6 @@ export default function Register() {
           </Link>
         </p>
 
-        {/* BACK */}
         <div className="text-center mt-4">
           <Link
             to="/"

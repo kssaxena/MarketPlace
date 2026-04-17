@@ -39,7 +39,6 @@ export default function Contact() {
       />
 
       <div className="px-4 py-16">
-      {/* HEADER */}
       <div className="text-center mb-10">
         <h1 className="text-3xl font-bold text-teal-600 mb-2">
           Contact Us
@@ -49,7 +48,6 @@ export default function Contact() {
         </p>
       </div>
 
-      {/* CONTACT FORM */}
       <div className="max-w-md mx-auto bg-white rounded-xl shadow p-6 mb-16">
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1">
@@ -78,7 +76,6 @@ export default function Contact() {
         </button>
       </div>
 
-      {/* FAQ SECTION */}
       <div className="max-w-3xl mx-auto">
         <h2 className="text-xl font-semibold text-center mb-6">
           Frequently Asked Questions
@@ -87,7 +84,7 @@ export default function Contact() {
         <div className="space-y-3">
           {faqs.map((item, index) => (
             <div
-              key={index}
+              key={item.q}
               className="bg-white rounded-md shadow px-4 py-3 cursor-pointer"
               onClick={() => setOpenFaq(openFaq === index ? null : index)}
             >
@@ -105,7 +102,6 @@ export default function Contact() {
           ))}
         </div>
 
-        {/* VISIT HELP CENTER LINK */}
         <div className="text-center mt-8">
           <Link
             to="/help"

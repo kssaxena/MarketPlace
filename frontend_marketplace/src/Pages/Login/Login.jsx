@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../../components/Header.jsx";
@@ -34,16 +34,14 @@ export default function Login() {
 
       alert("Login successful!");
 
-      // store token
+  // Store auth artifacts for subsequent protected/user-aware views.
       localStorage.setItem("token", res.data.data.token);
 
-      // store user
       localStorage.setItem("user", JSON.stringify(res.data.data));
 
-      // notify navbar to update
+  // Broadcast auth state change so shared UI can react immediately.
       window.dispatchEvent(new Event("userLoggedIn"));
 
-      // redirect to homepage
       navigate("/");
 
     } catch (error) {
@@ -69,7 +67,6 @@ export default function Login() {
 
       <div className="w-full max-w-md bg-white rounded-xl shadow-md p-8">
 
-        {/* HEADER */}
         <h2 className="text-2xl font-semibold text-gray-900 mb-1">
           Log In
         </h2>
@@ -78,10 +75,8 @@ export default function Login() {
           Welcome back! Please enter your details.
         </p>
 
-        {/* FORM */}
         <form className="space-y-4" onSubmit={handleLogin}>
 
-          {/* EMAIL */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Email Address
@@ -97,7 +92,6 @@ export default function Login() {
             />
           </div>
 
-          {/* PASSWORD */}
           <div>
 
             <div className="flex justify-between items-center mb-1">
@@ -133,7 +127,6 @@ export default function Login() {
 
           </div>
 
-          {/* LOGIN BUTTON */}
           <button
             type="submit"
             className="w-full bg-teal-600 text-white py-2.5 rounded-md font-medium hover:bg-teal-700 transition"
@@ -143,7 +136,6 @@ export default function Login() {
 
         </form>
 
-        {/* SIGN UP LINK */}
         <p className="text-center text-sm text-gray-600 mt-6">
           Don’t have an account?{" "}
           <Link
@@ -154,7 +146,6 @@ export default function Login() {
           </Link>
         </p>
 
-        {/* FOOTER */}
         <div className="flex justify-center gap-4 text-xs text-gray-400 mt-8">
           <Link to="/help" className="hover:underline">
             Help Center
@@ -167,7 +158,6 @@ export default function Login() {
           </Link>
         </div>
 
-        {/* BACK */}
         <div className="text-center mt-4">
           <Link
             to="/"

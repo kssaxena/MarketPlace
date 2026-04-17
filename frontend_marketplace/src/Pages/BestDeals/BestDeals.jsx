@@ -9,16 +9,9 @@ import {
   getSelectedCurrency,
   subscribeCurrencyChange,
 } from "../../utility/currency.js";
+import { PRODUCT_CATEGORIES, BEST_DEALS_SORT_OPTIONS } from "../../constants/filters.js";
 
-const CATEGORIES = ["All", "Electronics", "Vehicles", "Furniture", "Fashion", "Books", "Hobbies"];
-
-const SORT_OPTIONS = [
-  { label: "Best Match", value: "default" },
-  { label: "Price: Low to High", value: "price_asc" },
-  { label: "Price: High to Low", value: "price_desc" },
-  { label: "Newest First", value: "newest" },
-];
-
+// Extract numeric price value by stripping currency symbols for sortable comparisons.
 function parsePrice(p) {
   if (!p) return 0;
   return parseFloat(String(p).replace(/[^0-9.]/g, "")) || 0;
@@ -32,10 +25,12 @@ export default function BestDeals() {
   const [searchQuery, setSearchQuery] = useState("");
   const [currency, setCurrency] = useState(() => getSelectedCurrency());
 
+  // Curate deals from the featured-flagged products in the product database.
   const featuredProducts = productsData.filter((p) => p.featured);
 
   useEffect(() => subscribeCurrencyChange(setCurrency), []);
 
+  // Apply multi-stage filtering: by category → search → sort. Separate top deal for hero layout.
   const filtered = featuredProducts
     .filter((p) => activeCategory === "All" || p.category === activeCategory)
     .filter((p) => p.title.toLowerCase().includes(searchQuery.toLowerCase()))
@@ -52,7 +47,6 @@ export default function BestDeals() {
     <div className="min-h-screen bg-white">
       <Header activePage="best-deals" onSearchQueryChange={setSearchQuery} searchQuery={searchQuery} onSearchSubmit={(e) => e.preventDefault()} onPostAdClick={() => navigate("/post-ad")} />
 
-      {/* Hero Banner */}
       <div className="relative overflow-hidden bg-gradient-to-br from-teal-600 to-teal-400 px-6 py-14 text-white">
         <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/10" />
         <div className="absolute -bottom-10 left-10 h-40 w-40 rounded-full bg-white/10" />
@@ -70,7 +64,7 @@ export default function BestDeals() {
               <p className="text-[0.75rem] text-teal-100">Active Deals</p>
             </div>
             <div className="rounded-2xl bg-white/15 px-5 py-3 text-center">
-              <p className="text-2xl font-bold">{CATEGORIES.length - 1}</p>
+              <p className="text-2xl font-bold">{PRODUCT_CATEGORIES.length - 1}</p>
               <p className="text-[0.75rem] text-teal-100">Categories</p>
             </div>
             <div className="rounded-2xl bg-white/15 px-5 py-3 text-center">
@@ -83,10 +77,9 @@ export default function BestDeals() {
 
       <div className="mx-auto max-w-6xl px-4 py-8">
 
-        {/* Filters */}
         <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
           <div className="flex flex-wrap gap-2">
-            {CATEGORIES.map((cat) => (
+            {PRODUCT_CATEGORIES.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
@@ -105,7 +98,7 @@ export default function BestDeals() {
             onChange={(e) => setSortBy(e.target.value)}
             className="rounded-xl border border-gray-200 bg-gray-50 px-4 py-2 text-[0.85rem] font-medium text-gray-700 outline-none focus:border-teal-400"
           >
-            {SORT_OPTIONS.map((o) => (
+            {BEST_DEALS_SORT_OPTIONS.map((o) => (
               <option key={o.value} value={o.value}>{o.label}</option>
             ))}
           </select>
@@ -119,7 +112,6 @@ export default function BestDeals() {
           </div>
         ) : (
           <>
-            {/* Top Pick — Featured Hero Card */}
             {topPick && (
               <div
                 onClick={() => setSelectedProduct(topPick)}
@@ -151,13 +143,11 @@ export default function BestDeals() {
               </div>
             )}
 
-            {/* Results count */}
             <p className="mb-4 text-[0.85rem] text-gray-400 font-medium">
               Showing <span className="text-teal-600 font-bold">{filtered.length}</span> deals
               {activeCategory !== "All" && <> in <span className="text-gray-700 font-semibold">{activeCategory}</span></>}
             </p>
 
-            {/* Deal Cards Grid */}
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {rest.map((product, index) => (
                 <div

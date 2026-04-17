@@ -12,27 +12,7 @@ import {
   getSelectedCurrency,
   subscribeCurrencyChange,
 } from "../../utility/currency.js";
-
-const DUMMY_USER = {
-  name: "Alex Johnson",
-  email: "alex.johnson@email.com",
-  phone: "+1 (555) 234-5678",
-  location: "New York, NY",
-};
-
-const DUMMY_MESSAGES = [
-  { id: 1, from: "Sarah M.", message: "Is the Toyota still available?", time: "2h ago", avatar: "S" },
-  { id: 2, from: "John D.", message: "Can you do $800 for the iPhone?", time: "5h ago", avatar: "J" },
-  { id: 3, from: "Priya K.", message: "What's the condition of the bed?", time: "1d ago", avatar: "P" },
-];
-
-const DUMMY_TRANSACTIONS = [
-  { id: 1, title: "Nike Air Jordan 1", amount: "$185", date: "Mar 28, 2026", type: "Sale" },
-  { id: 2, title: "Samsung 65\" TV", amount: "$1,100", date: "Mar 15, 2026", type: "Purchase" },
-  { id: 3, title: "IKEA MALM Bed", amount: "$320", date: "Feb 20, 2026", type: "Sale" },
-];
-
-const NAV_ITEMS = ["Profile", "My Ads", "Messages", "Favorites", "Transactions", "Settings"];
+import { DUMMY_USER, DUMMY_MESSAGES, DUMMY_TRANSACTIONS, ACCOUNT_NAV_ITEMS } from "../../constants/account.js";
 
 export default function Account() {
   const navigate = useNavigate();
@@ -48,14 +28,13 @@ export default function Account() {
   const [darkMode, setDarkMode] = useState(() => isDarkModeEnabled());
   const [currency, setCurrency] = useState(() => getSelectedCurrency());
 
-  // ── My Ads — from localStorage ──
   const [myAds, setMyAds] = useState(() =>
     JSON.parse(localStorage.getItem("myAds") || "[]")
   );
 
-  // ── Wishlist — live from store ──
   const [wishlist, setWishlist] = useState(getWishlistItems());
 
+  // Keep wishlist in sync when items are added/removed from the shared marketplace store.
   useEffect(() => {
     const unsub = subscribeMarketplaceStore(() => {
       setWishlist(getWishlistItems());
@@ -63,6 +42,7 @@ export default function Account() {
     return unsub;
   }, []);
 
+  // Respond to global theme changes so the account page stays consistent with app-wide dark mode toggle.
   useEffect(() => {
     const onThemeChange = (event) => {
       setDarkMode(Boolean(event.detail?.darkMode));
@@ -99,7 +79,6 @@ export default function Account() {
 
       <div className="flex">
 
-        {/* LEFT SIDEBAR */}
         <div className="w-64 min-h-screen bg-white shadow-md p-6 flex flex-col">
 
           <div className="flex flex-col items-center mb-8">
@@ -111,7 +90,7 @@ export default function Account() {
           </div>
 
           <div className="flex flex-col gap-1 text-sm flex-1">
-            {NAV_ITEMS.map((item) => (
+            {ACCOUNT_NAV_ITEMS.map((item) => (
               <button
                 key={item}
                 onClick={() => setActiveTab(item)}
@@ -145,10 +124,8 @@ export default function Account() {
 
         </div>
 
-        {/* RIGHT PANEL */}
         <div className="flex-1 p-8">
 
-          {/* ── PROFILE ── */}
           {activeTab === "Profile" && (
             <div className="bg-white p-6 rounded-xl shadow">
               <div className="flex justify-between mb-6">
@@ -192,7 +169,6 @@ export default function Account() {
             </div>
           )}
 
-          {/* ── MY ADS ── */}
           {activeTab === "My Ads" && (
             <div className="bg-white p-6 rounded-xl shadow">
               <div className="flex items-center justify-between mb-6">
@@ -241,7 +217,6 @@ export default function Account() {
             </div>
           )}
 
-          {/* ── MESSAGES ── */}
           {activeTab === "Messages" && (
             <div className="bg-white p-6 rounded-xl shadow">
               <h3 className="font-semibold text-lg mb-6">Messages</h3>
@@ -262,7 +237,6 @@ export default function Account() {
             </div>
           )}
 
-          {/* ── FAVORITES ── */}
           {activeTab === "Favorites" && (
             <div className="bg-white p-6 rounded-xl shadow">
               <div className="flex items-center justify-between mb-6">
@@ -302,7 +276,6 @@ export default function Account() {
             </div>
           )}
 
-          {/* ── TRANSACTIONS ── */}
           {activeTab === "Transactions" && (
             <div className="bg-white p-6 rounded-xl shadow">
               <h3 className="font-semibold text-lg mb-6">Transactions</h3>
@@ -335,7 +308,6 @@ export default function Account() {
             </div>
           )}
 
-          {/* ── SETTINGS ── */}
           {activeTab === "Settings" && (
             <div className={`${darkMode ? "bg-slate-900 border border-slate-800" : "bg-white"} p-6 rounded-xl shadow`}>
               <h3 className="font-semibold text-lg mb-6">Settings</h3>

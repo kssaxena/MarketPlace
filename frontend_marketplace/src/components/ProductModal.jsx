@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { addToCart, addToWishlist } from "../utility/marketplaceStore.js";
+import { isDarkModeEnabled } from "../utility/theme.js";
 import {
   formatCurrency,
   getSelectedCurrency,
@@ -9,8 +10,18 @@ import {
 function ProductModal({ product, onClose }) {
   const [toast, setToast] = useState("");
   const [currency, setCurrency] = useState(() => getSelectedCurrency());
+  const [darkMode, setDarkMode] = useState(() => isDarkModeEnabled());
 
   useEffect(() => subscribeCurrencyChange(setCurrency), []);
+
+  useEffect(() => {
+    const onThemeChange = (event) => {
+      setDarkMode(Boolean(event.detail?.darkMode));
+    };
+
+    window.addEventListener("themechange", onThemeChange);
+    return () => window.removeEventListener("themechange", onThemeChange);
+  }, []);
 
   if (!product) return null;
 
@@ -33,13 +44,17 @@ function ProductModal({ product, onClose }) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-white w-full max-w-2xl rounded-xl shadow-xl relative overflow-hidden animate-fadeIn"
+        className={`${darkMode ? "bg-slate-900" : "bg-white"} w-full max-w-2xl rounded-xl shadow-xl relative overflow-hidden animate-fadeIn transition-colors`}
       >
 
         {/* CLOSE BUTTON */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 bg-white/80 hover:bg-white text-red-700 rounded-full px-2 py-1 text-lg shadow-md"
+          className={`absolute top-4 right-4 rounded-full px-2 py-1 text-lg shadow-md transition ${
+            darkMode 
+              ? "bg-slate-700/80 hover:bg-slate-700 text-red-400" 
+              : "bg-white/80 hover:bg-white text-red-700"
+          }`}
         >
           ✕
         </button>
@@ -53,26 +68,26 @@ function ProductModal({ product, onClose }) {
 
         {/* CONTENT */}
         <div className="p-6">
-          <h2 className="text-2xl font-semibold mb-2">{product.title}</h2>
+          <h2 className={`text-2xl font-semibold mb-2 ${darkMode ? "text-slate-100" : "text-gray-900"}`}>{product.title}</h2>
 
           <p className="text-teal-600 text-xl font-bold mb-4">
             {formatCurrency(product.price, currency)}
           </p>
 
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <p className={`leading-relaxed mb-6 ${darkMode ? "text-slate-300" : "text-gray-700"}`}>
             {product.description}
           </p>
 
           {/* 🔥 SELLER INFO (NO API CALL NEEDED) */}
           {product.seller && (
-            <div className="mb-4 p-4 bg-gray-100 rounded-xl">
-              <h3 className="font-semibold text-lg mb-1">Seller Info</h3>
+            <div className={`mb-4 p-4 rounded-xl ${darkMode ? "bg-slate-800" : "bg-gray-100"}`}>
+              <h3 className={`font-semibold text-lg mb-1 ${darkMode ? "text-slate-100" : "text-gray-900"}`}>Seller Info</h3>
 
-              <p className="text-gray-700">
+              <p className={darkMode ? "text-slate-300" : "text-gray-700"}>
                 {product.seller?.personalDetails?.name}
               </p>
 
-              <p className="text-gray-500 text-sm">
+              <p className={`text-sm ${darkMode ? "text-slate-400" : "text-gray-500"}`}>
                 {product.seller?.communityDetails?.name}
               </p>
             </div>
@@ -89,15 +104,19 @@ function ProductModal({ product, onClose }) {
             <button
               type="button"
               onClick={handleAddToWishlist}
-              className="rounded-xl border border-gray-300 bg-white px-5 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-50"
+              className={`rounded-xl border px-5 py-2.5 text-sm font-semibold transition ${
+                darkMode
+                  ? "border-slate-600 bg-slate-800 text-slate-200 hover:bg-slate-700"
+                  : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
+              }`}
             >
               Add to Wishlist
             </button>
-            {toast && <span className="text-sm font-medium text-teal-700">{toast}</span>}
+            {toast && <span className={`text-sm font-medium ${darkMode ? "text-teal-400" : "text-teal-700"}`}>{toast}</span>}
           </div>
 
           {/* LOCATION & TIME */}
-          <div className="text-sm text-gray-500 flex justify-between">
+          <div className={`text-sm flex justify-between ${darkMode ? "text-slate-400" : "text-gray-500"}`}>
             <span>{product.location}</span>
             <span>{product.time}</span>
           </div>

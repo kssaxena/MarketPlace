@@ -24,7 +24,6 @@ export default function HelpCenter() {
     <div className="bg-gray-50 min-h-screen">
       <Header activePage="help" />
 
-      {/* HERO SEARCH SECTION */}
       <section className="bg-[#e8f9fb] py-20 px-4 text-center">
         <h1 className="text-3xl md:text-4xl font-bold mb-4">
           How can we help you?
@@ -57,7 +56,6 @@ export default function HelpCenter() {
         </p>
       </section>
 
-      {/* BROWSE BY CATEGORY */}
       <section className="max-w-7xl mx-auto px-6 py-14">
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-xl font-semibold">Browse by Category</h2>
@@ -67,9 +65,9 @@ export default function HelpCenter() {
         </div>
 
         <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {categories.map((item, index) => (
+          {categories.map((item) => (
             <div
-              key={index}
+              key={item.title}
               className="bg-white rounded-xl shadow p-6 hover:shadow-md transition cursor-pointer"
             >
               <div className="w-10 h-10 bg-teal-50 text-teal-600 flex items-center justify-center rounded mb-4">
@@ -82,16 +80,15 @@ export default function HelpCenter() {
         </div>
       </section>
 
-      {/* PROMOTED ARTICLES */}
       <section className="max-w-7xl mx-auto px-6 pb-20">
         <h2 className="text-xl font-semibold mb-6">
           Promoted Articles
         </h2>
 
         <div className="grid md:grid-cols-2 gap-6 text-sm">
-          {articles.map((article, index) => (
+          {articles.map((article) => (
             <div
-              key={index}
+              key={article}
               className="bg-white p-4 rounded-lg shadow hover:shadow-md transition cursor-pointer"
             >
               {article}
@@ -100,7 +97,6 @@ export default function HelpCenter() {
         </div>
       </section>
 
-      {/* HELP BANNER */}
       <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-[#0f172a] text-white px-6 py-4 rounded-xl shadow-lg flex items-center gap-4">
         <div>
           <p className="text-sm font-medium">Still need help?</p>
