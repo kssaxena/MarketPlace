@@ -1,12 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios";
 import Header from "../../components/Header.jsx";
 import { COUNTRY_CODES } from "../../constants/auth.js";
+import { useAuth } from "../../contexts/AuthContext.jsx";
 
 export default function Register() {
-
   const navigate = useNavigate();
+  const { register, error: authError } = useAuth();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -16,15 +16,15 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
-
     const trimmedQuery = searchQuery.trim();
     navigate(trimmedQuery ? `/search?q=${encodeURIComponent(trimmedQuery)}` : "/search");
   };
 
-  // Lightweight visual indicator; backend validation remains authoritative.
   const getStrength = () => {
     if (password.length === 0) return null;
     if (password.length < 6) return "weak";
@@ -35,44 +35,23 @@ export default function Register() {
   const strength = getStrength();
 
   const handleRegister = async (e) => {
-
     e.preventDefault();
+    setError("");
 
-    // Basic client-side guard before sending payload.
     if (phone.length < 6) {
       setPhoneError("Enter a valid phone number");
       return;
     }
 
+    setLoading(true);
     try {
-
-      const res = await axios.post(
-        "http://localhost:5000/api/users/register",
-        {
-          name,
-          email,
-          phone: countryCode + phone,
-          password
-        }
-      );
-
+      await register(name, email, password, countryCode + phone);
       alert("Account created successfully!");
-
-      const userData = res.data.data;
-
-  // Persist auth context for header/account flows on refresh.
-      localStorage.setItem("user", JSON.stringify(userData));
-
-  // Notify listeners (for example, the header) without a hard reload.
-      window.dispatchEvent(new Event("userLoggedIn"));
-
       navigate("/account");
-
-    } catch (error) {
-
-      console.log(error.response?.data);
-      alert("Registration failed");
-
+    } catch (err) {
+      setError(err.response?.data?.message || "Registration failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -97,6 +76,12 @@ export default function Register() {
         <p className="text-sm text-gray-500 mb-6">
           Connect with buyers in your neighborhood.
         </p>
+
+        {(error || authError) && (
+          <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+            {error || authError}
+          </div>
+        )}
 
         <form className="space-y-4" onSubmit={handleRegister}>
 
@@ -223,9 +208,10 @@ export default function Register() {
 
           <button
             type="submit"
-            className="w-full bg-teal-600 text-white py-2.5 rounded-md font-medium hover:bg-teal-700 transition"
+            disabled={loading}
+            className="w-full bg-teal-600 text-white py-2.5 rounded-md font-medium hover:bg-teal-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Create Account
+            {loading ? "Creating Account..." : "Create Account"}
           </button>
 
         </form>

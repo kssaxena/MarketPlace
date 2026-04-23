@@ -1,13 +1,14 @@
 import { Link } from "react-router-dom";
 import Header from "../../components/Header.jsx";
+import { BookOpen, CreditCard, Lock, Truck, HelpCircle, Phone } from "lucide-react";
 
 const categories = [
-  { icon: "📚", title: "Getting Started", desc: "Learn the basics of using our platform" },
-  { icon: "💳", title: "Payments", desc: "Payment methods and billing information" },
-  { icon: "🔒", title: "Account Security", desc: "Keep your account safe and secure" },
-  { icon: "🚚", title: "Shipping", desc: "Shipping policies and tracking" },
-  { icon: "❓", title: "FAQ", desc: "Frequently asked questions" },
-  { icon: "📞", title: "Contact Support", desc: "Get in touch with our support team" },
+  { icon: BookOpen, title: "Getting Started", desc: "Learn the basics of using our platform" },
+  { icon: CreditCard, title: "Payments", desc: "Payment methods and billing information" },
+  { icon: Lock, title: "Account Security", desc: "Keep your account safe and secure" },
+  { icon: Truck, title: "Shipping", desc: "Shipping policies and tracking" },
+  { icon: HelpCircle, title: "FAQ", desc: "Frequently asked questions" },
+  { icon: Phone, title: "Contact Support", desc: "Get in touch with our support team" },
 ];
 
 const articles = [
@@ -65,18 +66,21 @@ export default function HelpCenter() {
         </div>
 
         <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {categories.map((item) => (
-            <div
-              key={item.title}
-              className="bg-white rounded-xl shadow p-6 hover:shadow-md transition cursor-pointer"
-            >
-              <div className="w-10 h-10 bg-teal-50 text-teal-600 flex items-center justify-center rounded mb-4">
-                {item.icon}
+          {categories.map((item) => {
+            const IconComponent = item.icon;
+            return (
+              <div
+                key={item.title}
+                className="bg-white rounded-xl shadow p-6 hover:shadow-md transition cursor-pointer"
+              >
+                <div className="w-10 h-10 bg-teal-50 text-teal-600 flex items-center justify-center rounded mb-4">
+                  <IconComponent size={24} strokeWidth={2} />
+                </div>
+                <h3 className="font-semibold mb-1">{item.title}</h3>
+                <p className="text-sm text-gray-600">{item.desc}</p>
               </div>
-              <h3 className="font-semibold mb-1">{item.title}</h3>
-              <p className="text-sm text-gray-600">{item.desc}</p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 

@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { User, FileText, Package, LogOut, MessageSquare, ShoppingCart } from "lucide-react";
 import CategoriesModal from "./CategoriesModal.jsx";
 import CartModal from "./CartModal.jsx";
 import ChatModal from "./ChatModal.jsx";
+import { useAuth } from "../contexts/AuthContext.jsx";
 import {
   getCartItems,
   getWishlistItems,
@@ -28,11 +30,14 @@ function Header({
   onToggleDarkMode,
   showDarkModeToggle = false,
 }) {
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
   const [showCategories, setShowCategories] = useState(false);
   const [showCart, setShowCart] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
   const [showCurrencyMenu, setShowCurrencyMenu] = useState(false);
+  const [showAccountMenu, setShowAccountMenu] = useState(false);
   const [language, setLanguage] = useState("English");
   const [currency, setCurrency] = useState(() => getSelectedCurrency());
   const [messages, setMessages] = useState([
@@ -54,6 +59,27 @@ function Header({
   }, []);
 
   useEffect(() => subscribeCurrencyChange(setCurrency), []);
+
+  // Close account menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (showAccountMenu && !e.target.closest('.account-menu-container')) {
+        setShowAccountMenu(false);
+      }
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [showAccountMenu]);
+
+  const handleLogout = () => {
+    logout();
+    setShowAccountMenu(false);
+    navigate("/");
+  };
+
+  const getInitial = () => {
+    return user?.name?.charAt(0).toUpperCase() || "A";
+  };
 
   const linkClass = (page) =>
     page === activePage ? "text-teal-600 font-semibold" : "text-black hover:text-teal-600";
@@ -156,21 +182,107 @@ function Header({
         </form>
 
         <div className="flex cursor-pointer items-center gap-5 text-lg">
-          <Link to="/login" aria-label="Login">
-            👤
-          </Link>
-          <button type="button" onClick={() => setShowChat(true)} aria-label="Open chat">
-            💬
-          </button>
-          <button type="button" onClick={() => setShowCart(true)} aria-label="Open cart">
-            🛒
-          </button>
-          <Link
-            to="/register"
-            className="rounded-full border border-teal-600 px-4 py-1.5 text-[0.82rem] font-semibold text-teal-600 transition-colors hover:bg-teal-600 hover:text-white"
+          {!user ? (
+            <>
+              <Link 
+                to="/login" 
+                aria-label="Login"
+                className="text-gray-700 hover:text-teal-600 transition"
+              >
+                <User size={24} />
+              </Link>
+              <Link
+                to="/login"
+                className="rounded-full border border-teal-600 px-4 py-1.5 text-[0.82rem] font-semibold text-teal-600 transition-colors hover:bg-teal-600 hover:text-white"
+              >
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className="rounded-full border border-teal-600 px-4 py-1.5 text-[0.82rem] font-semibold text-teal-600 transition-colors hover:bg-teal-600 hover:text-white"
+              >
+                Register
+              </Link>
+            </>
+          ) : (
+            <div className="relative account-menu-container">
+              <button
+                type="button"
+                onClick={() => setShowAccountMenu(!showAccountMenu)}
+                className="flex items-center justify-center w-10 h-10 rounded-full bg-teal-600 text-white font-bold text-lg transition hover:bg-teal-700 cursor-pointer"
+                title={user.name}
+              >
+                {getInitial()}
+              </button>
+
+              {showAccountMenu && (
+                <div className="absolute right-0 top-full z-50 mt-2 w-56 rounded-xl border border-gray-200 bg-white shadow-xl">
+                  <div className="px-4 py-5 border-b bg-gradient-to-r from-teal-50 to-teal-100">
+                    <div className="flex items-center gap-3">
+                      <div className="flex-shrink-0 w-12 h-12 rounded-full bg-teal-600 text-white flex items-center justify-center font-bold text-lg">
+                        {getInitial()}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold text-gray-900 truncate">{user.name}</p>
+                        <p className="text-xs text-gray-600 truncate">{user.email}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="px-2 py-2">
+                    <Link
+                      to="/account"
+                      onClick={() => setShowAccountMenu(false)}
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-teal-50 hover:text-teal-600 rounded-lg transition"
+                    >
+                      <User size={18} />
+                      <span>My Account</span>
+                    </Link>
+                    <Link
+                      to="/my-ads"
+                      onClick={() => setShowAccountMenu(false)}
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-teal-50 hover:text-teal-600 rounded-lg transition"
+                    >
+                      <FileText size={18} />
+                      <span>My Ads</span>
+                    </Link>
+                    <Link
+                      to="/order-status"
+                      onClick={() => setShowAccountMenu(false)}
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-teal-50 hover:text-teal-600 rounded-lg transition"
+                    >
+                      <Package size={18} />
+                      <span>Orders</span>
+                    </Link>
+                    <div className="my-2 border-t"></div>
+                    <button
+                      type="button"
+                      onClick={handleLogout}
+                      className="w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition"
+                    >
+                      <LogOut size={18} />
+                      <span>Logout</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+          <button 
+            type="button" 
+            onClick={() => setShowChat(true)} 
+            aria-label="Open chat"
+            className="text-gray-700 hover:text-teal-600 transition"
           >
-            Register
-          </Link>
+            <MessageSquare size={22} />
+          </button>
+          <button 
+            type="button" 
+            onClick={() => setShowCart(true)} 
+            aria-label="Open cart"
+            className="text-gray-700 hover:text-teal-600 transition"
+          >
+            <ShoppingCart size={22} />
+          </button>
         </div>
       </div>
 

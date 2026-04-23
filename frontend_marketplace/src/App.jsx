@@ -20,6 +20,7 @@ import CategoryPage from "./Pages/CategoryPage/CategoryPage.jsx";
 import Header from "./components/Header.jsx";
 import { applyTheme, isDarkModeEnabled } from "./utility/theme.js";
 import BestDeals from "./Pages/BestDeals/BestDeals.jsx";
+import { AuthProvider } from "./contexts/AuthContext.jsx";
 
 function App() {
   useEffect(() => {
@@ -27,6 +28,7 @@ function App() {
   }, []);
 
   return (
+    <AuthProvider>
     <BrowserRouter>
      <div className="flex min-h-screen flex-col">
       <div className="flex-1">
@@ -57,6 +59,7 @@ function App() {
       <Footer />
       </div>
     </BrowserRouter>
+    </AuthProvider>
   );
 }
 

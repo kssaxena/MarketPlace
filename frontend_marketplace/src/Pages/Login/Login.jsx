@@ -1,55 +1,38 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import Header from "../../components/Header.jsx";
+import { useAuth } from "../../contexts/AuthContext.jsx";
 
 export default function Login() {
-
   const navigate = useNavigate();
+  const { login, error: authError } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
-
     const trimmedQuery = searchQuery.trim();
     navigate(trimmedQuery ? `/search?q=${encodeURIComponent(trimmedQuery)}` : "/search");
   };
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
 
     try {
-
-      const res = await axios.post(
-        "http://localhost:5000/api/users/login",
-        {
-          email,
-          password
-        }
-      );
-
+      await login(email, password);
       alert("Login successful!");
-
-  // Store auth artifacts for subsequent protected/user-aware views.
-      localStorage.setItem("token", res.data.data.token);
-
-      localStorage.setItem("user", JSON.stringify(res.data.data));
-
-  // Broadcast auth state change so shared UI can react immediately.
-      window.dispatchEvent(new Event("userLoggedIn"));
-
       navigate("/");
-
-    } catch (error) {
-
-      console.log(error.response?.data);
-
-      alert("Invalid email or password");
-
+    } catch (err) {
+      setError(err.response?.data?.message || "Invalid email or password");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -74,6 +57,12 @@ export default function Login() {
         <p className="text-sm text-gray-500 mb-6">
           Welcome back! Please enter your details.
         </p>
+
+        {(error || authError) && (
+          <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+            {error || authError}
+          </div>
+        )}
 
         <form className="space-y-4" onSubmit={handleLogin}>
 
@@ -129,9 +118,10 @@ export default function Login() {
 
           <button
             type="submit"
-            className="w-full bg-teal-600 text-white py-2.5 rounded-md font-medium hover:bg-teal-700 transition"
+            disabled={loading}
+            className="w-full bg-teal-600 text-white py-2.5 rounded-md font-medium hover:bg-teal-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
 
         </form>
