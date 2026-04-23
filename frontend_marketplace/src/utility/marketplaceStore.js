@@ -1,3 +1,4 @@
+import { addToCart as addToCartAPI } from "../api/cart";
 const CART_KEY = "marketplace_cart_items";
 const WISHLIST_KEY = "marketplace_wishlist_items";
 const STORE_EVENT = "marketplace:store-updated";
@@ -64,8 +65,10 @@ export function getWishlistItems() {
   return readList(WISHLIST_KEY);
 }
 
-export function addToCart(product) {
+export async function addToCart(product) {
   const item = normalizeProduct(product);
+
+  // 🟡 LOCAL (your existing logic)
   const cart = getCartItems();
   const existing = cart.find((entry) => String(entry.id) === String(item.id));
 
@@ -79,6 +82,17 @@ export function addToCart(product) {
 
   writeList(CART_KEY, next);
   emitStoreUpdate();
+
+  // 🔵 BACKEND (NEW PART)
+  try {
+    const token = localStorage.getItem("token");
+
+    if (token && (product._id || product.id)) {
+      await addToCartAPI(product._id || product.id);
+    }
+  } catch (err) {
+    console.error("Backend cart sync failed", err);
+  }
 }
 
 export function addToWishlist(product) {

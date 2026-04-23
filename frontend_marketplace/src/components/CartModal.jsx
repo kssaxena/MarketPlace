@@ -6,6 +6,11 @@ import {
 } from "../utility/currency.js";
 import { isDarkModeEnabled } from "../utility/theme.js";
 import { useNavigate } from "react-router-dom";
+import {
+  fetchCart,
+  updateCartItem,
+  deleteCartItem
+} from "../api/cart";
 
 function CartModal({
   isOpen,
@@ -40,6 +45,32 @@ function CartModal({
     () => cartItems.reduce((acc, item) => acc + (item.price ?? 0) * (item.qty ?? 1), 0),
     [cartItems]
   );
+
+  const refreshCart = async () => {
+  const data = await fetchCart();
+  if (data.success) {
+    setCartItems(data.items);
+  }
+};
+
+const handleIncrease = async (item) => {
+  await updateCartItem(item.id, item.qty + 1);
+  refreshCart();
+};
+
+const handleDecrease = async (item) => {
+  if (item.qty === 1) {
+    await deleteCartItem(item.id);
+  } else {
+    await updateCartItem(item.id, item.qty - 1);
+  }
+  refreshCart();
+};
+
+const handleRemove = async (item) => {
+  await deleteCartItem(item.id);
+  refreshCart();
+};
 
   if (!isOpen) return null;
 
@@ -103,7 +134,7 @@ function CartModal({
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
-                      onClick={() => onDecreaseQty(item.id)}
+                      onClick={() => handleDecrease(item)}
                       className={`rounded ${darkMode ? "bg-slate-600 hover:bg-slate-500 text-slate-100" : "bg-gray-300"} px-2`}
                     >
                       -
@@ -111,14 +142,14 @@ function CartModal({
                     <span className={`w-6 text-center ${darkMode ? "text-slate-100" : ""}`}>{item.qty}</span>
                     <button
                       type="button"
-                      onClick={() => onIncreaseQty(item.id)}
+                      onClick={() => handleIncrease(item)}
                       className={`rounded ${darkMode ? "bg-slate-600 hover:bg-slate-500 text-slate-100" : "bg-gray-300"} px-2`}
                     >
                       +
                     </button>
                     <button
                       type="button"
-                      onClick={() => onRemoveCartItem(item.id)}
+                      onClick={() => handleRemove(item)}
                       className={`ml-1 text-xs font-semibold ${darkMode ? "text-red-400 hover:text-red-300" : "text-red-500 hover:text-red-600"}`}
                     >
                       Remove

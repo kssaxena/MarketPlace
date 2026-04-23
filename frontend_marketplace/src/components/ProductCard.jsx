@@ -8,7 +8,6 @@ import {
 function ProductCard({ product, onClick }) {
   const condition = product.condition || "Good";
   const [currency, setCurrency] = useState(() => getSelectedCurrency());
-
   useEffect(() => subscribeCurrencyChange(setCurrency), []);
 
   return (

@@ -11,7 +11,6 @@ function ProductModal({ product, onClose }) {
   const [toast, setToast] = useState("");
   const [currency, setCurrency] = useState(() => getSelectedCurrency());
   const [darkMode, setDarkMode] = useState(() => isDarkModeEnabled());
-
   useEffect(() => subscribeCurrencyChange(setCurrency), []);
 
   useEffect(() => {

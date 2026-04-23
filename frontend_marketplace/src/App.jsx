@@ -31,8 +31,8 @@ function App() {
   return (
     <AuthProvider>
     <BrowserRouter>
-     <div className="flex min-h-screen flex-col">
-      <div className="flex-1">
+     <div className="flex flex-col min-h-screen">
+      <div className="flex-1 overflow-y-auto">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
