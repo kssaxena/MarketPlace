@@ -21,6 +21,7 @@ import Header from "./components/Header.jsx";
 import { applyTheme, isDarkModeEnabled } from "./utility/theme.js";
 import BestDeals from "./Pages/BestDeals/BestDeals.jsx";
 import { AuthProvider } from "./contexts/AuthContext.jsx";
+import Checkout from "./Pages/Checkout/Checkout.jsx";
 
 function App() {
   useEffect(() => {
@@ -54,6 +55,7 @@ function App() {
         <Route path="/category/:categoryName" element={<CategoryPage />} />
         <Route path="/category/:categoryName/:subCategory" element={<CategoryPage />} />
         <Route path="/best-deals" element={<BestDeals />} />
+        <Route path="/checkout" element={<Checkout />} />
       </Routes>
       </div>
       <Footer />

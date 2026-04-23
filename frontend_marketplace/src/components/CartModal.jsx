@@ -5,6 +5,7 @@ import {
   subscribeCurrencyChange,
 } from "../utility/currency.js";
 import { isDarkModeEnabled } from "../utility/theme.js";
+import { useNavigate } from "react-router-dom";
 
 function CartModal({
   isOpen,
@@ -20,7 +21,7 @@ function CartModal({
   const [activeTab, setActiveTab] = useState("cart");
   const [currency, setCurrency] = useState(() => getSelectedCurrency());
   const [darkMode, setDarkMode] = useState(() => isDarkModeEnabled());
-
+  const navigate = useNavigate();
   useEffect(() => {
     const unsubscribe = subscribeCurrencyChange(setCurrency);
     return unsubscribe;
@@ -171,8 +172,9 @@ function CartModal({
         {activeTab === "cart" && (
           <div className={`mt-4 border-t ${darkMode ? "border-slate-700" : ""} pt-3`}>
             <h4 className={`mb-2 font-semibold ${darkMode ? "text-slate-100" : ""}`}>Total: {formatCurrency(total, currency)}</h4>
-            <button className={`w-full rounded-lg ${darkMode ? "bg-teal-600 hover:bg-teal-700" : "bg-teal-600 hover:bg-teal-700"} py-2 text-white`}>
-              Checkout →
+            <button onClick={() => navigate("/checkout")}
+               className="w-full rounded-lg bg-teal-600 hover:bg-teal-700 py-2 text-white">
+                 Checkout →
             </button>
           </div>
         )}
