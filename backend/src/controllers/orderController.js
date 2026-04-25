@@ -1,7 +1,7 @@
 import Order from '../models/Order.js';
 
 // Create order
-export const createOrder = async (req, res) => {
+ const createOrder = async (req, res) => {
   try {
     const { items, totalAmount, shippingAddress, paymentMethod } = req.body;
 
@@ -28,7 +28,7 @@ export const createOrder = async (req, res) => {
 };
 
 // Get user orders
-export const getUserOrders = async (req, res) => {
+ const getUserOrders = async (req, res) => {
   try {
     const orders = await Order.find({ user: req.userId })
       .populate('items.product')
@@ -41,7 +41,7 @@ export const getUserOrders = async (req, res) => {
 };
 
 // Get order by ID
-export const getOrderById = async (req, res) => {
+ const getOrderById = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id).populate('items.product');
 
@@ -61,7 +61,7 @@ export const getOrderById = async (req, res) => {
 };
 
 // Update order status
-export const updateOrderStatus = async (req, res) => {
+ const updateOrderStatus = async (req, res) => {
   try {
     const { orderStatus, trackingNumber } = req.body;
 
@@ -85,7 +85,7 @@ export const updateOrderStatus = async (req, res) => {
 };
 
 // Get all orders (admin)
-export const getAllOrders = async (req, res) => {
+ const getAllOrders = async (req, res) => {
   try {
     const orders = await Order.find()
       .populate('user', 'name email phone')
@@ -97,3 +97,4 @@ export const getAllOrders = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+export { createOrder, getUserOrders, getOrderById, updateOrderStatus, getAllOrders };
