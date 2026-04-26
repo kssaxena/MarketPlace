@@ -1,38 +1,37 @@
 //createorderController.js
-export const createOrder = async (req, res) => {
-  try {
-    const { items, shippingAddress, paymentMethod } = req.body;
+import { asyncHandler } from '../utils/asyncHandler.js';
+import Order from '../models/Order.js';
 
-    if (!items || items.length === 0) {
-      return res.status(400).json({ message: "Cart is empty" });
-    }
+// Process and finalize orders with automatic total amount calculation
+export const createOrder = asyncHandler(async (req, res) => {
+  const { items, shippingAddress, paymentMethod } = req.body;
 
-    // 🔒 Calculate total safely
-    let totalAmount = 0;
-
-    const updatedItems = items.map((item) => {
-      totalAmount += item.price * item.quantity;
-      return item;
-    });
-
-    const order = new Order({
-      orderNumber: "ORD-" + Date.now(),
-      user: req.userId,
-      items: updatedItems,
-      totalAmount,
-      shippingAddress,
-      paymentMethod,
-    });
-
-    await order.save();
-
-    res.status(201).json({
-      success: true,
-      order,
-    });
-
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
+  if (!items || items.length === 0) {
+    const error = new Error('Cannot create order with empty cart');
+    error.status = 400;
+    throw error;
   }
-};
+
+  let totalAmount = 0;
+
+  const updatedItems = items.map((item) => {
+    totalAmount += item.price * item.quantity;
+    return item;
+  });
+
+  const order = new Order({
+    orderNumber: 'ORD-' + Date.now(),
+    user: req.userId,
+    items: updatedItems,
+    totalAmount,
+    shippingAddress,
+    paymentMethod,
+  });
+
+  await order.save();
+
+  res.status(201).json({
+    success: true,
+    order,
+  });
+});

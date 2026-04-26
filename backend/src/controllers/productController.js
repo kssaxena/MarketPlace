@@ -1,140 +1,127 @@
 import Product from '../models/Product.js';
+import { asyncHandler } from '../utils/asyncHandler.js';
 
-// Create product
-export const createProduct = async (req, res) => {
-  try {
-    const { title, description, price, category, stock, images, location, tags } = req.body;
+// Enable sellers to list new products with details and inventory management
+export const createProduct = asyncHandler(async (req, res) => {
+  const { title, description, price, category, stock, images, location, tags } = req.body;
 
-    const product = new Product({
-      title,
-      description,
-      price,
-      originalPrice: price,
-      category,
-      stock,
-      images,
-      location,
-      tags,
-      seller: req.userId,
-    });
+  const product = new Product({
+    title,
+    description,
+    price,
+    originalPrice: price,
+    category,
+    stock,
+    images,
+    location,
+    tags,
+    seller: req.userId,
+  });
 
-    await product.save();
+  await product.save();
 
-    res.status(201).json({
-      message: 'Product created successfully',
-      product,
-    });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  res.status(201).json({
+    message: 'Product created successfully',
+    product,
+  });
+});
+
+// Browse and filter products by category, price range, search terms with pagination
+export const getAllProducts = asyncHandler(async (req, res) => {
+  const { category, search, minPrice, maxPrice, status = 'active' } = req.query;
+
+  const filter = { status };
+
+  if (category) {
+    filter.category = category;
   }
-};
 
-// Get all products
-export const getAllProducts = async (req, res) => {
-  try {
-    const { category, search, minPrice, maxPrice, status = 'active' } = req.query;
-
-    let filter = { status };
-
-    if (category) {
-      filter.category = category;
-    }
-
-    if (minPrice || maxPrice) {
-      filter.price = {};
-      if (minPrice) filter.price.$gte = parseFloat(minPrice);
-      if (maxPrice) filter.price.$lte = parseFloat(maxPrice);
-    }
-
-    if (search) {
-      filter.$text = { $search: search };
-    }
-
-    const products = await Product.find(filter)
-      .populate('seller', 'name email phone')
-      .sort({ createdAt: -1 });
-
-    res.status(200).json({ products });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  if (minPrice || maxPrice) {
+    filter.price = {};
+    if (minPrice) filter.price.$gte = parseFloat(minPrice);
+    if (maxPrice) filter.price.$lte = parseFloat(maxPrice);
   }
-};
 
-// Get product by ID
-export const getProductById = async (req, res) => {
-  try {
-    const product = await Product.findById(req.params.id).populate('seller', 'name email phone');
-
-    if (!product) {
-      return res.status(404).json({ message: 'Product not found' });
-    }
-
-    res.status(200).json({ product });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  if (search) {
+    filter.$text = { $search: search };
   }
-};
 
-// Update product
-export const updateProduct = async (req, res) => {
-  try {
-    const { title, description, price, stock, images, status, tags } = req.body;
+  const products = await Product.find(filter)
+    .populate('seller', 'name email phone')
+    .sort({ createdAt: -1 });
 
-    const product = await Product.findById(req.params.id);
+  res.status(200).json({ products });
+});
 
-    if (!product) {
-      return res.status(404).json({ message: 'Product not found' });
-    }
+// Retrieve detailed information for a specific product including seller details
+export const getProductById = asyncHandler(async (req, res) => {
+  const product = await Product.findById(req.params.id).populate('seller', 'name email phone');
 
-    // Check if user is the seller
-    if (product.seller.toString() !== req.userId) {
-      return res.status(403).json({ message: 'Not authorized to update this product' });
-    }
-
-    const updatedProduct = await Product.findByIdAndUpdate(
-      req.params.id,
-      { title, description, price, stock, images, status, tags, updatedAt: Date.now() },
-      { new: true, runValidators: true }
-    );
-
-    res.status(200).json({
-      message: 'Product updated successfully',
-      product: updatedProduct,
-    });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  if (!product) {
+    const error = new Error('Product not found');
+    error.status = 404;
+    throw error;
   }
-};
 
-// Delete product
-export const deleteProduct = async (req, res) => {
-  try {
-    const product = await Product.findById(req.params.id);
+  res.status(200).json({ product });
+});
 
-    if (!product) {
-      return res.status(404).json({ message: 'Product not found' });
-    }
+// Allow sellers to modify their product listings with authorization verification
+export const updateProduct = asyncHandler(async (req, res) => {
+  const { title, description, price, stock, images, status, tags } = req.body;
 
-    // Check if user is the seller
-    if (product.seller.toString() !== req.userId) {
-      return res.status(403).json({ message: 'Not authorized to delete this product' });
-    }
+  const product = await Product.findById(req.params.id);
 
-    await Product.findByIdAndDelete(req.params.id);
-
-    res.status(200).json({ message: 'Product deleted successfully' });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  if (!product) {
+    const error = new Error('Product not found');
+    error.status = 404;
+    throw error;
   }
-};
 
-// Get products by seller
-export const getProductsBySeller = async (req, res) => {
-  try {
-    const products = await Product.find({ seller: req.params.sellerId }).populate('seller', 'name email phone');
-
-    res.status(200).json({ products });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  if (product.seller.toString() !== req.userId) {
+    const error = new Error('Unauthorized to modify this product');
+    error.status = 403;
+    throw error;
   }
-};
+
+  const updatedProduct = await Product.findByIdAndUpdate(
+    req.params.id,
+    { title, description, price, stock, images, status, tags, updatedAt: Date.now() },
+    { new: true, runValidators: true }
+  );
+
+  res.status(200).json({
+    message: 'Product updated successfully',
+    product: updatedProduct,
+  });
+});
+
+// Enable sellers to remove their products from marketplace permanently
+export const deleteProduct = asyncHandler(async (req, res) => {
+  const product = await Product.findById(req.params.id);
+
+  if (!product) {
+    const error = new Error('Product not found');
+    error.status = 404;
+    throw error;
+  }
+
+  if (product.seller.toString() !== req.userId) {
+    const error = new Error('Unauthorized to delete this product');
+    error.status = 403;
+    throw error;
+  }
+
+  await Product.findByIdAndDelete(req.params.id);
+
+  res.status(200).json({ message: 'Product deleted successfully' });
+});
+
+// Retrieve all products listed by a specific seller with seller information
+export const getProductsBySeller = asyncHandler(async (req, res) => {
+  const products = await Product.find({ seller: req.params.sellerId }).populate('seller', 'name email phone');
+
+  res.status(200).json({ products });
+});
+
+export{createProduct, getAllProducts, getProductById, updateProduct, deleteProduct, getProductsBySeller};

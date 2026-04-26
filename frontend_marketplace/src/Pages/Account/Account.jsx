@@ -13,6 +13,7 @@ import {
   subscribeCurrencyChange,
 } from "../../utility/currency.js";
 import { DUMMY_USER, DUMMY_MESSAGES, DUMMY_TRANSACTIONS, ACCOUNT_NAV_ITEMS } from "../../constants/account.js";
+import { userAPI } from "../../services/api.js";
 
 export default function Account() {
   const navigate = useNavigate();
@@ -33,6 +34,27 @@ export default function Account() {
   );
 
   const [wishlist, setWishlist] = useState(getWishlistItems());
+
+  // Fetch user details from backend on component mount
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const response = await userAPI.getProfile();
+        if (response.data.user) {
+          setUser(response.data.user);
+          setName(response.data.user.name || DUMMY_USER.name);
+          setPhone(response.data.user.phone || DUMMY_USER.phone);
+          setLocation(response.data.user.location || DUMMY_USER.location);
+          localStorage.setItem("user", JSON.stringify(response.data.user));
+        }
+      } catch (error) {
+        console.error("Failed to fetch user details:", error);
+        // Keep existing user data if API fails
+      }
+    };
+
+    fetchUserDetails();
+  }, []);
 
   // Keep wishlist in sync when items are added/removed from the shared marketplace store.
   useEffect(() => {

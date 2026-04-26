@@ -1,100 +1,87 @@
 import Order from '../models/Order.js';
+import { asyncHandler } from '../utils/asyncHandler.js';
 
-// Create order
- const createOrder = async (req, res) => {
-  try {
-    const { items, totalAmount, shippingAddress, paymentMethod } = req.body;
+// Process new orders with order generation and transaction recording
+export const createOrder = asyncHandler(async (req, res) => {
+  const { items, totalAmount, shippingAddress, paymentMethod } = req.body;
 
-    const orderNumber = `ORD-${Date.now()}`;
+  const orderNumber = `ORD-${Date.now()}`;
 
-    const order = new Order({
-      orderNumber,
-      user: req.userId,
-      items,
-      totalAmount,
-      shippingAddress,
-      paymentMethod,
-    });
+  const order = new Order({
+    orderNumber,
+    user: req.userId,
+    items,
+    totalAmount,
+    shippingAddress,
+    paymentMethod,
+  });
 
-    await order.save();
+  await order.save();
 
-    res.status(201).json({
-      message: 'Order created successfully',
-      order,
-    });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  res.status(201).json({
+    message: 'Order created successfully',
+    order,
+  });
+});
+
+// Fetch all orders placed by the authenticated user with product details
+export const getUserOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find({ user: req.userId })
+    .populate('items.product')
+    .sort({ createdAt: -1 });
+
+  res.status(200).json({ orders });
+});
+
+// Retrieve specific order details with ownership verification
+export const getOrderById = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id).populate('items.product');
+
+  if (!order) {
+    const error = new Error('Order not found');
+    error.status = 404;
+    throw error;
   }
-};
 
-// Get user orders
- const getUserOrders = async (req, res) => {
-  try {
-    const orders = await Order.find({ user: req.userId })
-      .populate('items.product')
-      .sort({ createdAt: -1 });
-
-    res.status(200).json({ orders });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  if (order.user.toString() !== req.userId) {
+    const error = new Error('Unauthorized to access this order');
+    error.status = 403;
+    throw error;
   }
-};
 
-// Get order by ID
- const getOrderById = async (req, res) => {
-  try {
-    const order = await Order.findById(req.params.id).populate('items.product');
+  res.status(200).json({ order });
+});
 
-    if (!order) {
-      return res.status(404).json({ message: 'Order not found' });
-    }
+// Update order status and tracking information for shipment management
+export const updateOrderStatus = asyncHandler(async (req, res) => {
+  const { orderStatus, trackingNumber } = req.body;
 
-    // Check authorization
-    if (order.user.toString() !== req.userId) {
-      return res.status(403).json({ message: 'Not authorized to view this order' });
-    }
+  const order = await Order.findByIdAndUpdate(
+    req.params.id,
+    { orderStatus, trackingNumber, updatedAt: Date.now() },
+    { new: true }
+  );
 
-    res.status(200).json({ order });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  if (!order) {
+    const error = new Error('Order not found');
+    error.status = 404;
+    throw error;
   }
-};
 
-// Update order status
- const updateOrderStatus = async (req, res) => {
-  try {
-    const { orderStatus, trackingNumber } = req.body;
+  res.status(200).json({
+    message: 'Order updated successfully',
+    order,
+  });
+});
 
-    const order = await Order.findByIdAndUpdate(
-      req.params.id,
-      { orderStatus, trackingNumber, updatedAt: Date.now() },
-      { new: true }
-    );
+// Retrieve all orders across platform with user and product information (admin)
+export const getAllOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find()
+    .populate('user', 'name email phone')
+    .populate('items.product')
+    .sort({ createdAt: -1 });
 
-    if (!order) {
-      return res.status(404).json({ message: 'Order not found' });
-    }
+  res.status(200).json({ orders });
+});
 
-    res.status(200).json({
-      message: 'Order updated successfully',
-      order,
-    });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// Get all orders (admin)
- const getAllOrders = async (req, res) => {
-  try {
-    const orders = await Order.find()
-      .populate('user', 'name email phone')
-      .populate('items.product')
-      .sort({ createdAt: -1 });
-
-    res.status(200).json({ orders });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-export { createOrder, getUserOrders, getOrderById, updateOrderStatus, getAllOrders };
+export{createOrder, getUserOrders, getOrderById, updateOrderStatus, getAllOrders};

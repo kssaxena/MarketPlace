@@ -1,60 +1,74 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import connectDB from './config/db.js';
+import connectDB from './index/db.js';
 import userRoutes from './routes/userRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 import reviewRoutes from './routes/reviewRoutes.js';
-import cartRoutes from "./routes/cartRoutes.js";
+import cartRoutes from './routes/cartRoutes.js';
 
-// Load environment variables
 dotenv.config();
 
 const app = express();
+const PORT = process.env.PORT || 5000;
+const NODE_ENV = process.env.NODE_ENV || 'development';
 
-// Connect to MongoDB
-connectDB();
+connectDB().catch((error) => {
+  console.error('[Database] Connection failed:', error.message);
+  process.exit(1);
+});
 
-// Middleware
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+    origin: process.env.CORS_ORIGIN,
     credentials: true,
   })
 );
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-// Health check route
 app.get('/health', (req, res) => {
-  res.json({ status: 'Server is running' });
+  res.json({ status: 'operational', environment: NODE_ENV });
 });
 
-// API Routes
 app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/reviews', reviewRoutes);
-app.use("/api/cart", cartRoutes);
+app.use('/api/cart', cartRoutes);
 
-// 404 handler
 app.use((req, res) => {
-  res.status(404).json({ message: 'Route not found' });
+  res.status(404).json({ success: false, message: 'Endpoint not found' });
 });
 
-// Error handling middleware
 app.use((err, req, res, next) => {
-  console.error('Error:', err.message);
-  res.status(err.status || 500).json({
-    message: err.message || 'Internal Server Error',
-    status: err.status || 500,
+  const statusCode = err.status || err.statusCode || 500;
+  let message = err.message || 'Internal Server Error';
+
+  if (err.name === 'ValidationError') {
+    const errors = Object.values(err.errors).map(e => e.message);
+    message = errors.join(', ');
+  } else if (err.code === 11000) {
+    const field = Object.keys(err.keyValue)[0];
+    message = `${field} already exists`;
+  } else if (err.name === 'CastError') {
+    message = 'Invalid resource identifier';
+  }
+
+  if (NODE_ENV === 'production') {
+    console.error(`[${statusCode}] ${message}`);
+  } else {
+    console.error(`[Error] ${statusCode}:`, err);
+  }
+
+  res.status(statusCode).json({
+    success: false,
+    message,
+    ...(NODE_ENV === 'development' && { stack: err.stack }),
   });
 });
 
-// Start server
-const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`✓ Server running on http://localhost:${PORT}`);
-  console.log(`✓ Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`[Server] Started on port ${PORT} | Environment: ${NODE_ENV}`);
 });

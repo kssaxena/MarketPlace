@@ -50,42 +50,34 @@ const productSchema = new mongoose.Schema(
         altText: String,
       },
     ],
-    seller: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+    stock: {
+      type: Number,
       required: true,
+      min: [0, 'Stock cannot be negative'],
+      default: 0,
     },
     rating: {
       type: Number,
+      default: 0,
       min: 0,
       max: 5,
-      default: 0,
     },
     reviews: {
       type: Number,
       default: 0,
     },
-    stock: {
-      type: Number,
-      required: [true, 'Please provide stock quantity'],
-      min: [0, 'Stock cannot be negative'],
-    },
-    sold: {
-      type: Number,
-      default: 0,
-      min: 0,
+    seller: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
     },
     status: {
       type: String,
-      enum: ['active', 'inactive', 'removed'],
+      enum: ['active', 'inactive', 'sold', 'archived'],
       default: 'active',
     },
-    location: {
-      city: String,
-      state: String,
-      country: String,
-    },
     tags: [String],
+    location: String,
     createdAt: {
       type: Date,
       default: Date.now,
@@ -97,10 +89,5 @@ const productSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
-// Index for faster searches
-productSchema.index({ title: 'text', description: 'text', tags: 'text' });
-productSchema.index({ category: 1, status: 1 });
-productSchema.index({ seller: 1 });
 
 export default mongoose.model('Product', productSchema);

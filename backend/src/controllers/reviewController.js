@@ -1,107 +1,100 @@
 import Review from '../models/Review.js';
 import Product from '../models/Product.js';
+import { asyncHandler } from '../utils/asyncHandler.js';
 
-// Create review
-export const createReview = async (req, res) => {
-  try {
-    const { productId, rating, title, comment } = req.body;
+// Allow users to submit product reviews with automatic product rating calculation
+export const createReview = asyncHandler(async (req, res) => {
+  const { productId, rating, title, comment } = req.body;
 
-    // Check if product exists
-    const product = await Product.findById(productId);
-    if (!product) {
-      return res.status(404).json({ message: 'Product not found' });
-    }
-
-    const review = new Review({
-      product: productId,
-      user: req.userId,
-      rating,
-      title,
-      comment,
-    });
-
-    await review.save();
-
-    // Update product rating
-    const reviews = await Review.find({ product: productId });
-    const avgRating = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
-
-    await Product.findByIdAndUpdate(productId, {
-      rating: avgRating,
-      reviews: reviews.length,
-    });
-
-    res.status(201).json({
-      message: 'Review created successfully',
-      review,
-    });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  const product = await Product.findById(productId);
+  if (!product) {
+    const error = new Error('Product not found');
+    error.status = 404;
+    throw error;
   }
-};
 
-// Get reviews for product
-export const getProductReviews = async (req, res) => {
-  try {
-    const reviews = await Review.find({ product: req.params.productId })
-      .populate('user', 'name avatar')
-      .sort({ createdAt: -1 });
+  const review = new Review({
+    product: productId,
+    user: req.userId,
+    rating,
+    title,
+    comment,
+  });
 
-    res.status(200).json({ reviews });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  await review.save();
+
+  const reviews = await Review.find({ product: productId });
+  const avgRating = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+
+  await Product.findByIdAndUpdate(productId, {
+    rating: avgRating,
+    reviews: reviews.length,
+  });
+
+  res.status(201).json({
+    message: 'Review created successfully',
+    review,
+  });
+});
+
+// Fetch all reviews for a specific product with user information
+export const getProductReviews = asyncHandler(async (req, res) => {
+  const reviews = await Review.find({ product: req.params.productId })
+    .populate('user', 'name avatar')
+    .sort({ createdAt: -1 });
+
+  res.status(200).json({ reviews });
+});
+
+// Enable users to edit their product reviews with authorization check
+export const updateReview = asyncHandler(async (req, res) => {
+  const { rating, title, comment } = req.body;
+
+  const review = await Review.findById(req.params.id);
+
+  if (!review) {
+    const error = new Error('Review not found');
+    error.status = 404;
+    throw error;
   }
-};
 
-// Update review
-export const updateReview = async (req, res) => {
-  try {
-    const { rating, title, comment } = req.body;
-
-    const review = await Review.findById(req.params.id);
-
-    if (!review) {
-      return res.status(404).json({ message: 'Review not found' });
-    }
-
-    // Check authorization
-    if (review.user.toString() !== req.userId) {
-      return res.status(403).json({ message: 'Not authorized to update this review' });
-    }
-
-    const updatedReview = await Review.findByIdAndUpdate(
-      req.params.id,
-      { rating, title, comment },
-      { new: true }
-    );
-
-    res.status(200).json({
-      message: 'Review updated successfully',
-      review: updatedReview,
-    });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  if (review.user.toString() !== req.userId) {
+    const error = new Error('Unauthorized to modify this review');
+    error.status = 403;
+    throw error;
   }
-};
 
-// Delete review
-export const deleteReview = async (req, res) => {
-  try {
-    const review = await Review.findById(req.params.id);
+  const updatedReview = await Review.findByIdAndUpdate(
+    req.params.id,
+    { rating, title, comment },
+    { new: true }
+  );
 
-    if (!review) {
-      return res.status(404).json({ message: 'Review not found' });
-    }
+  res.status(200).json({
+    message: 'Review updated successfully',
+    review: updatedReview,
+  });
+});
 
-    // Check authorization
-    if (review.user.toString() !== req.userId) {
-      return res.status(403).json({ message: 'Not authorized to delete this review' });
-    }
+// Allow users to remove their reviews from products
+export const deleteReview = asyncHandler(async (req, res) => {
+  const review = await Review.findById(req.params.id);
 
-    await Review.findByIdAndDelete(req.params.id);
-
-    res.status(200).json({ message: 'Review deleted successfully' });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  if (!review) {
+    const error = new Error('Review not found');
+    error.status = 404;
+    throw error;
   }
-};
+
+  if (review.user.toString() !== req.userId) {
+    const error = new Error('Unauthorized to delete this review');
+    error.status = 403;
+    throw error;
+  }
+
+  await Review.findByIdAndDelete(req.params.id);
+
+  res.status(200).json({ message: 'Review deleted successfully' });
+});
+
+export{createReview, getProductReviews, updateReview, deleteReview};

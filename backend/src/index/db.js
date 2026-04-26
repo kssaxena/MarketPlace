@@ -1,20 +1,21 @@
 import mongoose from 'mongoose';
 
 const connectDB = async () => {
-  try {
-    const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/marketplace';
-    
-    await mongoose.connect(mongoUri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+  const mongoUri = process.env.MONGODB_URI;
 
-    console.log('✓ MongoDB Connected Successfully');
-    return mongoose.connection;
-  } catch (error) {
-    console.error('✗ MongoDB Connection Error:', error.message);
-    process.exit(1);
+  if (!mongoUri) {
+    const error = new Error('MONGODB_URI is not defined in environment variables');
+    error.status = 500;
+    throw error;
   }
+
+  await mongoose.connect(mongoUri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+
+  console.log('✓ MongoDB Connected Successfully');
+  return mongoose.connection;
 };
 
 export default connectDB;
