@@ -3,7 +3,7 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 import { generateToken } from '../utils/tokenUtils.js';
 
 // Register new user with validation and password encryption
-export const registerUser = asyncHandler(async (req, res) => {
+const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password, phone } = req.body;
 
   // Prevent duplicate email registrations
@@ -32,7 +32,7 @@ export const registerUser = asyncHandler(async (req, res) => {
 });
 
 // Authenticate user and issue JWT token
-export const loginUser = asyncHandler(async (req, res) => {
+const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -72,7 +72,7 @@ export const loginUser = asyncHandler(async (req, res) => {
 });
 
 // Retrieve authenticated user's profile
-export const getUserProfile = asyncHandler(async (req, res) => {
+const getUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.userId);
   if (!user) {
     const error = new Error('User profile not found');
@@ -83,7 +83,7 @@ export const getUserProfile = asyncHandler(async (req, res) => {
 });
 
 // Update user profile information
-export const updateUserProfile = asyncHandler(async (req, res) => {
+const updateUserProfile = asyncHandler(async (req, res) => {
   const { name, phone, address, avatar } = req.body;
 
   const user = await User.findByIdAndUpdate(
@@ -99,7 +99,7 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
 });
 
 // Retrieve all users (admin operation)
-export const getAllUsers = asyncHandler(async (req, res) => {
+const getAllUsers = asyncHandler(async (req, res) => {
   const users = await User.find().select('-password');
   res.status(200).json({ users });
 });

@@ -2,7 +2,7 @@ import Order from '../models/Order.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 
 // Process new orders with order generation and transaction recording
-export const createOrder = asyncHandler(async (req, res) => {
+const createOrder = asyncHandler(async (req, res) => {
   const { items, totalAmount, shippingAddress, paymentMethod } = req.body;
 
   const orderNumber = `ORD-${Date.now()}`;
@@ -25,7 +25,7 @@ export const createOrder = asyncHandler(async (req, res) => {
 });
 
 // Fetch all orders placed by the authenticated user with product details
-export const getUserOrders = asyncHandler(async (req, res) => {
+const getUserOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find({ user: req.userId })
     .populate('items.product')
     .sort({ createdAt: -1 });
@@ -34,7 +34,7 @@ export const getUserOrders = asyncHandler(async (req, res) => {
 });
 
 // Retrieve specific order details with ownership verification
-export const getOrderById = asyncHandler(async (req, res) => {
+const getOrderById = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id).populate('items.product');
 
   if (!order) {
@@ -53,7 +53,7 @@ export const getOrderById = asyncHandler(async (req, res) => {
 });
 
 // Update order status and tracking information for shipment management
-export const updateOrderStatus = asyncHandler(async (req, res) => {
+const updateOrderStatus = asyncHandler(async (req, res) => {
   const { orderStatus, trackingNumber } = req.body;
 
   const order = await Order.findByIdAndUpdate(
@@ -75,7 +75,7 @@ export const updateOrderStatus = asyncHandler(async (req, res) => {
 });
 
 // Retrieve all orders across platform with user and product information (admin)
-export const getAllOrders = asyncHandler(async (req, res) => {
+const getAllOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find()
     .populate('user', 'name email phone')
     .populate('items.product')

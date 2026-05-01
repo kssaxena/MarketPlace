@@ -7,6 +7,7 @@ import Header from "../../components/Header.jsx";
 import RecentlyViewed from "../../components/RecentlyViewed.jsx";
 import SavedSearchesWidget from "../../components/SavedSearchesWidget.jsx";
 import { productsData } from "../../constants/products.js";
+import { productAPI } from "../../services/api.js";
 import { isDarkModeEnabled, setDarkMode } from "../../utility/theme.js";
 import { addToRecentlyViewed } from "../../utility/userTracking.js";
 
@@ -19,12 +20,39 @@ const HERO_IMAGES = [
 function Home() {
   const navigate = useNavigate();
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const products = productsData;
+  const [products, setProducts] = useState(productsData);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("All Ads");
   const [searchQuery, setSearchQuery] = useState("");
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [darkMode, setDarkModeState] = useState(() => isDarkModeEnabled());
+
+  // Fetch products from backend
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const response = await productAPI.getAllProducts();
+        if (response.data.products && response.data.products.length > 0) {
+          setProducts(response.data.products);
+          setError(null);
+        } else {
+          // Use mock data if no products from backend
+          setProducts(productsData);
+        }
+      } catch (err) {
+        console.warn("Failed to fetch from backend, using mock data:", err.message);
+        // Use mock data as fallback
+        setProducts(productsData);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   useEffect(() => {
     // Rotate hero visuals on a fixed interval for lightweight motion.

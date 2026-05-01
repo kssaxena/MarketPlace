@@ -3,7 +3,7 @@ import Product from '../models/Product.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 
 // Allow users to submit product reviews with automatic product rating calculation
-export const createReview = asyncHandler(async (req, res) => {
+const createReview = asyncHandler(async (req, res) => {
   const { productId, rating, title, comment } = req.body;
 
   const product = await Product.findById(productId);
@@ -38,7 +38,7 @@ export const createReview = asyncHandler(async (req, res) => {
 });
 
 // Fetch all reviews for a specific product with user information
-export const getProductReviews = asyncHandler(async (req, res) => {
+const getProductReviews = asyncHandler(async (req, res) => {
   const reviews = await Review.find({ product: req.params.productId })
     .populate('user', 'name avatar')
     .sort({ createdAt: -1 });
@@ -47,7 +47,7 @@ export const getProductReviews = asyncHandler(async (req, res) => {
 });
 
 // Enable users to edit their product reviews with authorization check
-export const updateReview = asyncHandler(async (req, res) => {
+const updateReview = asyncHandler(async (req, res) => {
   const { rating, title, comment } = req.body;
 
   const review = await Review.findById(req.params.id);
@@ -77,7 +77,7 @@ export const updateReview = asyncHandler(async (req, res) => {
 });
 
 // Allow users to remove their reviews from products
-export const deleteReview = asyncHandler(async (req, res) => {
+const deleteReview = asyncHandler(async (req, res) => {
   const review = await Review.findById(req.params.id);
 
   if (!review) {
