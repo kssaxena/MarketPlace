@@ -27,7 +27,11 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    // Only redirect on 401 for non-login/register endpoints
+    const isAuthEndpoint = error.config?.url?.includes('/users/login') || 
+                          error.config?.url?.includes('/users/register');
+    
+    if (error.response?.status === 401 && !isAuthEndpoint) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       window.location.href = '/login';

@@ -6,7 +6,7 @@ import { useAuth } from "../../contexts/AuthContext.jsx";
 
 export default function Register() {
   const navigate = useNavigate();
-  const { register, error: authError } = useAuth();
+  const { register } = useAuth();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -38,8 +38,8 @@ export default function Register() {
     e.preventDefault();
     setError("");
 
-    if (phone.length < 6) {
-      setPhoneError("Enter a valid phone number");
+    if (phone.length !== 10) {
+      setPhoneError("Phone number must be exactly 10 digits");
       return;
     }
 
@@ -77,9 +77,21 @@ export default function Register() {
           Connect with buyers in your neighborhood.
         </p>
 
-        {(error || authError) && (
-          <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
-            {error || authError}
+        {error && (
+          <div className="mb-4 p-4 bg-red-50 border-l-4 border-red-500 rounded-md flex items-start gap-3 shadow-md">
+            <div className="text-red-600 text-xl leading-none mt-0.5">⚠</div>
+            <div className="flex-1">
+              <p className="text-sm font-semibold text-red-800">Registration Failed</p>
+              <p className="text-sm text-red-700 mt-1">{error}</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setError("")}
+              className="text-red-500 hover:text-red-700 font-bold text-lg leading-none hover:bg-red-100 rounded px-2 py-1 transition"
+              aria-label="Close error"
+            >
+              ×
+            </button>
           </div>
         )}
 

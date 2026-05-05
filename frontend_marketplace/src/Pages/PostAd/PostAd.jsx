@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header.jsx";
 import { isDarkModeEnabled, setDarkMode as setGlobalDarkMode } from "../../utility/theme.js";
+import { productAPI } from "../../services/api.js";
+import { useAuth } from "../../contexts/AuthContext.jsx";
 
 const steps = ["Category", "Details", "Photos"];
 
@@ -9,6 +11,7 @@ const CATEGORIES = ["Vehicles", "Property", "Electronics", "Furniture", "Books",
 
 export default function PostAd() {
   const navigate = useNavigate();
+  const { user, token } = useAuth();
   const [step, setStep] = useState(1);
   const [isDarkMode, setIsDarkMode] = useState(() => isDarkModeEnabled());
 
@@ -17,6 +20,8 @@ export default function PostAd() {
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [photos, setPhotos] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const onThemeChange = (event) => {
@@ -34,31 +39,57 @@ export default function PostAd() {
     setPhotos(urls);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!title.trim() || !price) {
       alert("Please fill in the title and price.");
       return;
     }
 
-    const newAd = {
-      id: Date.now(),
-      title,
-      price: `$${price}`,
-      description,
-      category,
-      image: photos[0] || `https://picsum.photos/seed/${Date.now()}/300/200`,
-      location: "Your Location",
-      time: "Just now",
-      status: "Active",
-      postedAt: new Date().toISOString(),
-    };
+    if (!token) {
+      setError("You must be logged in to post an ad");
+      return;
+    }
 
-    const existing = JSON.parse(localStorage.getItem("myAds") || "[]");
-    // Newest listing first so it appears at the top in account history.
-    localStorage.setItem("myAds", JSON.stringify([newAd, ...existing]));
+    setLoading(true);
+    setError("");
 
-    alert("Ad posted successfully!");
-    navigate("/account");
+    try {
+      const productData = {
+        title: title.trim(),
+        price: parseFloat(price),
+        description: description.trim(),
+        category,
+        images: photos.length > 0 ? photos : [`https://picsum.photos/seed/${Date.now()}/300/200`],
+        stock: 1,
+        location: "Not specified",
+        tags: [category.toLowerCase()],
+        status: "active",
+      };
+
+      const response = await productAPI.createProduct(productData);
+
+      // Also store locally for reference
+      const newAd = {
+        id: response.data.product._id,
+        title,
+        price,
+        description,
+        category,
+        image: photos[0] || `https://picsum.photos/seed/${Date.now()}/300/200`,
+        postedAt: new Date().toISOString(),
+      };
+
+      const existing = JSON.parse(localStorage.getItem("myAds") || "[]");
+      localStorage.setItem("myAds", JSON.stringify([newAd, ...existing]));
+
+      alert("Ad posted successfully! It will appear in the marketplace.");
+      navigate("/");
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to post ad. Please try again.");
+      console.error("Error posting ad:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const toggleDarkMode = () => {
@@ -88,6 +119,16 @@ export default function PostAd() {
           <p className={`${isDarkMode ? "text-slate-400" : "text-gray-600"} text-sm mb-8`}>
             Fill out the details to list your item locally.
           </p>
+
+          {error && (
+            <div className="mb-4 p-4 bg-red-50 border-l-4 border-red-500 rounded-md flex items-start gap-3">
+              <div className="text-red-600 text-xl leading-none mt-0.5">⚠</div>
+              <div className="flex-1">
+                <p className="text-sm font-semibold text-red-800">Error</p>
+                <p className="text-sm text-red-700 mt-1">{error}</p>
+              </div>
+            </div>
+          )}
 
           <div className="relative flex items-center justify-between mb-10">
             <div className={`${isDarkMode ? "bg-slate-700" : "bg-gray-200"} absolute top-1/2 left-0 w-full h-[3px] -translate-y-1/2`} />
@@ -208,16 +249,17 @@ export default function PostAd() {
             {step < steps.length ? (
               <button
                 onClick={() => setStep(step + 1)}
-                className="bg-teal-600 text-white px-6 py-2 rounded-md text-sm"
+                className="bg-teal-600 text-white px-6 py-2 rounded-md text-sm hover:bg-teal-700 transition disabled:opacity-50"
               >
                 Next
               </button>
             ) : (
               <button
                 onClick={handleSubmit}
-                className="bg-teal-600 text-white px-6 py-2 rounded-md text-sm"
+                disabled={loading}
+                className="bg-teal-600 text-white px-6 py-2 rounded-md text-sm hover:bg-teal-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Post My Ad
+                {loading ? "Posting..." : "Post My Ad"}
               </button>
             )}
           </div>
