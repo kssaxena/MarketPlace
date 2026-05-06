@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Heart } from "lucide-react";
 import {
   formatCurrency,
@@ -13,6 +14,7 @@ import {
 } from "../utility/marketplaceStore.js";
 
 function ProductCard({ product, onClick }) {
+  const navigate = useNavigate();
   const condition = product.condition || "Good";
   const [currency, setCurrency] = useState(() => getSelectedCurrency());
   const [isInWishlist, setIsInWishlist] = useState(() => {
@@ -91,7 +93,7 @@ function ProductCard({ product, onClick }) {
         <button
           onClick={(e) => {
             e.stopPropagation();
-            onClick?.();
+            navigate(`/product/${product.id}`);
           }}
           className="mt-3 w-full bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-700 transition-colors duration-200"
         >
