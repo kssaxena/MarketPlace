@@ -53,27 +53,19 @@ export default function Checkout() {
       if (item.qty <= 1) {
         console.log("Removing item:", itemId);
         removeFromCart(itemId);
-        setCart(prevCart => prevCart.filter(i => String(i.id) !== String(itemId)));
       } else {
-        console.log("Decreasing qty");
+        console.log("Decreasing qty from", item.qty, "to", item.qty - 1);
         updateCartQty(itemId, -1);
-        setCart(prevCart => prevCart.map(i => 
-          String(i.id) === String(itemId) ? { ...i, qty: i.qty - 1 } : i
-        ));
       }
     } else if (action === "increase") {
-      console.log("Increasing qty");
+      console.log("Increasing qty from", item.qty, "to", item.qty + 1);
       updateCartQty(itemId, 1);
-      setCart(prevCart => prevCart.map(i => 
-        String(i.id) === String(itemId) ? { ...i, qty: i.qty + 1 } : i
-      ));
     }
   };
 
   const handleRemoveItem = (itemId) => {
     console.log("Removing item:", itemId);
     removeFromCart(itemId);
-    setCart(prevCart => prevCart.filter(i => String(i.id) !== String(itemId)));
   };
 
   const handleCheckout = async () => {
