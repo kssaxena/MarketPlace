@@ -2,7 +2,6 @@ import { useState, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { productsData } from "../../constants/products";
 import ProductCard from "../../components/ProductCard";
-import ProductModal from "../../components/ProductModal";
 import Header from "../../components/Header";
 import { CATEGORY_PAGE_SORT_OPTIONS } from "../../constants/filters.js";
 
@@ -19,7 +18,6 @@ function CategoryPage() {
   const [maxPrice, setMaxPrice] = useState("");
   const [minPrice, setMinPrice] = useState("");
   const [condition, setCondition] = useState("");
-  const [selectedProduct, setSelectedProduct] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
 
   const decodedCategory = decodeURIComponent(categoryName || "");
@@ -209,7 +207,6 @@ function CategoryPage() {
                   <ProductCard
                     key={ad.id}
                     product={ad}
-                    onClick={() => setSelectedProduct(ad)}
                   />
                 ))}
               </div>
@@ -218,13 +215,6 @@ function CategoryPage() {
 
         </div>
       </div>
-
-      {selectedProduct && (
-        <ProductModal
-          product={selectedProduct}
-          onClose={() => setSelectedProduct(null)}
-        />
-      )}
     </div>
   );
 }

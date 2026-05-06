@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+﻿import { useEffect, useState } from "react";
 import { addToCart, addToWishlist } from "../utility/marketplaceStore.js";
 import { isDarkModeEnabled } from "../utility/theme.js";
 import ReviewComponent from "./ReviewComponent.jsx";
@@ -10,10 +9,10 @@ import {
 } from "../utility/currency.js";
 
 function ProductModal({ product, onClose }) {
-  const navigate = useNavigate();
   const [toast, setToast] = useState("");
   const [currency, setCurrency] = useState(() => getSelectedCurrency());
   const [darkMode, setDarkMode] = useState(() => isDarkModeEnabled());
+
   useEffect(() => subscribeCurrencyChange(setCurrency), []);
 
   useEffect(() => {
@@ -32,7 +31,7 @@ function ProductModal({ product, onClose }) {
     product.features ||
     product.description
       .split(". ")
-      .slice(0, 3)
+      .slice(0, 4)
       .map((feature) => feature.replace(/\.$/, ""))
       .filter(Boolean);
 
@@ -53,12 +52,6 @@ function ProductModal({ product, onClose }) {
     addToWishlist(product);
     setToast("Added to wishlist");
     setTimeout(() => setToast(""), 1400);
-  };
-
-  const handleBuyNow = () => {
-    addToCart(product);
-    navigate("/checkout");
-    onClose();
   };
 
   return (
@@ -90,12 +83,10 @@ function ProductModal({ product, onClose }) {
             />
 
             <div className={`${darkMode ? "bg-slate-900/80 border-slate-800" : "bg-gray-50 border-gray-200"} rounded-3xl border p-6`}>
-              <div className="flex items-center justify-between gap-4 mb-4">
-                <div>
-                  <p className="text-sm uppercase tracking-[0.24em] text-teal-600 font-semibold">
-                    Delivery Options
-                  </p>
-                </div>
+              <div className="mb-4">
+                <p className="text-sm uppercase tracking-[0.24em] text-teal-600 font-semibold">
+                  Delivery Options
+                </p>
               </div>
 
               <ul className={`space-y-3 text-sm ${darkMode ? "text-slate-300" : "text-gray-600"}`}>
@@ -169,15 +160,8 @@ function ProductModal({ product, onClose }) {
               <div className="grid gap-3">
                 <button
                   type="button"
-                  onClick={handleBuyNow}
-                  className="rounded-3xl bg-teal-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-teal-700"
-                >
-                  Buy Now
-                </button>
-                <button
-                  type="button"
                   onClick={handleAddToCart}
-                  className="rounded-3xl border border-teal-600 px-5 py-3 text-sm font-semibold text-teal-700 transition hover:bg-teal-50"
+                  className="rounded-3xl bg-teal-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-teal-700"
                 >
                   Add to Cart
                 </button>

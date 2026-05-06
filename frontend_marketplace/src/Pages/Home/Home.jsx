@@ -112,10 +112,7 @@ function Home() {
             <ProductCard
               key={item.id ?? index}
               product={item}
-              onClick={() => {
-                addToRecentlyViewed(item);
-                setSelectedProduct(item);
-              }}
+              onClick={() => setSelectedProduct(item)}
             />
           ))}
         </div>

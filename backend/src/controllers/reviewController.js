@@ -1,10 +1,18 @@
 import Review from '../models/Review.js';
 import Product from '../models/Product.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
+import mongoose from 'mongoose';
 
 // Allow users to submit product reviews with automatic product rating calculation
 const createReview = asyncHandler(async (req, res) => {
   const { productId, rating, title, comment } = req.body;
+
+  // Validate if productId is a valid MongoDB ObjectId
+  if (!mongoose.Types.ObjectId.isValid(productId)) {
+    const error = new Error('Invalid product ID format');
+    error.status = 400;
+    throw error;
+  }
 
   const product = await Product.findById(productId);
   if (!product) {
@@ -39,7 +47,16 @@ const createReview = asyncHandler(async (req, res) => {
 
 // Fetch all reviews for a specific product with user information
 const getProductReviews = asyncHandler(async (req, res) => {
-  const reviews = await Review.find({ product: req.params.productId })
+  const { productId } = req.params;
+
+  // Validate if productId is a valid MongoDB ObjectId
+  if (!mongoose.Types.ObjectId.isValid(productId)) {
+    const error = new Error('Invalid product ID format');
+    error.status = 400;
+    throw error;
+  }
+
+  const reviews = await Review.find({ product: productId })
     .populate('user', 'name avatar')
     .sort({ createdAt: -1 });
 
@@ -49,8 +66,16 @@ const getProductReviews = asyncHandler(async (req, res) => {
 // Enable users to edit their product reviews with authorization check
 const updateReview = asyncHandler(async (req, res) => {
   const { rating, title, comment } = req.body;
+  const reviewId = req.params.id;
 
-  const review = await Review.findById(req.params.id);
+  // Validate if reviewId is a valid MongoDB ObjectId
+  if (!mongoose.Types.ObjectId.isValid(reviewId)) {
+    const error = new Error('Invalid review ID format');
+    error.status = 400;
+    throw error;
+  }
+
+  const review = await Review.findById(reviewId);
 
   if (!review) {
     const error = new Error('Review not found');
@@ -65,7 +90,7 @@ const updateReview = asyncHandler(async (req, res) => {
   }
 
   const updatedReview = await Review.findByIdAndUpdate(
-    req.params.id,
+    reviewId,
     { rating, title, comment },
     { new: true }
   );
@@ -78,7 +103,16 @@ const updateReview = asyncHandler(async (req, res) => {
 
 // Allow users to remove their reviews from products
 const deleteReview = asyncHandler(async (req, res) => {
-  const review = await Review.findById(req.params.id);
+  const reviewId = req.params.id;
+
+  // Validate if reviewId is a valid MongoDB ObjectId
+  if (!mongoose.Types.ObjectId.isValid(reviewId)) {
+    const error = new Error('Invalid review ID format');
+    error.status = 400;
+    throw error;
+  }
+
+  const review = await Review.findById(reviewId);
 
   if (!review) {
     const error = new Error('Review not found');
@@ -92,7 +126,7 @@ const deleteReview = asyncHandler(async (req, res) => {
     throw error;
   }
 
-  await Review.findByIdAndDelete(req.params.id);
+  await Review.findByIdAndDelete(reviewId);
 
   res.status(200).json({ message: 'Review deleted successfully' });
 });

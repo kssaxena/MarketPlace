@@ -5,7 +5,7 @@ import { useAuth } from "../../contexts/AuthContext.jsx";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login, error: authError } = useAuth();
+  const { login } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -58,9 +58,21 @@ export default function Login() {
           Welcome back! Please enter your details.
         </p>
 
-        {(error || authError) && (
-          <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
-            {error || authError}
+        {error && (
+          <div className="mb-4 p-4 bg-red-50 border-l-4 border-red-500 rounded-md flex items-start gap-3 shadow-md">
+            <div className="text-red-600 text-xl leading-none mt-0.5">⚠</div>
+            <div className="flex-1">
+              <p className="text-sm font-semibold text-red-800">Login Failed</p>
+              <p className="text-sm text-red-700 mt-1">{error}</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setError("")}
+              className="text-red-500 hover:text-red-700 font-bold text-lg leading-none hover:bg-red-100 rounded px-2 py-1 transition"
+              aria-label="Close error"
+            >
+              ×
+            </button>
           </div>
         )}
 

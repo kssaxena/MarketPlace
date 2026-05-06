@@ -41,7 +41,6 @@ function ProductCard({ product, onClick }) {
 
   return (
     <div
-      onClick={onClick}
       className="product-card group overflow-hidden rounded-[28px] bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl cursor-pointer"
     >
       <div className="relative h-64 overflow-hidden">
@@ -92,7 +91,7 @@ function ProductCard({ product, onClick }) {
         <button
           onClick={(e) => {
             e.stopPropagation();
-            onClick();
+            onClick?.();
           }}
           className="mt-3 w-full bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-700 transition-colors duration-200"
         >
