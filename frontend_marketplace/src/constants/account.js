@@ -19,4 +19,4 @@ export const DUMMY_TRANSACTIONS = [
   { id: 3, title: "IKEA MALM Bed", amount: "$320", date: "Feb 20, 2026", type: "Sale" },
 ];
 
-export const ACCOUNT_NAV_ITEMS = ["Profile", "My Ads", "Messages", "Favorites", "Transactions", "Settings"];
+export const ACCOUNT_NAV_ITEMS = ["Profile", "My Ads", "Messages", "Favorites", "Transactions", "Addresses", "Settings"];

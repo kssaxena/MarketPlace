@@ -5,7 +5,7 @@ import {
   getSelectedCurrency,
   subscribeCurrencyChange,
 } from "../../utility/currency.js";
-import { getCartItems, updateCartQty, removeFromCart, subscribeMarketplaceStore } from "../../utility/marketplaceStore.js";
+import { getCartItems, updateCartQty, removeFromCart, subscribeMarketplaceStore, getAddresses } from "../../utility/marketplaceStore.js";
 
 export default function Checkout() {
   const [cart, setCart] = useState([]);
@@ -28,8 +28,21 @@ export default function Checkout() {
     };
     
     loadCart();
+    // load saved addresses
+    setAddresses(getAddresses());
     const unsubscribe = subscribeMarketplaceStore(loadCart);
     return unsubscribe;
+  }, []);
+
+  // Addresses state
+  const [addresses, setAddresses] = useState([]);
+  const [selectedAddressId, setSelectedAddressId] = useState(null);
+
+  useEffect(() => {
+    const refresh = () => setAddresses(getAddresses());
+    refresh();
+    const unsub = subscribeMarketplaceStore(refresh);
+    return unsub;
   }, []);
 
   // Bill computation
@@ -218,6 +231,25 @@ export default function Checkout() {
         <SectionHeader step="3" title="Delivery address" />
 
         <div className="bg-white border border-gray-200 rounded-xl p-4 mb-6 space-y-3">
+          {addresses.length > 0 && (
+            <div className="mb-4">
+              <h4 className="text-sm font-semibold mb-2">Choose a saved address</h4>
+              <div className="grid gap-3">
+                {addresses.map((a) => (
+                  <label key={a.id} className={`flex items-center justify-between p-3 rounded-lg border ${String(selectedAddressId) === String(a.id) ? "border-teal-600 bg-teal-50" : "border-gray-100"}`}>
+                    <div>
+                      <p className="font-medium text-gray-800">{a.name} <span className="text-xs text-gray-500">{a.phone}</span></p>
+                      <p className="text-sm text-gray-600">{a.street}, {a.city}, {a.state} {a.zipCode}</p>
+                    </div>
+                    <input type="radio" name="selectedAddress" checked={String(selectedAddressId) === String(a.id)} onChange={() => {
+                      setSelectedAddressId(a.id);
+                      setForm({ name: a.name, phone: a.phone, street: a.street, city: a.city, state: a.state, zipCode: a.zipCode });
+                    }} />
+                  </label>
+                ))}
+              </div>
+            </div>
+          )}
           <div className="grid grid-cols-2 gap-3">
             <Field label="Full name" name="name" placeholder="Rahul Sharma" onChange={handleChange} />
             <Field label="Phone" name="phone" placeholder="+91 98765 43210" onChange={handleChange} />

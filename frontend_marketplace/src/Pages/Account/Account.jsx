@@ -5,6 +5,10 @@ import {
   getWishlistItems,
   removeFromWishlist,
   subscribeMarketplaceStore,
+  getAddresses,
+  addAddress,
+  updateAddress,
+  removeAddress,
 } from "../../utility/marketplaceStore.js";
 import { isDarkModeEnabled, setDarkMode as setGlobalDarkMode } from "../../utility/theme.js";
 import {
@@ -34,6 +38,18 @@ export default function Account() {
   );
 
   const [wishlist, setWishlist] = useState(getWishlistItems());
+  const [addresses, setAddresses] = useState(() => getAddresses());
+
+  const [addrEditingId, setAddrEditingId] = useState(null);
+  const [addrForm, setAddrForm] = useState({
+    name: "",
+    phone: "",
+    street: "",
+    city: "",
+    state: "",
+    zipCode: "",
+    country: "India",
+  });
 
   // Fetch user details from backend on component mount
   useEffect(() => {
@@ -60,6 +76,7 @@ export default function Account() {
   useEffect(() => {
     const unsub = subscribeMarketplaceStore(() => {
       setWishlist(getWishlistItems());
+      setAddresses(getAddresses());
     });
     return unsub;
   }, []);
@@ -87,6 +104,35 @@ export default function Account() {
     setUser(updated);
     localStorage.setItem("user", JSON.stringify(updated));
     setEditing(false);
+  };
+
+  const openNewAddressForm = () => {
+    setAddrEditingId(null);
+    setAddrForm({ name: "", phone: "", street: "", city: "", state: "", zipCode: "", country: "India" });
+  };
+
+  const startEditAddress = (addr) => {
+    setAddrEditingId(addr.id);
+    setAddrForm({ name: addr.name, phone: addr.phone, street: addr.street, city: addr.city, state: addr.state, zipCode: addr.zipCode, country: addr.country || "India" });
+  };
+
+  const submitAddress = () => {
+    if (!addrForm.street || !addrForm.name) return alert("Please enter name and street");
+    if (addrEditingId) {
+      updateAddress(addrEditingId, addrForm);
+    } else {
+      const id = `${addrForm.name.replace(/\s+/g, "-").toLowerCase()}-${Date.now()}`;
+      addAddress({ id, ...addrForm });
+    }
+    setAddrForm({ name: "", phone: "", street: "", city: "", state: "", zipCode: "", country: "India" });
+    setAddrEditingId(null);
+    setAddresses(getAddresses());
+  };
+
+  const handleRemoveAddress = (id) => {
+    if (!confirm("Remove this address?")) return;
+    removeAddress(id);
+    setAddresses(getAddresses());
   };
 
   const deleteAd = (id) => {
@@ -295,6 +341,58 @@ export default function Account() {
                   ))}
                 </div>
               )}
+            </div>
+          )}
+
+          {activeTab === "Addresses" && (
+            <div className="bg-white p-6 rounded-xl shadow">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="font-semibold text-lg">Saved Addresses</h3>
+                <div className="flex gap-2">
+                  <button onClick={openNewAddressForm} className="text-sm bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition">+ Add Address</button>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-4">
+                {addresses.length === 0 ? (
+                  <div className="text-gray-400">No saved addresses yet. Add one to speed up checkout.</div>
+                ) : (
+                  addresses.map((addr) => (
+                    <div key={addr.id} className="flex items-start justify-between p-4 rounded-lg border border-gray-100">
+                      <div>
+                        <p className="font-medium text-gray-800">{addr.name} — <span className="text-xs text-gray-500">{addr.phone}</span></p>
+                        <p className="text-sm text-gray-600 mt-1">{addr.street}, {addr.city}, {addr.state} {addr.zipCode}</p>
+                        <p className="text-xs text-gray-400 mt-1">{addr.country}</p>
+                      </div>
+                      <div className="flex flex-col gap-2 items-end">
+                        <div className="flex gap-2">
+                          <button onClick={() => startEditAddress(addr)} className="text-sm text-teal-600">Edit</button>
+                          <button onClick={() => handleRemoveAddress(addr.id)} className="text-sm text-red-500">Remove</button>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+
+                {/* Address form */}
+                <div className="mt-4 border-t pt-4">
+                  <h4 className="font-semibold mb-2">{addrEditingId ? "Edit Address" : "Add New Address"}</h4>
+                  <div className="grid grid-cols-2 gap-3">
+                    <input placeholder="Full name" value={addrForm.name} onChange={(e) => setAddrForm({ ...addrForm, name: e.target.value })} className="border rounded px-2 py-2" />
+                    <input placeholder="Phone" value={addrForm.phone} onChange={(e) => setAddrForm({ ...addrForm, phone: e.target.value })} className="border rounded px-2 py-2" />
+                    <input placeholder="Street / flat / area" value={addrForm.street} onChange={(e) => setAddrForm({ ...addrForm, street: e.target.value })} className="border rounded px-2 py-2 col-span-2" />
+                    <input placeholder="City" value={addrForm.city} onChange={(e) => setAddrForm({ ...addrForm, city: e.target.value })} className="border rounded px-2 py-2" />
+                    <input placeholder="State" value={addrForm.state} onChange={(e) => setAddrForm({ ...addrForm, state: e.target.value })} className="border rounded px-2 py-2" />
+                    <input placeholder="Zip code" value={addrForm.zipCode} onChange={(e) => setAddrForm({ ...addrForm, zipCode: e.target.value })} className="border rounded px-2 py-2" />
+                    <input placeholder="Country" value={addrForm.country} onChange={(e) => setAddrForm({ ...addrForm, country: e.target.value })} className="border rounded px-2 py-2" />
+                  </div>
+                  <div className="mt-3 flex gap-2">
+                    <button onClick={submitAddress} className="bg-teal-600 text-white px-4 py-2 rounded">Save address</button>
+                    <button onClick={openNewAddressForm} className="px-4 py-2 rounded border">Clear</button>
+                  </div>
+                </div>
+
+              </div>
             </div>
           )}
 

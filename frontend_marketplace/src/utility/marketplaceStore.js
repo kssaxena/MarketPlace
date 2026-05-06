@@ -1,6 +1,7 @@
 import { addToCart as addToCartAPI } from "../api/cart";
 const CART_KEY = "marketplace_cart_items";
 const WISHLIST_KEY = "marketplace_wishlist_items";
+const ADDRESSES_KEY = "marketplace_addresses";
 const STORE_EVENT = "marketplace:store-updated";
 
 function isBrowser() {
@@ -63,6 +64,28 @@ export function getCartItems() {
 
 export function getWishlistItems() {
   return readList(WISHLIST_KEY);
+}
+
+export function getAddresses() {
+  return readList(ADDRESSES_KEY);
+}
+
+export function addAddress(address) {
+  const next = [address, ...getAddresses()];
+  writeList(ADDRESSES_KEY, next);
+  emitStoreUpdate();
+}
+
+export function updateAddress(id, updated) {
+  const next = getAddresses().map((a) => (String(a.id) === String(id) ? { ...a, ...updated } : a));
+  writeList(ADDRESSES_KEY, next);
+  emitStoreUpdate();
+}
+
+export function removeAddress(id) {
+  const next = getAddresses().filter((a) => String(a.id) !== String(id));
+  writeList(ADDRESSES_KEY, next);
+  emitStoreUpdate();
 }
 
 export async function addToCart(product) {
