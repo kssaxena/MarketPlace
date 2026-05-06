@@ -37,6 +37,7 @@ export default function Checkout() {
   // Addresses state
   const [addresses, setAddresses] = useState([]);
   const [selectedAddressId, setSelectedAddressId] = useState(null);
+  const [showAddressPicker, setShowAddressPicker] = useState(false);
 
   useEffect(() => {
     const refresh = () => setAddresses(getAddresses());
@@ -44,6 +45,13 @@ export default function Checkout() {
     const unsub = subscribeMarketplaceStore(refresh);
     return unsub;
   }, []);
+
+  // initialize selected address to default or first
+  useEffect(() => {
+    if (!addresses || addresses.length === 0) return;
+    const def = addresses.find((a) => a.isDefault) || addresses[0];
+    if (!selectedAddressId) setSelectedAddressId(def.id);
+  }, [addresses]);
 
   // Bill computation
   const itemTotal = cart.reduce((sum, item) => sum + (item.price || 0) * (item.qty || 1), 0);
@@ -231,31 +239,59 @@ export default function Checkout() {
         <SectionHeader step="3" title="Delivery address" />
 
         <div className="bg-white border border-gray-200 rounded-xl p-4 mb-6 space-y-3">
-          {addresses.length > 0 && (
-            <div className="mb-4">
-              <h4 className="text-sm font-semibold mb-2">Choose a saved address</h4>
-              <div className="grid gap-3">
-                {addresses.map((a) => (
-                  <label key={a.id} className={`flex items-center justify-between p-3 rounded-lg border ${String(selectedAddressId) === String(a.id) ? "border-teal-600 bg-teal-50" : "border-gray-100"}`}>
-                    <div>
-                      <p className="font-medium text-gray-800">{a.name} <span className="text-xs text-gray-500">{a.phone}</span></p>
-                      <p className="text-sm text-gray-600">{a.street}, {a.city}, {a.state} {a.zipCode}</p>
-                    </div>
-                    <input type="radio" name="selectedAddress" checked={String(selectedAddressId) === String(a.id)} onChange={() => {
-                      setSelectedAddressId(a.id);
-                      setForm({ name: a.name, phone: a.phone, street: a.street, city: a.city, state: a.state, zipCode: a.zipCode });
-                    }} />
-                  </label>
-                ))}
+          {addresses.length === 0 ? (
+            <div>
+              <p className="text-sm text-gray-700">No delivery addresses saved yet.</p>
+              <div className="mt-3">
+                <button onClick={() => navigate('/account?tab=Addresses')} className="text-sm bg-teal-600 text-white px-4 py-2 rounded-lg">Add a new delivery address</button>
               </div>
             </div>
-          )}
-          <div className="py-2">
-            <p className="text-sm text-gray-600">Manage your delivery addresses in your account. Add, edit, or set a default address there and return to checkout to select it.</p>
-            <div className="mt-3">
-              <button onClick={() => navigate('/account?tab=Addresses')} className="text-sm bg-teal-600 text-white px-4 py-2 rounded-lg">Go to Account → Addresses</button>
+          ) : (
+            <div>
+              {/* Selected address summary */}
+              {(() => {
+                const current = addresses.find((a) => String(a.id) === String(selectedAddressId)) || addresses.find((a) => a.isDefault) || addresses[0];
+                if (!current) return null;
+                return (
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="font-medium text-gray-800">Delivering to <span className="font-semibold">{current.name}</span></p>
+                      <p className="text-sm text-gray-600 mt-1">{current.street}, {current.city}, {current.state}, {current.zipCode}, {current.country}</p>
+                      <p className="text-sm text-gray-500 mt-1">Phone: {current.phone}</p>
+                    </div>
+                    <div>
+                      <button onClick={() => setShowAddressPicker(true)} className="text-sm text-teal-600">Change</button>
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* Address picker panel */}
+              {showAddressPicker && (
+                <div className="mt-4">
+                  <div className="grid gap-3">
+                    {addresses.map((a) => (
+                      <label key={a.id} className={`flex items-center justify-between p-3 rounded-lg border ${String(selectedAddressId) === String(a.id) ? "border-teal-600 bg-teal-50" : "border-gray-100"}`}>
+                        <div>
+                          <p className="font-medium text-gray-800">{a.name} <span className="text-xs text-gray-500">{a.phone}</span></p>
+                          <p className="text-sm text-gray-600">{a.street}, {a.city}, {a.state} {a.zipCode}</p>
+                        </div>
+                        <input type="radio" name="selectedAddress" checked={String(selectedAddressId) === String(a.id)} onChange={() => {
+                          setSelectedAddressId(a.id);
+                          setForm({ name: a.name, phone: a.phone, street: a.street, city: a.city, state: a.state, zipCode: a.zipCode });
+                        }} />
+                      </label>
+                    ))}
+                  </div>
+                  <div className="mt-3 flex items-center gap-3">
+                    <button onClick={() => { setShowAddressPicker(false); }} className="px-4 py-2 border rounded">Cancel</button>
+                    <button onClick={() => { setShowAddressPicker(false); }} className="px-4 py-2 bg-teal-600 text-white rounded">Deliver to this address</button>
+                    <button onClick={() => navigate('/account?tab=Addresses')} className="ml-auto text-sm text-teal-600">Edit or add addresses</button>
+                  </div>
+                </div>
+              )}
             </div>
-          </div>
+          )}
         </div>
 
         {/* Step 4 — Payment */}
