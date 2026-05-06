@@ -279,10 +279,10 @@ export default function Checkout() {
 function SectionHeader({ step, title, children }) {
   return (
     <div className="flex items-center gap-2 mb-3">
-      <span className="w-6 h-6 rounded-full bg-gray-100 text-gray-500 text-xs flex items-center justify-center">
+      <span className="w-6 h-6 rounded-full bg-teal-600 text-white text-xs font-semibold flex items-center justify-center">
         {step}
       </span>
-      <h2 className="text-sm font-medium text-gray-500 uppercase">
+      <h2 className="text-sm font-semibold text-gray-900 uppercase">
         {title}
       </h2>
       {children}
@@ -292,9 +292,9 @@ function SectionHeader({ step, title, children }) {
 
 function BillRow({ label, value, green }) {
   return (
-    <div className="flex justify-between text-sm text-gray-500">
+    <div className="flex justify-between text-sm text-gray-700">
       <span>{label}</span>
-      <span className={green ? "text-green-600 font-medium" : "text-gray-800 dark:text-gray-200"}>
+      <span className={green ? "text-green-600 font-semibold" : "text-gray-900 font-medium dark:text-gray-100"}>
         {value}
       </span>
     </div>
