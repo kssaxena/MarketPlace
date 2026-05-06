@@ -1,8 +1,17 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { getRecentlyViewed } from "../utility/userTracking.js";
+import {
+  formatCurrency,
+  getSelectedCurrency,
+  subscribeCurrencyChange,
+} from "../utility/currency.js";
 
 export default function RecentlyViewed() {
   const recently = getRecentlyViewed();
+  const [currency, setCurrency] = useState(() => getSelectedCurrency());
+
+  useEffect(() => subscribeCurrencyChange(setCurrency), []);
 
   if (recently.length === 0) return null;
 
@@ -28,7 +37,7 @@ export default function RecentlyViewed() {
               <div className="p-3">
                 <p className="text-sm font-medium text-gray-800 line-clamp-2">{product.title}</p>
                 <p className="text-xs text-gray-500 mt-1">{product.location}</p>
-                <p className="text-teal-600 font-semibold text-sm mt-2">{product.price}</p>
+                <p className="text-teal-600 font-semibold text-sm mt-2">{formatCurrency(product.price, currency)}</p>
               </div>
             </Link>
           ))}

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header.jsx";
-import ProductModal from "../../components/ProductModal.jsx";
+
 import { productsData } from "../../constants/products.js";
 import {
   formatCurrency,
@@ -19,7 +19,6 @@ function parsePrice(p) {
 
 export default function BestDeals() {
   const navigate = useNavigate();
-  const [selectedProduct, setSelectedProduct] = useState(null);
   const [activeCategory, setActiveCategory] = useState("All");
   const [sortBy, setSortBy] = useState("default");
   const [searchQuery, setSearchQuery] = useState("");
@@ -114,7 +113,7 @@ export default function BestDeals() {
           <>
             {topPick && (
               <div
-                onClick={() => setSelectedProduct(topPick)}
+                onClick={() => navigate(`/product/${topPick.id}`)}
                 className="mb-8 cursor-pointer overflow-hidden rounded-[28px] border border-teal-100 bg-white shadow-lg transition hover:-translate-y-1 hover:shadow-2xl"
               >
                 <div className="grid md:grid-cols-2">
@@ -152,7 +151,7 @@ export default function BestDeals() {
               {rest.map((product, index) => (
                 <div
                   key={product.id ?? index}
-                  onClick={() => setSelectedProduct(product)}
+                  onClick={() => navigate(`/product/${product.id}`)}
                   className="group cursor-pointer overflow-hidden rounded-[24px] bg-white border border-gray-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
                 >
                   <div className="relative h-48 overflow-hidden">
@@ -176,8 +175,6 @@ export default function BestDeals() {
           </>
         )}
       </div>
-
-      {selectedProduct && <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />}
     </div>
   );
 }

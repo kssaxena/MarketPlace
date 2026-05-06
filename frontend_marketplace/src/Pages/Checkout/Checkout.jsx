@@ -1,49 +1,80 @@
 import { useState, useEffect } from "react";
 import Header from "../../components/Header.jsx";
+import {
+  formatCurrency,
+  getSelectedCurrency,
+  subscribeCurrencyChange,
+} from "../../utility/currency.js";
+import { getCartItems, updateCartQty, removeFromCart, subscribeMarketplaceStore } from "../../utility/marketplaceStore.js";
 
 export default function Checkout() {
   const [cart, setCart] = useState([]);
   const [paymentMethod, setPaymentMethod] = useState("upi");
+  const [currency, setCurrency] = useState(() => getSelectedCurrency());
   const [form, setForm] = useState({
     name: "", email: "", phone: "",
     street: "", city: "", state: "", zipCode: ""
   });
 
+  useEffect(() => subscribeCurrencyChange(setCurrency), []);
+
   useEffect(() => {
-    const fetchCartData = async () => {
-      const token = localStorage.getItem("token");
-
-      try {
-        const res = await fetch("/api/cart", {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-
-        const data = await res.json();
-
-        if (data.success && data.items.length > 0) {
-          setCart(data.items);
-        } else {
-          const localCart = JSON.parse(localStorage.getItem("marketplace_cart_items")) || [];
-          setCart(localCart);
-        }
-
-      } catch {
-        const localCart = JSON.parse(localStorage.getItem("marketplace_cart_items")) || [];
-        setCart(localCart);
-      }
+    const loadCart = () => {
+      const items = getCartItems().map(item => ({
+        ...item,
+        qty: item.qty || 1  // Ensure qty is always set
+      }));
+      setCart(items);
     };
-
-    fetchCartData();
+    
+    loadCart();
+    const unsubscribe = subscribeMarketplaceStore(loadCart);
+    return unsubscribe;
   }, []);
 
   // Bill computation
-  const itemTotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+  const itemTotal = cart.reduce((sum, item) => sum + (item.price || 0) * (item.qty || 1), 0);
   const deliveryFee = cart.length === 0 ? 0 : itemTotal > 500 ? 0 : 49;
   const platformFee = cart.length === 0 ? 0 : 20;
   const gst = Math.round(itemTotal * 0.05);
   const total = itemTotal + deliveryFee + platformFee + gst;
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+
+  const handleQuantityChange = (itemId, action) => {
+    console.log("Quantity change:", { itemId, action });
+    const item = cart.find(item => String(item.id) === String(itemId));
+    if (!item) {
+      console.log("Item not found");
+      return;
+    }
+    
+    if (action === "decrease") {
+      if (item.qty <= 1) {
+        console.log("Removing item:", itemId);
+        removeFromCart(itemId);
+        setCart(prevCart => prevCart.filter(i => String(i.id) !== String(itemId)));
+      } else {
+        console.log("Decreasing qty");
+        updateCartQty(itemId, -1);
+        setCart(prevCart => prevCart.map(i => 
+          String(i.id) === String(itemId) ? { ...i, qty: i.qty - 1 } : i
+        ));
+      }
+    } else if (action === "increase") {
+      console.log("Increasing qty");
+      updateCartQty(itemId, 1);
+      setCart(prevCart => prevCart.map(i => 
+        String(i.id) === String(itemId) ? { ...i, qty: i.qty + 1 } : i
+      ));
+    }
+  };
+
+  const handleRemoveItem = (itemId) => {
+    console.log("Removing item:", itemId);
+    removeFromCart(itemId);
+    setCart(prevCart => prevCart.filter(i => String(i.id) !== String(itemId)));
+  };
 
   const handleCheckout = async () => {
     const token = localStorage.getItem("token");
@@ -106,31 +137,71 @@ export default function Checkout() {
             <p className="text-sm text-gray-400 text-center py-8">Your cart is empty</p>
           ) : (
             cart.map((item, i) => (
-              <div key={item.id || i} className="flex items-center gap-3 p-4">
+              <div key={item.id || i} className="flex items-center gap-4 p-4">
                 {item.image ? (
                   <img
                     src={item.image}
                     alt={item.title}
-                    className="w-12 h-12 rounded-lg object-cover border"
+                    className="w-16 h-16 rounded-lg object-cover border"
                   />
                 ) : (
-                  <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
+                  <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
                     📦
                   </div>
                 )}
 
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-900 truncate">
+                  <p className="text-sm font-medium text-gray-900">
                     {item.title}
                   </p>
-                  <p className="text-xs text-gray-400 mt-0.5">
-                    Qty: {item.qty} · ₹{item.price} each
+                  <p className="text-xs text-gray-500 mt-1">
+                    {formatCurrency(item.price, currency)}
                   </p>
                 </div>
 
-                <span className="text-sm font-medium text-gray-900">
-                  ₹{(item.price * item.qty).toLocaleString()}
+                <div className="flex items-center gap-2 bg-gray-100 rounded-lg p-1">
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleQuantityChange(item.id, "decrease");
+                    }}
+                    className="w-8 h-8 flex items-center justify-center text-gray-700 hover:text-gray-900 hover:bg-gray-200 font-bold cursor-pointer rounded transition bg-white border border-gray-300"
+                  >
+                    −
+                  </button>
+                  <span className="w-6 text-center text-sm font-medium text-gray-900">
+                    {item.qty || 1}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleQuantityChange(item.id, "increase");
+                    }}
+                    className="w-8 h-8 flex items-center justify-center text-gray-700 hover:text-gray-900 hover:bg-gray-200 font-bold cursor-pointer rounded transition bg-white border border-gray-300"
+                  >
+                    +
+                  </button>
+                </div>
+
+                <span className="text-sm font-semibold text-gray-900 min-w-max">
+                  {formatCurrency(item.price * (item.qty || 1), currency)}
                 </span>
+
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleRemoveItem(item.id);
+                  }}
+                  className="text-red-500 hover:text-red-700 text-sm font-medium cursor-pointer"
+                >
+                  Remove
+                </button>
               </div>
             ))
           )}
@@ -140,14 +211,14 @@ export default function Checkout() {
         <SectionHeader step="2" title="Bill summary" />
 
         <div className="bg-white border border-gray-200 rounded-xl p-4 mb-6 space-y-2.5">
-          <BillRow label={`Item total (${cart.length} items)`} value={`₹${itemTotal.toLocaleString()}`} />
-          <BillRow label="Delivery charges" value={deliveryFee === 0 ? "Free" : `₹${deliveryFee}`} green={deliveryFee === 0} />
-          <BillRow label="Platform fee" value={`₹${platformFee}`} />
-          <BillRow label="GST (5%)" value={`₹${gst}`} />
+          <BillRow label={`Item total (${cart.length} items)`} value={formatCurrency(itemTotal, currency)} />
+          <BillRow label="Delivery charges" value={deliveryFee === 0 ? "Free" : formatCurrency(deliveryFee, currency)} green={deliveryFee === 0} />
+          <BillRow label="Platform fee" value={formatCurrency(platformFee, currency)} />
+          <BillRow label="GST (5%)" value={formatCurrency(gst, currency)} />
 
           <div className="border-t pt-2.5 flex justify-between text-base font-semibold text-gray-900 dark:text-white">
             <span>Total payable</span>
-            <span>₹{total.toLocaleString()}</span>
+            <span>{formatCurrency(total, currency)}</span>
           </div>
         </div>
 

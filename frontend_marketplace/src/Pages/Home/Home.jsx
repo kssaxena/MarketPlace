@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import ProductModal from "../../components/ProductModal.jsx";
 import CategoriesBar from "../../components/CategoriesBar.jsx";
 import ProductCard from "../../components/ProductCard.jsx";
 import Header from "../../components/Header.jsx";
@@ -19,7 +18,6 @@ const HERO_IMAGES = [
 
 function Home() {
   const navigate = useNavigate();
-  const [selectedProduct, setSelectedProduct] = useState(null);
   const [products, setProducts] = useState(productsData);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -125,18 +123,12 @@ function Home() {
             <ProductCard
               key={item.id ?? index}
               product={item}
-              onClick={() => {
-                addToRecentlyViewed(item);
-                setSelectedProduct(item);
-              }}
             />
           ))}
         </div>
       </div>
 
       <RecentlyViewed />
-
-      {selectedProduct && <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />}
     </div>
   );
 }

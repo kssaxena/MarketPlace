@@ -18,6 +18,7 @@ import TermsConditions from "./Pages/Terms_and_Conditions/Terms_and_Conditions.j
 import Footer from "./components/Footer.jsx";
 import CategoryPage from "./Pages/CategoryPage/CategoryPage.jsx";
 import Header from "./components/Header.jsx";
+import ProductDetail from "./Pages/ProductDetail/ProductDetail.jsx";
 import { applyTheme, isDarkModeEnabled } from "./utility/theme.js";
 import BestDeals from "./Pages/BestDeals/BestDeals.jsx";
 import { AuthProvider } from "./contexts/AuthContext.jsx";
@@ -56,6 +57,7 @@ function App() {
         <Route path="/category/:categoryName/:subCategory" element={<CategoryPage />} />
         <Route path="/best-deals" element={<BestDeals />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/product/:productId" element={<ProductDetail />} />
       </Routes>
       </div>
       <Footer />
