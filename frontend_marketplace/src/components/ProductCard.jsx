@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Eye, Heart } from "lucide-react";
+import { Heart } from "lucide-react";
 import {
   formatCurrency,
   getSelectedCurrency,
@@ -16,7 +15,6 @@ import {
 function ProductCard({ product, onClick }) {
   const condition = product.condition || "Good";
   const [currency, setCurrency] = useState(() => getSelectedCurrency());
-  const navigate = useNavigate();
   const [isInWishlist, setIsInWishlist] = useState(() => {
     const wishlist = getWishlistItems();
     return wishlist.some((item) => String(item.id) === String(product?.id));
@@ -31,11 +29,6 @@ function ProductCard({ product, onClick }) {
     };
     return subscribeMarketplaceStore(handleStoreUpdate);
   }, [product?.id]);
-
-  const handleViewProduct = (e) => {
-    e.stopPropagation();
-    navigate(`/product/${product.id}`);
-  };
 
   const handleWishlistToggle = (e) => {
     e.stopPropagation();
@@ -95,12 +88,13 @@ function ProductCard({ product, onClick }) {
         <p className="product-card__location mt-2 text-[0.9rem] font-medium text-gray-500">
           {product.location}
         </p>
-        
         <button
-          onClick={handleViewProduct}
-          className="w-full mt-4 bg-teal-600 hover:bg-teal-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+          onClick={(e) => {
+            e.stopPropagation();
+            onClick?.();
+          }}
+          className="mt-3 w-full bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-700 transition-colors duration-200"
         >
-          <Eye size={18} />
           View Product
         </button>
       </div>
