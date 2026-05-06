@@ -61,11 +61,11 @@ function ProductModal({ product, onClose }) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`${darkMode ? "bg-slate-950" : "bg-white"} w-full max-w-6xl rounded-3xl shadow-2xl relative overflow-hidden animate-fadeIn transition-colors my-8`}
+        className={`${darkMode ? "bg-slate-950" : "bg-white"} w-full max-w-3xl rounded-3xl shadow-2xl relative overflow-hidden animate-fadeIn transition-colors my-8`}
       >
         <button
           onClick={onClose}
-          className={`absolute top-5 right-5 rounded-full px-3 py-2 text-lg shadow-lg transition z-10 ${
+          className={`absolute top-4 right-4 rounded-full px-3 py-2 text-lg shadow-lg transition z-10 ${
             darkMode
               ? "bg-slate-800 text-slate-200 hover:bg-slate-700"
               : "bg-white text-gray-700 hover:bg-gray-100"
@@ -74,12 +74,12 @@ function ProductModal({ product, onClose }) {
           ✕
         </button>
 
-        <div className="grid gap-6 lg:grid-cols-[1.4fr_0.9fr] p-6 lg:p-8">
-          <div className="space-y-6">
+        <div className="grid gap-5 lg:grid-cols-[1.2fr_0.8fr] p-4 lg:p-6">
+          <div className="space-y-5">
             <img
               src={product.image}
               alt={product.title}
-              className="w-full rounded-3xl h-[430px] object-cover border border-gray-200"
+              className="w-full rounded-3xl h-[260px] object-cover border border-gray-200"
             />
 
             <div className={`${darkMode ? "bg-slate-900/80 border-slate-800" : "bg-gray-50 border-gray-200"} rounded-3xl border p-6`}>
@@ -137,7 +137,7 @@ function ProductModal({ product, onClose }) {
           <div className="space-y-6">
             <div className={`${darkMode ? "bg-slate-900/80 border-slate-800" : "bg-white border-gray-200"} rounded-3xl border p-6 shadow-sm`}>
               <p className="text-sm text-teal-600 font-semibold uppercase tracking-[0.24em] mb-3">{product.category || "Marketplace"}</p>
-              <h2 className={`text-3xl font-semibold mb-4 ${darkMode ? "text-slate-100" : "text-gray-900"}`}>
+              <h2 className={`text-2xl md:text-3xl font-semibold mb-4 ${darkMode ? "text-slate-100" : "text-gray-900"}`}>
                 {product.title}
               </h2>
               <div className="flex items-center gap-4 mb-4">
@@ -149,12 +149,20 @@ function ProductModal({ product, onClose }) {
                 </span>
               </div>
               <div className={`${darkMode ? "bg-slate-900 border-slate-800" : "bg-gray-50 border border-gray-200"} rounded-3xl p-4 mb-5`}>
-                <p className={`text-sm mb-3 ${darkMode ? "text-slate-300" : "text-gray-600"}`}>
-                  {product.description}
-                </p>
-                <p className={`text-sm font-medium ${darkMode ? "text-slate-200" : "text-gray-900"}`}>
-                  Condition: {condition}
-                </p>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.18em] text-gray-500 mb-2">Location</p>
+                    <p className={`font-medium ${darkMode ? "text-slate-200" : "text-gray-800"}`}>
+                      {product.location}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.18em] text-gray-500 mb-2">Posted</p>
+                    <p className={`font-medium ${darkMode ? "text-slate-200" : "text-gray-800"}`}>
+                      {product.time}
+                    </p>
+                  </div>
+                </div>
               </div>
 
               <div className="grid gap-3">
@@ -200,6 +208,17 @@ function ProductModal({ product, onClose }) {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        <div className={`px-6 pb-6 lg:px-8`}> 
+          <div className={`${darkMode ? "bg-slate-950 border-slate-800" : "bg-white border-gray-200"} rounded-3xl border p-6 mb-6`}>
+            <h3 className={`text-xl font-semibold mb-4 ${darkMode ? "text-slate-100" : "text-gray-900"}`}>
+              Description
+            </h3>
+            <p className={`text-sm leading-relaxed ${darkMode ? "text-slate-300" : "text-gray-700"}`}>
+              {product.description}
+            </p>
           </div>
         </div>
 
