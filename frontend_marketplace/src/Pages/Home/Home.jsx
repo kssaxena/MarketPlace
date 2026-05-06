@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ProductModal from "../../components/ProductModal.jsx";
-import CategoriesBar from "../../components/CategoriesBar.jsx";
 import ProductCard from "../../components/ProductCard.jsx";
 import Header from "../../components/Header.jsx";
 import RecentlyViewed from "../../components/RecentlyViewed.jsx";
@@ -23,7 +22,6 @@ function Home() {
   const [products, setProducts] = useState(productsData);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState("All Ads");
   const [searchQuery, setSearchQuery] = useState("");
 
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -72,11 +70,6 @@ function Home() {
     return () => window.removeEventListener("themechange", onThemeChange);
   }, []);
 
-  const filteredProducts =
-    selectedCategory === "All Ads"
-      ? products
-      : products.filter((p) => p.category === selectedCategory);
-
   const handleSearchSubmit = (event) => {
     // Normalize empty searches to the base search route.
     event.preventDefault();
@@ -92,7 +85,6 @@ function Home() {
         searchQuery={searchQuery}
         onSearchQueryChange={setSearchQuery}
         onSearchSubmit={handleSearchSubmit}
-        onPostAdClick={() => navigate("/post-ad")}
         darkMode={darkMode}
         onToggleDarkMode={() => setDarkMode(!darkMode)}
         showDarkModeToggle
@@ -110,18 +102,13 @@ function Home() {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4">
-        <CategoriesBar
-          selectedCategory={selectedCategory}
-          setSelectedCategory={setSelectedCategory}
-        />
-      </div>
+      
 
       <div className="max-w-6xl mx-auto p-6">
-        {filteredProducts.length === 0 && <p>No products available</p>}
+        {products.length === 0 && <p>No products available</p>}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {filteredProducts.map((item, index) => (
+          {products.map((item, index) => (
             <ProductCard
               key={item.id ?? index}
               product={item}

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { addToCart, addToWishlist } from "../utility/marketplaceStore.js";
 import { isDarkModeEnabled } from "../utility/theme.js";
 import ReviewComponent from "./ReviewComponent.jsx";
@@ -9,6 +10,7 @@ import {
 } from "../utility/currency.js";
 
 function ProductModal({ product, onClose }) {
+  const navigate = useNavigate();
   const [toast, setToast] = useState("");
   const [currency, setCurrency] = useState(() => getSelectedCurrency());
   const [darkMode, setDarkMode] = useState(() => isDarkModeEnabled());
@@ -25,6 +27,22 @@ function ProductModal({ product, onClose }) {
 
   if (!product) return null;
 
+  const condition = product.condition || "Good";
+  const keyFeatures =
+    product.features ||
+    product.description
+      .split(". ")
+      .slice(0, 3)
+      .map((feature) => feature.replace(/\.$/, ""))
+      .filter(Boolean);
+
+  const specifications = product.specifications || [
+    { label: "Category", value: product.category || "General" },
+    { label: "Location", value: product.location || "Unknown" },
+    { label: "Condition", value: condition },
+    { label: "Posted", value: product.time || "Recently" },
+  ];
+
   const handleAddToCart = () => {
     addToCart(product);
     setToast("Added to cart");
@@ -37,102 +55,178 @@ function ProductModal({ product, onClose }) {
     setTimeout(() => setToast(""), 1400);
   };
 
+  const handleBuyNow = () => {
+    addToCart(product);
+    navigate("/checkout");
+    onClose();
+  };
+
   return (
     <div
       onClick={onClose}
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center p-4 z-50 overflow-y-auto"
+      className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center p-4 z-50 overflow-y-auto"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`${darkMode ? "bg-slate-900" : "bg-white"} w-full max-w-2xl rounded-xl shadow-xl relative overflow-hidden animate-fadeIn transition-colors my-8`}
+        className={`${darkMode ? "bg-slate-950" : "bg-white"} w-full max-w-6xl rounded-3xl shadow-2xl relative overflow-hidden animate-fadeIn transition-colors my-8`}
       >
-
-        {/* CLOSE BUTTON */}
         <button
           onClick={onClose}
-          className={`absolute top-4 right-4 rounded-full px-2 py-1 text-lg shadow-md transition z-10 ${
-            darkMode 
-              ? "bg-slate-700/80 hover:bg-slate-700 text-red-400" 
-              : "bg-white/80 hover:bg-white text-red-700"
+          className={`absolute top-5 right-5 rounded-full px-3 py-2 text-lg shadow-lg transition z-10 ${
+            darkMode
+              ? "bg-slate-800 text-slate-200 hover:bg-slate-700"
+              : "bg-white text-gray-700 hover:bg-gray-100"
           }`}
         >
           ✕
         </button>
 
-        {/* SCROLLABLE CONTENT */}
-        <div className="max-h-[85vh] overflow-y-auto">
-          {/* IMAGE */}
-          <img
-            src={product.image}
-            alt={product.title}
-            className="w-full h-80 object-cover"
-          />
+        <div className="grid gap-6 lg:grid-cols-[1.4fr_0.9fr] p-6 lg:p-8">
+          <div className="space-y-6">
+            <img
+              src={product.image}
+              alt={product.title}
+              className="w-full rounded-3xl h-[430px] object-cover border border-gray-200"
+            />
 
-          {/* CONTENT */}
-          <div className="p-6">
-            <h2 className={`text-2xl font-semibold mb-2 ${darkMode ? "text-slate-100" : "text-gray-900"}`}>{product.title}</h2>
+            <div className={`${darkMode ? "bg-slate-900/80 border-slate-800" : "bg-gray-50 border-gray-200"} rounded-3xl border p-6`}>
+              <div className="flex items-center justify-between gap-4 mb-4">
+                <div>
+                  <p className="text-sm uppercase tracking-[0.24em] text-teal-600 font-semibold">
+                    Delivery Options
+                  </p>
+                </div>
+              </div>
 
-            <p className="text-teal-600 text-xl font-bold mb-4">
-              {formatCurrency(product.price, currency)}
-            </p>
+              <ul className={`space-y-3 text-sm ${darkMode ? "text-slate-300" : "text-gray-600"}`}>
+                <li className="flex items-center gap-3">
+                  <span className="h-2.5 w-2.5 rounded-full bg-teal-600" />
+                  Delivery within 3-5 business days
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="h-2.5 w-2.5 rounded-full bg-teal-600" />
+                  Pickup available from seller location
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="h-2.5 w-2.5 rounded-full bg-teal-600" />
+                  Free returns within 7 days
+                </li>
+              </ul>
+            </div>
 
-            <p className={`leading-relaxed mb-6 ${darkMode ? "text-slate-300" : "text-gray-700"}`}>
-              {product.description}
-            </p>
+            <div className={`${darkMode ? "bg-slate-900/80 border-slate-800" : "bg-gray-50 border-gray-200"} rounded-3xl border p-6`}>
+              <h3 className={`text-xl font-semibold mb-4 ${darkMode ? "text-slate-100" : "text-gray-900"}`}>
+                Key Features
+              </h3>
+              <ul className={`space-y-3 text-sm ${darkMode ? "text-slate-300" : "text-gray-600"}`}>
+                {keyFeatures.map((feature, index) => (
+                  <li key={index} className="flex gap-3">
+                    <span className="mt-1 h-2.5 w-2.5 rounded-full bg-teal-600" />
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-            {/* 🔥 SELLER INFO (NO API CALL NEEDED) */}
-            {product.seller && (
-              <div className={`mb-4 p-4 rounded-xl ${darkMode ? "bg-slate-800" : "bg-gray-100"}`}>
-                <h3 className={`font-semibold text-lg mb-1 ${darkMode ? "text-slate-100" : "text-gray-900"}`}>Seller Info</h3>
+            <div className={`${darkMode ? "bg-slate-950 border-slate-800" : "bg-white border-gray-200"} rounded-3xl border p-6`}>
+              <h3 className={`text-xl font-semibold mb-4 ${darkMode ? "text-slate-100" : "text-gray-900"}`}>
+                Specifications
+              </h3>
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                {specifications.map((spec) => (
+                  <div key={spec.label} className={`${darkMode ? "bg-slate-900" : "bg-gray-50"} rounded-2xl p-4`}>
+                    <p className="text-xs uppercase tracking-[0.18em] text-gray-500 mb-2">{spec.label}</p>
+                    <p className={`${darkMode ? "text-slate-200" : "text-gray-800"} font-medium`}>{spec.value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
 
-                <p className={darkMode ? "text-slate-300" : "text-gray-700"}>
-                  {product.seller?.personalDetails?.name}
+          <div className="space-y-6">
+            <div className={`${darkMode ? "bg-slate-900/80 border-slate-800" : "bg-white border-gray-200"} rounded-3xl border p-6 shadow-sm`}>
+              <p className="text-sm text-teal-600 font-semibold uppercase tracking-[0.24em] mb-3">{product.category || "Marketplace"}</p>
+              <h2 className={`text-3xl font-semibold mb-4 ${darkMode ? "text-slate-100" : "text-gray-900"}`}>
+                {product.title}
+              </h2>
+              <div className="flex items-center gap-4 mb-4">
+                <span className="rounded-full bg-teal-600/10 px-3 py-1 text-sm font-semibold text-teal-700">
+                  {formatCurrency(product.price, currency)}
+                </span>
+                <span className={`text-sm ${darkMode ? "text-slate-400" : "text-gray-500"}`}>
+                  {product.location}
+                </span>
+              </div>
+              <div className={`${darkMode ? "bg-slate-900 border-slate-800" : "bg-gray-50 border border-gray-200"} rounded-3xl p-4 mb-5`}>
+                <p className={`text-sm mb-3 ${darkMode ? "text-slate-300" : "text-gray-600"}`}>
+                  {product.description}
                 </p>
-
-                <p className={`text-sm ${darkMode ? "text-slate-400" : "text-gray-500"}`}>
-                  {product.seller?.communityDetails?.name}
+                <p className={`text-sm font-medium ${darkMode ? "text-slate-200" : "text-gray-900"}`}>
+                  Condition: {condition}
                 </p>
               </div>
-            )}
 
-            <div className="mb-5 flex flex-wrap items-center gap-3">
-              <button
-                type="button"
-                onClick={handleAddToCart}
-                className="rounded-xl bg-teal-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-teal-700"
-              >
-                Add to Cart
-              </button>
-              <button
-                type="button"
-                onClick={handleAddToWishlist}
-                className={`rounded-xl border px-5 py-2.5 text-sm font-semibold transition ${
-                  darkMode
-                    ? "border-slate-600 bg-slate-800 text-slate-200 hover:bg-slate-700"
-                    : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
-                }`}
-              >
-                Add to Wishlist
-              </button>
-              {toast && <span className={`text-sm font-medium ${darkMode ? "text-teal-400" : "text-teal-700"}`}>{toast}</span>}
+              <div className="grid gap-3">
+                <button
+                  type="button"
+                  onClick={handleBuyNow}
+                  className="rounded-3xl bg-teal-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-teal-700"
+                >
+                  Buy Now
+                </button>
+                <button
+                  type="button"
+                  onClick={handleAddToCart}
+                  className="rounded-3xl border border-teal-600 px-5 py-3 text-sm font-semibold text-teal-700 transition hover:bg-teal-50"
+                >
+                  Add to Cart
+                </button>
+                <button
+                  type="button"
+                  onClick={handleAddToWishlist}
+                  className={`rounded-3xl bg-white px-5 py-3 text-sm font-semibold transition ${
+                    darkMode
+                      ? "border border-slate-700 text-slate-100 hover:bg-slate-800"
+                      : "border border-gray-200 text-gray-700 hover:bg-gray-50"
+                  }`}
+                >
+                  Add to Wishlist
+                </button>
+              </div>
+
+              {toast && <p className={`mt-4 text-sm font-medium ${darkMode ? "text-teal-400" : "text-teal-700"}`}>{toast}</p>}
             </div>
 
-            {/* LOCATION & TIME */}
-            <div className={`text-sm flex justify-between mb-6 ${darkMode ? "text-slate-400" : "text-gray-500"}`}>
-              <span>{product.location}</span>
-              <span>{product.time}</span>
+            <div className={`${darkMode ? "bg-slate-950 border-slate-800" : "bg-white border-gray-200"} rounded-3xl border p-6`}>
+              <h3 className={`text-xl font-semibold mb-4 ${darkMode ? "text-slate-100" : "text-gray-900"}`}>Delivery Options</h3>
+              <div className={`space-y-3 text-sm ${darkMode ? "text-slate-300" : "text-gray-600"}`}>
+                <div className={`flex justify-between items-center rounded-2xl p-4 ${darkMode ? "bg-slate-900" : "bg-gray-50"}`}>
+                  <div>
+                    <p className="font-semibold">Standard Delivery</p>
+                    <p className="text-xs text-gray-500">3-5 business days</p>
+                  </div>
+                  <span className="text-teal-600 font-semibold">Free</span>
+                </div>
+                <div className={`flex justify-between items-center rounded-2xl p-4 ${darkMode ? "bg-slate-900" : "bg-gray-50"}`}>
+                  <div>
+                    <p className="font-semibold">Pickup Available</p>
+                    <p className="text-xs text-gray-500">Pickup from seller address</p>
+                  </div>
+                  <span className="text-teal-600 font-semibold">Free</span>
+                </div>
+              </div>
             </div>
-
-            {/* REVIEWS COMPONENT */}
-            <ReviewComponent 
-              productId={product._id || product.id} 
-              onReviewAdded={() => {
-                // Optionally refresh product data if needed
-              }}
-            />
           </div>
         </div>
 
+        <div className={`border-t ${darkMode ? "border-slate-800" : "border-gray-200"} px-6 py-6 lg:px-8`}>
+          <ReviewComponent
+            productId={product._id || product.id}
+            onReviewAdded={() => {
+              // Optional refresh logic
+            }}
+          />
+        </div>
       </div>
     </div>
   );

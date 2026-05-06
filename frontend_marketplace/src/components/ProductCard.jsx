@@ -89,6 +89,15 @@ function ProductCard({ product, onClick }) {
         <p className="product-card__location mt-2 text-[0.9rem] font-medium text-gray-500">
           {product.location}
         </p>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onClick();
+          }}
+          className="mt-3 w-full bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-700 transition-colors duration-200"
+        >
+          View Product
+        </button>
       </div>
     </div>
   );
