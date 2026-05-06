@@ -6,11 +6,6 @@ import {
 } from "../utility/currency.js";
 import { isDarkModeEnabled } from "../utility/theme.js";
 import { useNavigate } from "react-router-dom";
-import {
-  fetchCart,
-  updateCartItem,
-  deleteCartItem
-} from "../api/cart";
 
 function CartModal({
   isOpen,
@@ -46,30 +41,16 @@ function CartModal({
     [cartItems]
   );
 
-  const refreshCart = async () => {
-  const data = await fetchCart();
-  if (data.success) {
-    setCartItems(data.items);
-  }
+  const handleIncrease = (itemId) => {
+  onIncreaseQty(itemId);
 };
 
-const handleIncrease = async (item) => {
-  await updateCartItem(item.id, item.qty + 1);
-  refreshCart();
+const handleDecrease = (itemId) => {
+  onDecreaseQty(itemId);
 };
 
-const handleDecrease = async (item) => {
-  if (item.qty === 1) {
-    await deleteCartItem(item.id);
-  } else {
-    await updateCartItem(item.id, item.qty - 1);
-  }
-  refreshCart();
-};
-
-const handleRemove = async (item) => {
-  await deleteCartItem(item.id);
-  refreshCart();
+const handleRemove = (itemId) => {
+  onRemoveCartItem(itemId);
 };
 
   if (!isOpen) return null;
@@ -134,7 +115,7 @@ const handleRemove = async (item) => {
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
-                      onClick={() => handleDecrease(item)}
+                      onClick={() => handleDecrease(item.id)}
                       className={`rounded ${darkMode ? "bg-slate-600 hover:bg-slate-500 text-slate-100" : "bg-gray-300"} px-2`}
                     >
                       -
@@ -142,14 +123,14 @@ const handleRemove = async (item) => {
                     <span className={`w-6 text-center ${darkMode ? "text-slate-100" : ""}`}>{item.qty}</span>
                     <button
                       type="button"
-                      onClick={() => handleIncrease(item)}
+                      onClick={() => handleIncrease(item.id)}
                       className={`rounded ${darkMode ? "bg-slate-600 hover:bg-slate-500 text-slate-100" : "bg-gray-300"} px-2`}
                     >
                       +
                     </button>
                     <button
                       type="button"
-                      onClick={() => handleRemove(item)}
+                      onClick={() => handleRemove(item.id)}
                       className={`ml-1 text-xs font-semibold ${darkMode ? "text-red-400 hover:text-red-300" : "text-red-500 hover:text-red-600"}`}
                     >
                       Remove
