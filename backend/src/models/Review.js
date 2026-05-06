@@ -20,11 +20,13 @@ const reviewSchema = new mongoose.Schema(
     },
     title: {
       type: String,
+      required: true,
       trim: true,
       maxlength: [100, 'Title cannot exceed 100 characters'],
     },
     comment: {
       type: String,
+      required: true,
       trim: true,
       maxlength: [1000, 'Comment cannot exceed 1000 characters'],
     },

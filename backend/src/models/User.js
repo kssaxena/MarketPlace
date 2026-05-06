@@ -5,14 +5,15 @@ const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, 'Please provide a name'],
+      required: true,
       trim: true,
       maxlength: [50, 'Name cannot exceed 50 characters'],
     },
     email: {
       type: String,
-      required: [true, 'Please provide an email'],
+      required: true,
       unique: true,
+      trim: true,
       lowercase: true,
       match: [
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
@@ -21,7 +22,7 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: [true, 'Please provide a password'],
+      required: true,
       minlength: [6, 'Password must be at least 6 characters'],
       select: false,
     },
@@ -31,15 +32,16 @@ const userSchema = new mongoose.Schema(
     },
     avatar: {
       type: String,
+      trim: true,
       default: null,
     },
-    address: {
+    address: [{
       street: String,
       city: String,
       state: String,
       zipCode: String,
       country: String,
-    },
+    }],
     role: {
       type: String,
       enum: ['user', 'seller', 'admin'],
@@ -49,16 +51,8 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
-    updatedAt: {
-      type: Date,
-      default: Date.now,
-    },
   },
-  { timestamps: true }
+  { timestamps: true }  
 );
 
 // Hash password before saving

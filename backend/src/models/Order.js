@@ -4,6 +4,7 @@ const orderSchema = new mongoose.Schema(
   {
     orderNumber: {
       type: String,
+      trim: true,
       unique: true,
       required: true,
     },
@@ -28,17 +29,18 @@ const orderSchema = new mongoose.Schema(
       min: 0,
     },
     shippingAddress: {
-      name: String,
-      email: String,
-      phone: String,
-      street: String,
-      city: String,
-      state: String,
-      zipCode: String,
-      country: String,
+      name: { type: String, trim: true },
+      email: { type: String, trim: true },
+      phone: { type: String, trim: true },
+      street: { type: String, trim: true },
+      city: { type: String, trim: true },
+      state: { type: String, trim: true },
+      zipCode: { type: String, trim: true },
+      country: { type: String, trim: true },
     },
     paymentMethod: {
       type: String,
+      trim: true,
       enum: ['credit_card', 'debit_card', 'net_banking', 'upi', 'wallet'],
     },
     paymentStatus: {
@@ -51,14 +53,9 @@ const orderSchema = new mongoose.Schema(
       enum: ['pending', 'processing', 'shipped', 'delivered', 'cancelled'],
       default: 'pending',
     },
-    trackingNumber: String,
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
-    updatedAt: {
-      type: Date,
-      default: Date.now,
+    trackingNumber: {
+      type: String,
+      trim: true,
     },
   },
   { timestamps: true }
