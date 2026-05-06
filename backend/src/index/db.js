@@ -1,12 +1,10 @@
 import mongoose from 'mongoose';
 
 const connectDB = async () => {
-  const mongoUri = process.env.MONGODB_URI;
+  const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/marketplace';
 
-  if (!mongoUri) {
-    const error = new Error('MONGODB_URI is not defined in environment variables');
-    error.status = 500;
-    throw error;
+  if (!process.env.MONGODB_URI) {
+    console.warn('[Database] MONGODB_URI is not defined. Falling back to local MongoDB at mongodb://127.0.0.1:27017/marketplace');
   }
 
   await mongoose.connect(mongoUri, {
