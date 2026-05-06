@@ -90,7 +90,7 @@ function Home() {
 
       <div className="p-10 bg-gray-100 text-center">
         <div
-          className="h-[400px] rounded-xl bg-cover bg-center relative"
+          className="h-96 rounded-xl bg-cover bg-center relative"
           style={{ backgroundImage: `url(${HERO_IMAGES[currentSlide]})` }}
         >
           <div className="absolute inset-0 bg-black/40 flex flex-col justify-center items-center text-white">

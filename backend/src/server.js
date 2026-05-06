@@ -11,8 +11,10 @@ import cartRoutes from './routes/cartRoutes.js';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const BASE_PORT = parseInt(process.env.PORT, 10) || 5000;
 const NODE_ENV = process.env.NODE_ENV || 'development';
+let currentPort = BASE_PORT;
+const MAX_PORT = BASE_PORT + 10;
 
 connectDB().catch((error) => {
   console.error('[Database] Connection failed:', error.message);
@@ -69,6 +71,24 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`[Server] Started on port ${PORT} | Environment: ${NODE_ENV}`);
-});
+const startServer = (port) => {
+  const server = app.listen(port, () => {
+    console.log(`[Server] Started on port ${port} | Environment: ${NODE_ENV}`);
+  });
+
+  server.on('error', (error) => {
+    if (error.code === 'EADDRINUSE' && port < MAX_PORT) {
+      const nextPort = port + 1;
+      console.warn(`[Server] Port ${port} is in use. Trying port ${nextPort} instead.`);
+      startServer(nextPort);
+    } else if (error.code === 'EADDRINUSE') {
+      console.error(`[Server] Ports ${BASE_PORT}-${MAX_PORT} are in use. Please stop the conflicting process or set a different PORT in .env.`);
+      process.exit(1);
+    } else {
+      console.error('[Server] Startup error:', error);
+      process.exit(1);
+    }
+  });
+};
+
+startServer(currentPort);

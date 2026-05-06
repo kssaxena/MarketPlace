@@ -213,7 +213,7 @@ export default function Account() {
                 <div className="flex flex-col gap-4">
                   {myAds.map((ad) => (
                     <div key={ad.id} className="flex items-center gap-4 border border-gray-100 rounded-xl p-4">
-                      <img src={ad.image} alt={ad.title} className="w-20 h-14 rounded-lg object-cover flex-shrink-0" />
+                      <img src={ad.image} alt={ad.title} className="w-20 h-14 rounded-lg object-cover shrink-0" />
                       <div className="flex-1 min-w-0">
                         <p className="font-medium text-gray-800 truncate">{ad.title}</p>
                         <p className="text-teal-600 font-semibold text-sm mt-1">{formatCurrency(ad.price, currency)}</p>
@@ -245,14 +245,14 @@ export default function Account() {
               <div className="flex flex-col gap-3">
                 {DUMMY_MESSAGES.map((msg) => (
                   <div key={msg.id} className="flex items-center gap-4 p-4 border border-gray-100 rounded-xl hover:bg-gray-50 cursor-pointer transition">
-                    <div className="w-10 h-10 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center font-semibold text-sm flex-shrink-0">
+                    <div className="w-10 h-10 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center font-semibold text-sm shrink-0">
                       {msg.avatar}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="font-medium text-gray-800 text-sm">{msg.from}</p>
                       <p className="text-gray-400 text-xs truncate">{msg.message}</p>
                     </div>
-                    <span className="text-xs text-gray-300 flex-shrink-0">{msg.time}</span>
+                    <span className="text-xs text-gray-300 shrink-0">{msg.time}</span>
                   </div>
                 ))}
               </div>
@@ -276,17 +276,17 @@ export default function Account() {
                 <div className="flex flex-col gap-4">
                   {wishlist.map((item) => (
                     <div key={item.id} className="flex items-center gap-4 border border-gray-100 rounded-xl p-4">
-                      <img src={item.image} alt={item.title} className="w-20 h-14 rounded-lg object-cover flex-shrink-0" />
+                      <img src={item.image} alt={item.title} className="w-20 h-14 rounded-lg object-cover shrink-0" />
                       <div className="flex-1 min-w-0">
                         <p className="font-medium text-gray-800 truncate">{item.title}</p>
                         <p className="text-xs text-gray-400 mt-1">{item.location}</p>
                       </div>
-                      <p className="text-teal-600 font-semibold text-sm flex-shrink-0">
+                      <p className="text-teal-600 font-semibold text-sm shrink-0">
                         {formatCurrency(item.price, currency)}
                       </p>
                       <button
                         onClick={() => removeFromWishlist(item.id)}
-                        className="text-gray-300 hover:text-red-400 transition text-lg flex-shrink-0"
+                        className="text-gray-300 hover:text-red-400 transition text-lg shrink-0"
                         title="Remove from favorites"
                       >
                         ✕

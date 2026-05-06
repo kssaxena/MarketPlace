@@ -83,5 +83,4 @@ const getAllOrders = asyncHandler(async (req, res) => {
 
   res.status(200).json({ orders });
 });
-
 export{createOrder, getUserOrders, getOrderById, updateOrderStatus, getAllOrders};
