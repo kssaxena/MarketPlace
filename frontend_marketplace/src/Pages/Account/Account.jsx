@@ -74,16 +74,25 @@ export default function Account() {
   }, []);
 
   // If navigated with ?tab=Addresses open that tab
-  const location = useLocation();
+  const routerLocation = useLocation();
   useEffect(() => {
     try {
-      const params = new URLSearchParams(location.search);
+      const params = new URLSearchParams(routerLocation.search);
       const tab = params.get("tab");
+      const editId = params.get("edit");
       if (tab) setActiveTab(tab);
+      if (editId) {
+        const addr = getAddresses().find((a) => String(a.id) === String(editId));
+        if (addr) {
+          setActiveTab("Addresses");
+          setAddrEditingId(addr.id);
+          setAddrForm({ name: addr.name, phone: addr.phone, street: addr.street, city: addr.city, state: addr.state, zipCode: addr.zipCode, country: addr.country || "India" });
+        }
+      }
     } catch (e) {
       // ignore
     }
-  }, [location.search]);
+  }, [routerLocation.search]);
 
   // Keep wishlist in sync when items are added/removed from the shared marketplace store.
   useEffect(() => {
