@@ -285,7 +285,13 @@ export default function Checkout() {
                   </div>
                   <div className="mt-3 flex items-center gap-3">
                     <button onClick={() => { setShowAddressPicker(false); }} className="px-4 py-2 border rounded">Cancel</button>
-                    <button onClick={() => { setShowAddressPicker(false); }} className="px-4 py-2 bg-teal-600 text-white rounded">Deliver to this address</button>
+                    <button onClick={() => {
+                      const sel = addresses.find((a) => String(a.id) === String(selectedAddressId)) || addresses.find((a) => a.isDefault) || addresses[0];
+                      if (!sel) return alert("Please select an address or add one in your account.");
+                      setSelectedAddressId(sel.id);
+                      setForm({ name: sel.name, phone: sel.phone, street: sel.street, city: sel.city, state: sel.state, zipCode: sel.zipCode });
+                      setShowAddressPicker(false);
+                    }} className="px-4 py-2 bg-teal-600 text-white rounded">Deliver to this address</button>
                     <button onClick={() => navigate('/account?tab=Addresses')} className="ml-auto text-sm text-teal-600">Edit or add addresses</button>
                   </div>
                 </div>
