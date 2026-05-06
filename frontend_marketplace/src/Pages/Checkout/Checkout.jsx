@@ -250,24 +250,10 @@ export default function Checkout() {
               </div>
             </div>
           )}
-          <div className="grid grid-cols-2 gap-3">
-            <Field label="Full name" name="name" placeholder="Rahul Sharma" onChange={handleChange} />
-            <Field label="Phone" name="phone" placeholder="+91 98765 43210" onChange={handleChange} />
-          </div>
-
-          <Field label="Email" name="email" placeholder="you@example.com" onChange={handleChange} />
-          <Field label="Street / flat / area" name="street" placeholder="12B, Sector 5" onChange={handleChange} />
-
-          <div className="grid grid-cols-2 gap-3">
-            <Field label="City" name="city" placeholder="Kolkata" onChange={handleChange} />
-            <Field label="State" name="state" placeholder="West Bengal" onChange={handleChange} />
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            <Field label="Zip code" name="zipCode" placeholder="700091" onChange={handleChange} />
-            <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">Country</label>
-              <input value="India" readOnly className="w-full border rounded-lg px-3 h-10 text-sm text-gray-400 bg-gray-50" />
+          <div className="py-2">
+            <p className="text-sm text-gray-600">Manage your delivery addresses in your account. Add, edit, or set a default address there and return to checkout to select it.</p>
+            <div className="mt-3">
+              <button onClick={() => navigate('/account?tab=Addresses')} className="text-sm bg-teal-600 text-white px-4 py-2 rounded-lg">Go to Account → Addresses</button>
             </div>
           </div>
         </div>

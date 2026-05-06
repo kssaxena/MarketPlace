@@ -71,7 +71,9 @@ export function getAddresses() {
 }
 
 export function addAddress(address) {
-  const next = [address, ...getAddresses()];
+  const existing = getAddresses();
+  const shouldDefault = existing.length === 0;
+  const next = [{ ...address, isDefault: shouldDefault }, ...existing];
   writeList(ADDRESSES_KEY, next);
   emitStoreUpdate();
 }
@@ -84,6 +86,12 @@ export function updateAddress(id, updated) {
 
 export function removeAddress(id) {
   const next = getAddresses().filter((a) => String(a.id) !== String(id));
+  writeList(ADDRESSES_KEY, next);
+  emitStoreUpdate();
+}
+
+export function setDefaultAddress(id) {
+  const next = getAddresses().map((a) => ({ ...a, isDefault: String(a.id) === String(id) }));
   writeList(ADDRESSES_KEY, next);
   emitStoreUpdate();
 }

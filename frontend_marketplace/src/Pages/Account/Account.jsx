@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Header from "../../components/Header.jsx";
 import {
@@ -9,6 +9,7 @@ import {
   addAddress,
   updateAddress,
   removeAddress,
+  setDefaultAddress,
 } from "../../utility/marketplaceStore.js";
 import { isDarkModeEnabled, setDarkMode as setGlobalDarkMode } from "../../utility/theme.js";
 import {
@@ -72,6 +73,18 @@ export default function Account() {
     fetchUserDetails();
   }, []);
 
+  // If navigated with ?tab=Addresses open that tab
+  const location = useLocation();
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(location.search);
+      const tab = params.get("tab");
+      if (tab) setActiveTab(tab);
+    } catch (e) {
+      // ignore
+    }
+  }, [location.search]);
+
   // Keep wishlist in sync when items are added/removed from the shared marketplace store.
   useEffect(() => {
     const unsub = subscribeMarketplaceStore(() => {
@@ -117,7 +130,10 @@ export default function Account() {
   };
 
   const submitAddress = () => {
+    // basic validation
     if (!addrForm.street || !addrForm.name) return alert("Please enter name and street");
+    if (addrForm.zipCode && !/^\d{4,6}$/.test(addrForm.zipCode)) return alert("Please enter a valid zip/postal code");
+
     if (addrEditingId) {
       updateAddress(addrEditingId, addrForm);
     } else {
@@ -126,6 +142,11 @@ export default function Account() {
     }
     setAddrForm({ name: "", phone: "", street: "", city: "", state: "", zipCode: "", country: "India" });
     setAddrEditingId(null);
+    setAddresses(getAddresses());
+  };
+
+  const setDefault = (id) => {
+    setDefaultAddress(id);
     setAddresses(getAddresses());
   };
 
