@@ -4,18 +4,19 @@ const productSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: [true, 'Please provide a product title'],
+      required: true,
       trim: true,
       maxlength: [100, 'Title cannot exceed 100 characters'],
     },
     description: {
       type: String,
-      required: [true, 'Please provide a product description'],
+      required: true,
+      trim: true,
       maxlength: [2000, 'Description cannot exceed 2000 characters'],
     },
     price: {
       type: Number,
-      required: [true, 'Please provide a price'],
+      required: true,
       min: [0, 'Price cannot be negative'],
     },
     originalPrice: {
@@ -30,7 +31,8 @@ const productSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      required: [true, 'Please provide a category'],
+      required: true,
+      trim: true,
       enum: [
         'Electronics',
         'Clothing',
@@ -48,6 +50,7 @@ const productSchema = new mongoose.Schema(
       {
         url: String,
         altText: String,
+        required: true,
       },
     ],
     stock: {
@@ -73,21 +76,17 @@ const productSchema = new mongoose.Schema(
     },
     status: {
       type: String,
+      trim: true,
       enum: ['active', 'inactive', 'sold', 'archived'],
       default: 'active',
     },
     tags: [String],
-    location: String,
-    createdAt: {
-      type: Date,
-      default: Date.now,
+    location: {
+      type: String,
+      trim: true,
     },
-    updatedAt: {
-      type: Date,
-      default: Date.now,
-    },
-  },
-  { timestamps: true }
+  }
+  ,{ timestamps: true }
 );
 
 export default mongoose.model('Product', productSchema);

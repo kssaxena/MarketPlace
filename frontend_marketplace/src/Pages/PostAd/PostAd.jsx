@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header.jsx";
 import { isDarkModeEnabled, setDarkMode as setGlobalDarkMode } from "../../utility/theme.js";
-import { productAPI } from "../../services/api.js";
-import { useAuth } from "../../contexts/AuthContext.jsx";
 
 const steps = ["Category", "Details", "Photos"];
 
@@ -11,7 +9,6 @@ const CATEGORIES = ["Vehicles", "Property", "Electronics", "Furniture", "Books",
 
 export default function PostAd() {
   const navigate = useNavigate();
-  const { user, token } = useAuth();
   const [step, setStep] = useState(1);
   const [isDarkMode, setIsDarkMode] = useState(() => isDarkModeEnabled());
 
@@ -45,48 +42,15 @@ export default function PostAd() {
       return;
     }
 
-    if (!token) {
-      setError("You must be logged in to post an ad");
-      return;
-    }
-
     setLoading(true);
     setError("");
 
     try {
-      const productData = {
-        title: title.trim(),
-        price: parseFloat(price),
-        description: description.trim(),
-        category,
-        images: photos.length > 0 ? photos : [`https://picsum.photos/seed/${Date.now()}/300/200`],
-        stock: 1,
-        location: "Not specified",
-        tags: [category.toLowerCase()],
-        status: "active",
-      };
-
-      const response = await productAPI.createProduct(productData);
-
-      // Also store locally for reference
-      const newAd = {
-        id: response.data.product._id,
-        title,
-        price,
-        description,
-        category,
-        image: photos[0] || `https://picsum.photos/seed/${Date.now()}/300/200`,
-        postedAt: new Date().toISOString(),
-      };
-
-      const existing = JSON.parse(localStorage.getItem("myAds") || "[]");
-      localStorage.setItem("myAds", JSON.stringify([newAd, ...existing]));
-
-      alert("Ad posted successfully! It will appear in the marketplace.");
+      alert("Post Ad has been reverted. No product was created.");
       navigate("/");
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to post ad. Please try again.");
-      console.error("Error posting ad:", err);
+      setError("Post Ad is currently disabled.");
+      console.error("Post Ad is disabled:", err);
     } finally {
       setLoading(false);
     }
@@ -131,9 +95,9 @@ export default function PostAd() {
           )}
 
           <div className="relative flex items-center justify-between mb-10">
-            <div className={`${isDarkMode ? "bg-slate-700" : "bg-gray-200"} absolute top-1/2 left-0 w-full h-[3px] -translate-y-1/2`} />
+            <div className={`${isDarkMode ? "bg-slate-700" : "bg-gray-200"} absolute top-1/2 left-0 w-full h-0.75 -translate-y-1/2`} />
             <div
-              className="absolute top-1/2 left-0 h-[3px] bg-teal-600 -translate-y-1/2 transition-all duration-500"
+              className="absolute top-1/2 left-0 h-0.75 bg-teal-600 -translate-y-1/2 transition-all duration-500"
               style={{ width: `${((step - 1) / (steps.length - 1)) * 100}%` }}
             />
             {steps.map((label, index) => (
