@@ -240,14 +240,14 @@ export default function ProductDetail() {
                   <div className="mt-6 hidden gap-3 md:flex">
                     <button
                       onClick={handleAddToCart}
-                      className="flex flex-1 items-center justify-center gap-2 rounded-lg border-2 border-[#f59e0b] bg-white px-4 py-3 text-sm font-bold text-[#f59e0b]"
+                      className="flex flex-1 items-center justify-center gap-2 rounded-lg border-2 border-[#0ea5a0] bg-white px-4 py-3 text-sm font-bold text-[#0ea5a0]"
                     >
                       <ShoppingCart size={18} />
                       Add to Cart
                     </button>
                     <button
                       onClick={handleBuyNow}
-                      className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-[#f59e0b] px-4 py-3 text-sm font-bold text-white"
+                      className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-[#0ea5a0] px-4 py-3 text-sm font-bold text-white"
                     >
                       Buy Now
                     </button>
@@ -358,13 +358,13 @@ export default function ProductDetail() {
         <div className="flex gap-3">
           <button
             onClick={handleAddToCart}
-            className="flex-1 rounded-lg border-2 border-[#f59e0b] bg-white py-3 text-xs font-bold text-[#f59e0b]"
+            className="flex-1 rounded-lg border-2 border-[#0ea5a0] bg-white py-3 text-xs font-bold text-[#0ea5a0]"
           >
             Add to Cart
           </button>
           <button
             onClick={handleBuyNow}
-            className="flex-1 rounded-lg bg-[#f59e0b] py-3 text-xs font-bold text-white"
+            className="flex-1 rounded-lg bg-[#0ea5a0] py-3 text-xs font-bold text-white"
           >
             Buy Now
           </button>
